@@ -1,5 +1,6 @@
 #include <pd/game.hpp>
 #include <pd/texture.hpp>
+#include <pd/drawtools.hpp>
 
 const int width = 800;
 const int height = 450;
@@ -32,6 +33,8 @@ pd::game::game()
     glOrtho(0.0f, 800.0f, 450.0f, 0.0f, 0.0f, 1000.0f);
 
     glEnable(GL_TEXTURE_2D);
+    glEnableClientState(GL_VERTEX_ARRAY);
+    glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 
     m_win = win;
     m_glctx = ctx;
@@ -76,21 +79,8 @@ void pd::game::update(float dt)
 
 void pd::game::render(float dt) const
 {
-    glClearColor(0.3f, 0.5f, 0.7f, 1.0f);
-    glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
-
-    /* render a test quad */
-    glBindTexture(GL_TEXTURE_2D, test_texture->id());
-    glBegin(GL_QUADS);
-    glTexCoord2f(0.0f, 0.0f);
-    glVertex3f(20.0f, 20.0f, 0.0f);
-    glTexCoord2f(0.0f, 1.0f);
-    glVertex3f(20.0f, 100.0f, 0.0f);
-    glTexCoord2f(1.0f, 1.0f);
-    glVertex3f(100.0f, 100.0f, 0.0f);
-    glTexCoord2f(1.0f, 0.0f);
-    glVertex3f(100.0f, 20.0f, 0.0f);
-    glEnd();
+    pd::clear_screen(0x336699ff);
+    pd::draw_textured_quad(10.0, 10.0f, 100.0f, 100.0f, test_texture);
 }
 
 void pd::game::handle_event(SDL_Event &evt, float dt)
