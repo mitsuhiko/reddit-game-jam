@@ -1,7 +1,11 @@
 #include <pd/game.hpp>
+#include <pd/texture.hpp>
 
 const int width = 800;
 const int height = 450;
+
+static pd::texture *test_texture;
+
 
 pd::game::game()
 {
@@ -27,13 +31,18 @@ pd::game::game()
     glLoadIdentity();
     glOrtho(0.0f, 800.0f, 450.0f, 0.0f, 0.0f, 1000.0f);
 
+    glEnable(GL_TEXTURE_2D);
+
     m_win = win;
     m_glctx = ctx;
     m_running = true;
+
+    test_texture = pd::load_texture("textures/debug.png");
 }
 
 pd::game::~game()
 {
+    delete test_texture;
     SDL_GL_DeleteContext(m_glctx);
     SDL_DestroyWindow(m_win);
     SDL_Quit();
@@ -71,7 +80,7 @@ void pd::game::render(float dt) const
     glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
 
     /* render a test quad */
-    glColor4f(0.3f, 0.0f, 0.9f, 1.0f);
+    glBindTexture(GL_TEXTURE_2D, test_texture->id());
     glBegin(GL_QUADS);
     glVertex3f(0.0f, 0.0f, 0.0f);
     glVertex3f(0.0f, 100.0f, 0.0f);

@@ -25,6 +25,7 @@
 #include <new>
 #include <string>
 #include <cassert>
+#include <iostream>
 
 /* we also include SDL by default */
 #include <SDL.h>

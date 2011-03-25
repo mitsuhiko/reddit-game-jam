@@ -23,14 +23,15 @@ SDL_Surface *pd::load_image(const std::string &filename)
         0xff00, 0xff0000, 0xff000000);
 
     if (comp == 4) {
-        memcpy(rv->pixels, data, 32 * x * y);
+        memcpy(rv->pixels, data, 4 * x * y);
     } else {
         std::stringstream ss;
-        ss << "Invalid image format for '" << filename << "'.  Need 32bit";
+        ss << "Invalid image format for '" << filename <<
+            "'.  We currently require 32bit images, got " << (comp * 8) << "bit";
         pd::critical_error("Image Load Error", ss.str());
     }
 
     stbi_image_free(data);
 
-    return 0;
+    return rv;
 }

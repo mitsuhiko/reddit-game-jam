@@ -1,5 +1,20 @@
 #include <pd/texture.hpp>
+#include <pd/image.hpp>
 #include <pd/math.hpp>
+
+
+pd::texture *pd::texture_from_surface(SDL_Surface *surface)
+{
+    return new pd::simple_texture(surface);
+}
+
+pd::texture *pd::load_texture(const std::string &filename)
+{
+    SDL_Surface *surface = pd::load_image(filename);
+    pd::texture *rv = new pd::simple_texture(surface);
+    SDL_FreeSurface(surface);
+    return rv;
+}
 
 pd::simple_texture::simple_texture(SDL_Surface *surface)
 {
