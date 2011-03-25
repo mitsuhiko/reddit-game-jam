@@ -6,11 +6,16 @@ set(GAME_SOURCES
 	src/main.cpp
 	src/path.cpp
 	src/game.cpp
+    src/image.cpp
+    src/texture.cpp
 )
 set(GAME_HEADERS
 	include/pd/pd.hpp
 	include/pd/path.hpp
 	include/pd/game.hpp
+	include/pd/image.hpp
+	include/pd/texture.hpp
+	include/pd/math.hpp
 )
 
 if(APPLE)
