@@ -1,6 +1,7 @@
 #define PD_MAGIC_MAIN
 #include <pd/pd.hpp>
 #include <pd/path.hpp>
+#include <pd/game.hpp>
 
 #if PD_PLATFORM == PD_PLATFORM_WINDOWS
 #pragma comment(lib, "shlwapi")
@@ -30,7 +31,7 @@ static void initialize_win32_console(size_t width, size_t height,
 int main(int argc, char **argv)
 {
     /* on windows we have to initialize the console window */
-#if PD_PLATFORM == PD_PLATFORM_WINDOWS
+#if PD_PLATFORM == PD_PLATFORM_WINDOWS && !defined(NDEBUG)
     initialize_win32_console(120, 30, 1000);
 #endif
 
@@ -38,6 +39,9 @@ int main(int argc, char **argv)
        that game and engine can reference things in the resource folder */
     std::string resource_path = pd::path::get_resource_path();
     pd::path::set_cwd(resource_path);
+
+    pd::game game;
+    game.run();
 
     return 0;
 }

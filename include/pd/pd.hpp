@@ -28,9 +28,15 @@
 
 /* we also include SDL by default */
 #include <SDL.h>
+#include <SDL_opengl.h>
 #ifndef PD_MAGIC_MAIN
 #  undef main
 #endif
+
+/* logging */
+#define PD_LOG(Comp, Expr) do { \
+    std::clog << "[" << Comp << "] " << Expr << std::endl; \
+} while (0)
 
 /* if things go south. */
 namespace pd {

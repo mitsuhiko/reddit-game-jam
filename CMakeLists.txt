@@ -5,10 +5,12 @@ project(ProbablyDefective)
 set(GAME_SOURCES
 	src/main.cpp
 	src/path.cpp
+	src/game.cpp
 )
 set(GAME_HEADERS
 	include/pd/pd.hpp
 	include/pd/path.hpp
+	include/pd/game.hpp
 )
 
 if(APPLE)
