@@ -82,14 +82,14 @@ void pd::game::render(float dt) const
     /* render a test quad */
     glBindTexture(GL_TEXTURE_2D, test_texture->id());
     glBegin(GL_QUADS);
-    glVertex3f(0.0f, 0.0f, 0.0f);
-    glVertex3f(0.0f, 100.0f, 0.0f);
-    glVertex3f(100.0f, 100.0f, 0.0f);
-    glVertex3f(100.0f, 0.0f, 0.0f);
     glTexCoord2f(0.0f, 0.0f);
+    glVertex3f(20.0f, 20.0f, 0.0f);
     glTexCoord2f(0.0f, 1.0f);
+    glVertex3f(20.0f, 100.0f, 0.0f);
     glTexCoord2f(1.0f, 1.0f);
+    glVertex3f(100.0f, 100.0f, 0.0f);
     glTexCoord2f(1.0f, 0.0f);
+    glVertex3f(100.0f, 20.0f, 0.0f);
     glEnd();
 }
 
