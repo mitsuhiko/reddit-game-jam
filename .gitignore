@@ -1,0 +1,8 @@
+ProbablyDefective.app
+Makefile
+cmake_install.cmake
+*.a
+*.dylib
+CMakeFiles
+CMakeCache.txt
+vs

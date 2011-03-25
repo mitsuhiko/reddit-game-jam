@@ -1,0 +1,12 @@
+How to get this running.
+
+THe following libraries have to be downloaded and unzipped into
+the libs folder:
+
+  - sdl-1.3             http://www.libsdl.org/
+
+Additionally these have to be built.  Unfortunately SDL does not work
+without installation so make sure to set the prefix to just ``local``
+because this is where the CMakeLists.txt file looks for it.  Do not
+attempt other versions of the libraries as these are hardcoded in the
+CMakeLists.txt file for the time being.
