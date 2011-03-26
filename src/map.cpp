@@ -80,7 +80,7 @@ void pd::map::render() const
 
 void pd::map::create_ground_box(float x, float y, float width)
 {
-    assert(m_world != NULL);
+    assert(m_world);
     b2BodyDef bodydef;
     bodydef.type = b2_staticBody;
     bodydef.position.Set(pd::pixel_to_meter(x), pd::pixel_to_meter(y));
@@ -111,7 +111,8 @@ void pd::map::build_box2d_object()
                 start_point = x;
             }
             if (!tile && start_point != x) {
-                create_ground_box(x * m_tile_width, y * m_tile_height, current_width * m_tile_width);
+                create_ground_box((float)x * m_tile_width, (float)y * m_tile_height,
+                    (float)current_width * m_tile_width);
                 start_point = 0;
                 current_width = 0;
             }
