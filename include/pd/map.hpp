@@ -1,6 +1,7 @@
 #ifndef _INC_PD_MAP_HPP_
 #define _INC_PD_MAP_HPP_
 #include <pd/pd.hpp>
+#include <pd/math.hpp>
 #include <pd/resource_base.hpp>
 #include <pd/color.hpp>
 #include <Box2D/Box2D.h>
@@ -25,7 +26,7 @@ namespace pd {
         int tile_height() const { return m_tile_height; }
         pd::color background_color() const { return m_background_color; }
         b2World * world() const { return m_world; }
-        void world(b2World * val) { m_world = val; }
+        void world(b2World * val) { m_world = val; build_box2d_object(); }
 
         tile_id_t get_bg(int x, int y) const { return m_background[(y * m_width) + x]; }
         tile_id_t get_fg(int x, int y) const { return m_foreground[(y * m_width) + x]; }

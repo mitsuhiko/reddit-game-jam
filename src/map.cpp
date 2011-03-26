@@ -9,6 +9,7 @@
 
 pd::map::map(std::string filename)
 {
+    m_world = NULL;
     load(filename);
 }
 
@@ -79,16 +80,26 @@ void pd::map::render() const
 
 void pd::map::create_ground_box( float x, float y, float width )
 {
-    b2BodyDef groundbodydef;
-    groundbodydef.position.Set(0.0f, -10.0f);
-    b2Body* groundBody = m_world->CreateBody(&groundbodydef);
-    b2PolygonShape groundBox;
-    groundBox.SetAsBox(50.0f, 10.0f);
+    assert(m_world != NULL);
+    b2BodyDef bodydef;
+    bodydef.type = b2_staticBody;
+    bodydef.position.Set(pd::pixel_to_meter(x), pd::pixel_to_meter(y));
+    bodydef.fixedRotation = true;
+    b2Body *body = m_world->CreateBody(&bodydef);
+    b2FixtureDef fixturedef;
+    b2PolygonShape fixedbox;
+    fixedbox.SetAsBox(pd::pixel_to_meter(width / 2),
+                        pd::pixel_to_meter(m_tile_height / 2));
+    fixturedef.shape = &fixedbox;
+    fixturedef.density = 0;
+    fixturedef.friction = 0.5f;
+    body->CreateFixture(&fixturedef);
 }
 
 /* Builds a collision mask using RLE. */
 void pd::map::build_box2d_object()
 {
+    create_ground_box(0, 300, 1500);
     tile_id_t last_tile = 0;
     for (int x = 0; x < m_width;  x++) {
         for (int y = 0; y < m_height; y++) {
