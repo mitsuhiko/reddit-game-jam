@@ -13,8 +13,9 @@ namespace pd {
         typedef unsigned char tile_id_t;
 
 	    map(std::string filename);
-	    void render() const;
 	    ~map();
+
+	    void render() const;
 
         int width() const { return m_width; }
         int height() const { return m_height; }
