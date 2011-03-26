@@ -9,7 +9,8 @@ namespace pd {
 
     class entity {
     public:
-        entity(b2World *world, float x = 0.0f, float y = 0.0f, float sizex = 0.0f, float sizey = 0.0f, float weight = 0.0f, float friction = 0.0f);
+        entity(b2World *world, float x = 0.0f, float y = 0.0f, float sizex = 0.0f,
+               float sizey = 0.0f, float weight = 0.0f, float friction = 0.0f);
         virtual ~entity() {}
 
         float x() const { return m_x; }
