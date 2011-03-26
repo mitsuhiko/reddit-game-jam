@@ -9,11 +9,11 @@ pd::map::map(std::string filename)
 pd::map::~map(void)
 {
 	for (int x = 0; x != m_tile_width; x++) {
-		free(m_background[x]);
-		free(m_foreground[x]);
+		delete[] m_background[x];
+		delete[] m_foreground[x];
 	}
-	free (m_background);
-	free(m_foreground);
+	delete[] m_background;
+	delete[] m_foreground;
 }
 
 /* Loads map and loads texture from map file. */
@@ -30,18 +30,18 @@ bool pd::map::load( std::string filename )
 	m_height = atoi(height);
 	m_tile_width = atoi(tile_width);
 	m_tile_height = atoi(tile_height);
-	m_background = (char**)malloc(m_width);
-	m_foreground = (char**)malloc(m_width);
+	m_background = new char*[m_width];
+	m_foreground = new char*[m_width];
 	for (int x = 0; x != m_tile_width; x++) {
-		m_background[x] = (char*)malloc(m_height);
+		m_background[x] = new char[m_height];
 		fread(m_background[x], 1, m_width, fp);
 	}
 	for (int x = 0; x != m_tile_width; x++) {
-		m_foreground[x] = (char*)malloc(m_height);
+		m_foreground[x] = new char[m_height];
 		fread(m_foreground[x], 1, m_width, fp);
 	}
 
-	printf("Read map %s, with tileset %s, size %ix%i and tile size %ix%i\n.",
+	printf("Read map %s, with tileset %s, size %ix%i and tile size %ix%i.\n",
 		filename.c_str(), tileset, m_width, m_height,
 		m_tile_width, m_tile_height);
 

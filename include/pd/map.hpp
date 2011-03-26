@@ -3,8 +3,10 @@
 
 #include <string>
 #include <pd/texture.hpp>
+#include <pd/resource_base.hpp>
+
 namespace pd {
-class map
+class map : resource_base
 {
 public:
 	int m_width;
