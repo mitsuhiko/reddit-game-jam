@@ -80,7 +80,8 @@ pd::game_session::~game_session()
 void pd::game_session::update(float dt)
 {
     m_world->Step(dt, 10, 10);
-    for (std::vector<pd::entity *>::iterator iter = m_entities.begin(); iter != m_entities.end(); ++iter) {
+    for (std::vector<pd::entity *>::iterator iter = m_entities.begin();
+         iter != m_entities.end(); ++iter) {
         (*iter)->update(dt);
     }
 }

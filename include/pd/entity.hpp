@@ -13,7 +13,8 @@ namespace pd {
 
     class entity {
     public:
-        entity(b2World *world, float x = 0.0f, float y = 0.0f, float width = 0.0f, float height = 0.0f, float density = 0.0f, float friction = 0.0f);
+        entity(b2World *world, float x = 0.0f, float y = 0.0f, float width = 0.0f,
+            float height = 0.0f, float density = 0.0f, float friction = 0.0f);
         virtual ~entity() {}
 
         float x() const { return mtp(m_body->GetPosition().x); }
