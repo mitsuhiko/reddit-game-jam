@@ -7,6 +7,7 @@
 pd::game_session::game_session()
 {
     pd::game::instance().resmgr().push();
+	m_map = pd::get_resource<pd::map>("maps/demo.map");
 }
 
 pd::game_session::~game_session()
@@ -30,4 +31,5 @@ void pd::game_session::handle_event(SDL_Event &evt, float dt)
 void pd::game_session::render(float dt) const
 {
     pd::clear_screen(0x000000ff);
+	m_map->render();
 }

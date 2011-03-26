@@ -2,6 +2,7 @@
 #define _INC_PD_MAIN_GAME_SESSION_HPP_
 #include <pd/pd.hpp>
 #include <pd/screen.hpp>
+#include <pd/map.hpp>
 
 namespace pd {
 
@@ -10,6 +11,8 @@ namespace pd {
 
     class game_session : public screen {
     public:
+		pd::map *m_map;
+
         game_session();
         ~game_session();
 

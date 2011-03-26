@@ -13,10 +13,6 @@ pd::map::map(std::string filename)
 
 pd::map::~map()
 {
-	for (int x = 0; x != m_tile_width; x++) {
-		delete[] m_background[x];
-		delete[] m_foreground[x];
-	}
 	delete[] m_background;
 	delete[] m_foreground;
 }
@@ -39,17 +35,12 @@ bool pd::map::load(std::string filename)
 	m_height = pd::lexical_cast<int>(height);
 	m_tile_width = pd::lexical_cast<int>(tile_width);
 	m_tile_height = pd::lexical_cast<int>(tile_height);
-	m_background = new tile_id_t*[m_width];
-	m_foreground = new tile_id_t*[m_width];
+	m_background = new tile_id_t[m_width * m_height];
+	m_foreground = new tile_id_t[m_width * m_height];
 
-	for (int x = 0; x != m_tile_width; x++) {
-		m_background[x] = new tile_id_t[m_height];
-        fread(m_background[x], 1, m_width, fp);
-	}
-	for (int x = 0; x != m_tile_width; x++) {
-		m_foreground[x] = new tile_id_t[m_height];
-		fread(m_foreground[x], 1, m_width, fp);
-	}
+    fread(m_background, 1, m_width * m_height, fp);
+	fread(m_foreground, 1, m_width * m_height, fp);
+
 
 	m_tileset = pd::get_resource<pd::texture>(tileset);
 	printf("Read map %s, with tileset %s, size %ix%i and tile size %ix%i.\n",
@@ -62,5 +53,11 @@ bool pd::map::load(std::string filename)
 
 void pd::map::render()
 {
-	pd::draw_textured_quad(20, 20, m_tileset);
+	for (int x = 0; x < m_width; x++) {
+		for (int y = 0; y < m_height; y++) {
+			if (get_bg(x, y)) {
+				pd::draw_textured_quad(x * m_tile_width, y * m_tile_height, m_tileset);
+			}
+		}
+	}
 }
