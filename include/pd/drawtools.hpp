@@ -29,9 +29,16 @@ namespace pd {
 
     inline void rotate_around_point(float angle, float x, float y)
     {
+        if (angle >= -10e-5 && angle <= 10e-5f)
+            return;
         translate(x, y);
         rotate(angle);
         translate(-x, -y);
+    }
+
+    inline void scale(float x, float y)
+    {
+        glScalef(x, y, 1.0f);
     }
 }
 

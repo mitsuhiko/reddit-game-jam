@@ -24,10 +24,14 @@ namespace pd {
         void density(float val) { m_fixture->SetDensity(val); }
         float friction() const { return m_fixture->GetFriction(); }
         void friction(float val) { m_fixture->SetFriction(val); }
+        bool flipped() const { return m_flipped; }
+        void flipped(bool val) { m_flipped = val; }
+
         void move(float dx, float dy);
 
         virtual void update(float dt) = 0;
-        virtual void render(float dt) const = 0;
+        virtual void render(float dt) const;
+        virtual void local_render(float dt) const = 0;
 
     private:
         pd::game_session *m_session;
@@ -37,6 +41,7 @@ namespace pd {
         float m_width;
         float m_height;
         bool m_locked_rotation;
+        bool m_flipped;
     };
 }
 

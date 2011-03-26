@@ -14,12 +14,17 @@ pd::player::player(pd::game_session *session, float x, float y)
     m_kinetic_energy = 1.0f;
 }
 
+void pd::player::move(float dx, float dy)
+{
+    pd::entity::move(dx, dy);
+}
+
 void pd::player::update(float dt)
 {
     m_walk_anim.update(dt);
 }
 
-void pd::player::render(float dt) const
+void pd::player::local_render(float dt) const
 {
-    m_walk_anim.render(x(), y(), dt);
+    m_walk_anim.render(dt);
 }

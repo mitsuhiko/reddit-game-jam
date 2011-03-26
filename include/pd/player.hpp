@@ -24,9 +24,10 @@ namespace pd {
         float thermal_energy() const { return m_thermal_energy; }
         float electromagnetic_energy() const { return m_electromagnetic_energy; }
         float kinetic_energy() const { return m_kinetic_energy; }
+        void move(float dx, float dy);
 
         void update(float dt);
-        void render(float dt) const;
+        void local_render(float dt) const;
 
     private:
         stance_type m_stance;
