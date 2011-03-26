@@ -3,7 +3,7 @@
 
 /* platform identifiers */
 #define PD_PLATFORM_OSX         1
-#define PD_PLATFORM_WINDOWs     2
+#define PD_PLATFORM_WINDOWS     2
 
 /* figure out current platform */
 #if defined(__APPLE__) && defined(__MACH__)
@@ -33,6 +33,9 @@
 #ifndef PD_MAGIC_MAIN
 #  undef main
 #endif
+
+/* same goes with box2d */
+#include <Box2D/Box2D.h>
 
 /* logging */
 #define PD_LOG(Comp, Expr) do { \

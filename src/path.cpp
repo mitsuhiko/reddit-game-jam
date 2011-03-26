@@ -109,7 +109,7 @@ void pd::path::set_cwd(const std::string &path)
 
 std::string pd::path::get_cwd()
 {
-#if PD_PLATFORM == PL_PLATFORM_WINDOWS
+#if PD_PLATFORM == PD_PLATFORM_WINDOWS
     char path[MAX_PATH];
     GetCurrentDirectory(MAX_PATH, path);
     return std::string(path);

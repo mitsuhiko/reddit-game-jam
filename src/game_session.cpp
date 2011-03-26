@@ -65,8 +65,7 @@ pd::game_session::game_session()
     m_world = new b2World(b2Vec2(0, 9.79f), true);
 	m_map = pd::get_resource<pd::map>("maps/demo.map");
 
-    m_player = new pd::player(m_world, 40.0f, 300.0f);
-    add_entity(m_player);
+    m_player = new pd::player(this, 40.0f, 300.0f);
 }
 
 pd::game_session::~game_session()

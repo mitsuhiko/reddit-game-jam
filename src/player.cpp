@@ -3,17 +3,11 @@
 #include <pd/drawtools.hpp>
 #include <pd/game.hpp>
 
-pd::player::player(b2World *world, float x, float y)
-    : pd::entity(world, x, y),
+pd::player::player(pd::game_session *session, float x, float y)
+    : pd::entity(session, x, y, 30.0f, 50.0f, 20.0f, 1.02f),
       m_walk_anim(pd::get_resource<pd::texture>("textures/test-pirate.png"), 9, 0.1f)
 {
     m_stance = kinetic_stance;
-
-    width(30.0f);
-    height(50.0f);
-    density(20.0f);
-    friction(1.02f);
-    build_box2d_object(x, y);
 
     m_thermal_energy = 1.0f;
     m_electromagnetic_energy = 1.0f;

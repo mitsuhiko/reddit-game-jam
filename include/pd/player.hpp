@@ -8,6 +8,7 @@
 namespace pd {
 
     class texture;
+    class session;
 
     class player : public pd::entity {
     public:
@@ -17,7 +18,7 @@ namespace pd {
             kinetic_stance
         };
 
-        player(b2World *world, float x = 0.0f, float y = 0.0f);
+        player(pd::game_session *session, float x = 0.0f, float y = 0.0f);
         stance_type stance() const { return m_stance; }
         void stance(stance_type val) { m_stance = val; }
         float thermal_energy() const { return m_thermal_energy; }

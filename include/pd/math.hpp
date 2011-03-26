@@ -4,6 +4,19 @@
 
 namespace pd {
 
+    // Pixels to meters translation.
+    template <class T>
+    T pixel_to_meter(T a)
+    {
+        return a / 30;
+    }
+
+    template <class T>
+    T meter_to_pixel(T a)
+    {
+        return a * 30;
+    }
+
     template <class T>
     bool is_power_of_two(T value)
     {

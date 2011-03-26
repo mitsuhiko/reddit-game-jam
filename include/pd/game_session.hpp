@@ -31,6 +31,8 @@ namespace pd {
 
         void render_gui(float dt) const;
 
+        b2World *box2d_world() { return m_world; }
+
     private:
 		pd::map *m_map;
         pd::player *m_player;
