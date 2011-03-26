@@ -66,7 +66,7 @@ pd::game_session::game_session()
 	m_map = pd::get_resource<pd::map>("maps/demo.map");
     m_map->world(m_world);
 
-    m_player = new pd::player(this, 40.0f, 200.0f);
+    m_player = new pd::player(this, 400.0f, 200.0f);
 }
 
 pd::game_session::~game_session()
@@ -90,6 +90,8 @@ void pd::game_session::update(float dt)
         m_player->move(1200.0f, 0.0f);
     if (state[SDL_SCANCODE_A] || state[SDL_SCANCODE_LEFT])
         m_player->move(-1 * 1200.0f, 0.0f);
+    if (state[SDL_SCANCODE_SPACE])
+        m_player->move(0.0f, -1 * 1200.0f);
 }
 
 void pd::game_session::handle_event(SDL_Event &evt, float dt)
