@@ -2,20 +2,19 @@
 #define _INC_PD_MAP_HPP_
 #include <pd/pd.hpp>
 #include <pd/math.hpp>
-#include <pd/resource_base.hpp>
 #include <pd/color.hpp>
-#include <Box2D/Box2D.h>
 #include <map>
 
 namespace pd {
 
     class texture;
+    class game_session;
 
-    class map : public pd::resource_base {
+    class map {
     public:
         typedef unsigned char tile_id_t;
 
-	    map(std::string filename);
+	    map(pd::game_session *session, std::string filename);
 	    ~map();
 
 	    void render() const;
@@ -25,22 +24,13 @@ namespace pd {
         int tile_width() const { return m_tile_width; }
         int tile_height() const { return m_tile_height; }
         pd::color background_color() const { return m_background_color; }
-        b2World * world() const { return m_world; }
-        void world(b2World * val) { m_world = val; build_box2d_object(); }
 
         tile_id_t get_bg(int x, int y) const { return m_background[(y * m_width) + x]; }
         tile_id_t get_fg(int x, int y) const { return m_foreground[(y * m_width) + x]; }
 
-        static map *load_as_resource(const std::string &filename)
-        {
-            return new pd::map(filename);
-        }
-
     private:
-	    void load(std::string filename);
         void draw_tile(int x, int y, tile_id_t tile) const;
         void create_ground_box(int x, int y, int length);
-        void build_box2d_object();
         
 	    int m_width;
 	    int m_height;
@@ -49,7 +39,7 @@ namespace pd {
 	    tile_id_t *m_background;
 	    tile_id_t *m_foreground;
 	    pd::texture *m_tileset;
-        b2World *m_world;
+        pd::game_session *m_session;
         pd::color m_background_color;
         std::map<tile_id_t, pd::texture *> m_tiles;
     };
