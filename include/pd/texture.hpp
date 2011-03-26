@@ -55,6 +55,7 @@ namespace pd {
 
     class texture_slice : public texture {
     public:
+        texture_slice(texture *parent, int x, int y, int width, int height);
         GLuint id() const { return m_parent->id(); }
         int width() const { return m_width; }
         int height() const { return m_height; }
@@ -67,9 +68,6 @@ namespace pd {
         texture *slice(int x, int y, int width, int height);
 
     private:
-        friend class texture;
-        texture_slice(texture *parent, int x, int y, int width, int height);
-
         texture *m_parent;
         int m_offset_x;
         int m_offset_y;

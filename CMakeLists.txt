@@ -9,10 +9,12 @@ set(GAME_SOURCES
     src/image.cpp
     src/texture.cpp
 	src/drawtools.cpp
-	src/sprite.cpp
+	src/entity.cpp
+	src/player.cpp
     src/font.cpp
 	src/map.cpp
     src/resource_manager.cpp
+    src/animation.cpp
 
 	src/screen.cpp
 	src/main_menu.cpp
@@ -27,12 +29,14 @@ set(GAME_HEADERS
 	include/pd/math.hpp
 	include/pd/drawtools.hpp
 	include/pd/color.hpp
-	include/pd/sprite.hpp
+	include/pd/entity.hpp
+	include/pd/player.hpp
     include/pd/font.hpp
 	include/pd/lexical_cast.hpp
 	include/pd/map.hpp
 	include/pd/resource_base.hpp
 	include/pd/resource_manager.hpp
+	include/pd/animation.hpp
 
 	include/pd/screen.hpp
 	include/pd/main_menu.hpp
