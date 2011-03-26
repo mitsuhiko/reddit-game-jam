@@ -84,6 +84,12 @@ void pd::game_session::update(float dt)
          iter != m_entities.end(); ++iter) {
         (*iter)->update(dt);
     }
+
+    uint8_t *state = SDL_GetKeyboardState(NULL);
+    if (state[SDL_SCANCODE_D] || state[SDL_SCANCODE_RIGHT])
+        m_player->move(dt * 20.0f, 0.0f);
+    if (state[SDL_SCANCODE_A] || state[SDL_SCANCODE_LEFT])
+        m_player->move(-dt * 20.0f, 0.0f);
 }
 
 void pd::game_session::handle_event(SDL_Event &evt, float dt)

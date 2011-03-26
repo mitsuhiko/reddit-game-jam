@@ -78,7 +78,7 @@ void pd::map::render() const
     }
 }
 
-void pd::map::create_ground_box( float x, float y, float width )
+void pd::map::create_ground_box(float x, float y, float width)
 {
     assert(m_world != NULL);
     b2BodyDef bodydef;
@@ -88,8 +88,8 @@ void pd::map::create_ground_box( float x, float y, float width )
     b2Body *body = m_world->CreateBody(&bodydef);
     b2FixtureDef fixturedef;
     b2PolygonShape fixedbox;
-    fixedbox.SetAsBox(pd::pixel_to_meter(width / 2),
-                        pd::pixel_to_meter(m_tile_height / 2));
+    fixedbox.SetAsBox(pd::pixel_to_meter(width / 2.0f),
+                      pd::pixel_to_meter(m_tile_height / 2.0f));
     fixturedef.shape = &fixedbox;
     fixturedef.density = 0;
     fixturedef.friction = 0.5f;

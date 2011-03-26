@@ -31,3 +31,8 @@ pd::entity::~entity()
 {
     m_world->DestroyBody(m_body);
 }
+
+void pd::entity::move(float dx, float dy)
+{
+    m_body->ApplyForce(b2Vec2(dx, dy), b2Vec2());
+}

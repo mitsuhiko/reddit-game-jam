@@ -24,6 +24,8 @@ namespace pd {
         void density(float val) { m_fixture->SetDensity(val); }
         float friction() const { return m_fixture->GetFriction(); }
         void friction(float val) { m_fixture->SetFriction(val); }
+        void move(float dx, float dy);
+
         virtual void update(float dt) = 0;
         virtual void render(float dt) const = 0;
 
