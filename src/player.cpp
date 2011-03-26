@@ -13,7 +13,7 @@ pd::player::player(b2World *world, float x, float y)
     height(50.0f);
     density(20.0f);
     friction(1.02f);
-    build_box2d_object();
+    build_box2d_object(x, y);
 
     m_thermal_energy = 1.0f;
     m_electromagnetic_energy = 1.0f;
