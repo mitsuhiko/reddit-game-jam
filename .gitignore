@@ -3,6 +3,8 @@ Makefile
 cmake_install.cmake
 *.a
 *.dylib
+.*
+editor
 CMakeFiles
 CMakeCache.txt
 vs
