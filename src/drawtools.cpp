@@ -1,5 +1,7 @@
 #include <pd/drawtools.hpp>
 #include <pd/texture.hpp>
+#include <pd/font.hpp>
+#include <vector>
 
 
 void pd::clear_screen(pd::color color)
@@ -33,4 +35,29 @@ void pd::draw_textured_quad(float x, float y, float width, float height, const p
     glVertexPointer(2, GL_FLOAT, 0, vertices);
     glTexCoordPointer(2, GL_FLOAT, 0, texcoords);
     glDrawArrays(GL_QUADS, 0, 4);
+}
+
+void pd::draw_text(const std::string &text, float x, float y, const pd::font *font)
+{
+    float cx = x;
+    float cy = y;
+
+    /* XXX: write the quads into a vector and draw them at once */
+    for (size_t i = 0; i < text.size(); i++) {
+        unsigned char c = text[i];
+        if (c == '\n') {
+            cx = x;
+            cy += font->height();
+            continue;
+        }
+
+        const glyph_info &glyph = font->get(c);
+        if (glyph.texture)
+            draw_textured_quad(cx + glyph.xoff,
+                               cy + glyph.yoff,
+                               (float)glyph.texture->width(),
+                               (float)glyph.texture->height(),
+                               glyph.texture);
+        cx += glyph.advance;
+    }
 }

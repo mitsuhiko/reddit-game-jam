@@ -3,6 +3,11 @@
 #include <pd/math.hpp>
 
 
+pd::texture *pd::texture::slice(int x, int y, int width, int height)
+{
+    return new pd::texture_slice(this, x, y, width, height);
+}
+
 pd::texture *pd::texture_from_surface(SDL_Surface *surface)
 {
     return new pd::simple_texture(surface);
@@ -44,11 +49,6 @@ pd::simple_texture::simple_texture(SDL_Surface *surface)
 pd::simple_texture::~simple_texture()
 {
     glDeleteTextures(1, &m_id);
-}
-
-pd::texture *pd::simple_texture::slice(int x, int y, int width, int height)
-{
-    return new pd::texture_slice(this, x, y, width, height);
 }
 
 pd::texture_slice::texture_slice(pd::texture *parent, int x, int y, int width, int height)

@@ -16,6 +16,8 @@ namespace pd {
         virtual int offset_x() const = 0;
         virtual int offset_y() const = 0;
         virtual const texture *parent() const = 0;
+
+        texture *slice(int x, int y, int width, int height);
     };
 
     texture *texture_from_surface(SDL_Surface *surface);
@@ -34,8 +36,6 @@ namespace pd {
         int offset_x() const { return 0; }
         int offset_y() const { return 0; }
         const texture *parent() const { return 0; }
-
-        texture *slice(int x, int y, int width, int height);
 
     private:
         GLuint m_id;
@@ -59,7 +59,7 @@ namespace pd {
         texture *slice(int x, int y, int width, int height);
 
     private:
-        friend class simple_texture;
+        friend class texture;
         texture_slice(texture *parent, int x, int y, int width, int height);
 
         texture *m_parent;

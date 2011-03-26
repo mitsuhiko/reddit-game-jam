@@ -10,6 +10,7 @@ set(GAME_SOURCES
     src/texture.cpp
 	src/drawtools.cpp
 	src/sprite.cpp
+    src/font.cpp
 )
 set(GAME_HEADERS
 	include/pd/pd.hpp
@@ -21,6 +22,8 @@ set(GAME_HEADERS
 	include/pd/drawtools.hpp
 	include/pd/color.hpp
 	include/pd/sprite.hpp
+    include/pd/font.hpp
+	include/pd/lexical_cast.hpp
 )
 
 if(APPLE)

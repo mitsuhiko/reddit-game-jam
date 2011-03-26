@@ -2,12 +2,14 @@
 #include <pd/texture.hpp>
 #include <pd/sprite.hpp>
 #include <pd/drawtools.hpp>
+#include <pd/font.hpp>
 
 const int width = 800;
 const int height = 450;
 
 static pd::texture *test_texture;
 static pd::sprite *test_sprite;
+static pd::font *test_font;
 
 
 pd::game::game()
@@ -35,6 +37,8 @@ pd::game::game()
     glOrtho(0.0f, 800.0f, 450.0f, 0.0f, 0.0f, 1000.0f);
 
     glEnable(GL_TEXTURE_2D);
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glEnableClientState(GL_VERTEX_ARRAY);
     glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 
@@ -44,12 +48,15 @@ pd::game::game()
 
     test_texture = pd::load_texture("textures/debug.png");
     test_sprite = new pd::sprite(test_texture, 100.0f, 100.0f);
+    test_font = new pd::bitmap_font("fonts/simple.fnt");
 }
 
 pd::game::~game()
 {
+    delete test_font;
     delete test_sprite;
     delete test_texture;
+
     SDL_GL_DeleteContext(m_glctx);
     SDL_DestroyWindow(m_win);
     SDL_Quit();
@@ -85,6 +92,8 @@ void pd::game::render(float dt) const
 {
     pd::clear_screen(0x336699ff);
     test_sprite->render(dt);
+
+    pd::draw_text("Hello World!", 10.0f, 10.0f, test_font);
 }
 
 void pd::game::handle_event(SDL_Event &evt, float dt)
