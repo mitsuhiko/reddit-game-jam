@@ -3,9 +3,8 @@
 #include <pd/drawtools.hpp>
 #include <pd/game.hpp>
 
-
-pd::player::player(float x, float y)
-    : pd::entity(x, y),
+pd::player::player(b2World *world, float x, float y)
+    : pd::entity(world, x, y),
       m_walk_anim(pd::get_resource<pd::texture>("textures/test-pirate.png"), 9, 0.1f)
 {
     m_stance = kinetic_stance;

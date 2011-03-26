@@ -62,8 +62,10 @@ pd::game_session::game_session()
         437, 67, 543, 86, 559, 68, 646, 78, 15, 5);
 
     // create test environment
+    m_world = new b2World(b2Vec2(0, 9.79f), true);
 	m_map = pd::get_resource<pd::map>("maps/demo.map");
-    m_player = new pd::player(40.0f, 300.0f);
+
+    m_player = new pd::player(m_world, 40.0f, 300.0f);
     add_entity(m_player);
 }
 
@@ -77,9 +79,11 @@ pd::game_session::~game_session()
 
 void pd::game_session::update(float dt)
 {
-    for (std::vector<pd::entity *>::iterator iter = m_entities.begin();
-         iter != m_entities.end(); ++iter)
+    m_world->Step(dt, 10, 10);
+    for (std::vector<pd::entity *>::iterator iter = m_entities.begin(); iter != m_entities.end(); ++iter) {
         (*iter)->update(dt);
+        (*iter)->sync();
+    }
 }
 
 void pd::game_session::handle_event(SDL_Event &evt, float dt)

@@ -4,6 +4,7 @@
 #include <pd/screen.hpp>
 #include <pd/map.hpp>
 #include <vector>
+#include <Box2D/Box2D.h>
 
 namespace pd {
 
@@ -33,6 +34,7 @@ namespace pd {
     private:
 		pd::map *m_map;
         pd::player *m_player;
+        b2World *m_world;
         std::vector<pd::entity *> m_entities;
 
         pd::game_power_bar *m_kinetic_energy_bar;
