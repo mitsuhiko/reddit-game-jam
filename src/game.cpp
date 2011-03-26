@@ -30,7 +30,7 @@ pd::game::game()
     if (SDL_Init(SDL_INIT_VIDEO) < 0)
         pd::critical_error("Could not initialize SDL", SDL_GetError());
     
-    SDL_Window *win = SDL_CreateWindow("Working Title",
+    SDL_Window *win = SDL_CreateWindow("Navitas",
         SDL_WINDOWPOS_CENTERED,
         SDL_WINDOWPOS_CENTERED,
         width, height,
