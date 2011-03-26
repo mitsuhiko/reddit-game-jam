@@ -3,6 +3,7 @@
 #include <pd/sprite.hpp>
 #include <pd/drawtools.hpp>
 #include <pd/font.hpp>
+#include <pd/map.hpp>
 
 const int width = 800;
 const int height = 450;
@@ -10,6 +11,7 @@ const int height = 450;
 static pd::texture *test_texture;
 static pd::sprite *test_sprite;
 static pd::font *test_font;
+static pd::map *test_map;
 
 
 pd::game::game()
@@ -49,6 +51,7 @@ pd::game::game()
     test_texture = pd::load_texture("textures/debug.png");
     test_sprite = new pd::sprite(test_texture, 100.0f, 100.0f);
     test_font = new pd::bitmap_font("fonts/simple.fnt");
+	test_map = new pd::map("maps/testing.map");
 }
 
 pd::game::~game()

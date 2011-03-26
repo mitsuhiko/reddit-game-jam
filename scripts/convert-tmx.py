@@ -59,8 +59,8 @@ def read_tmx_file(filename):
 
 def write_simple_format(m, filename):
     with open(filename, 'wb') as f:
-        f.write(m.tileset + '\0')
-        f.write('%d\0%d\0%d\0%d\0' % (m.width, m.height, m.tile_width, m.tile_height))
+        f.write(m.tileset + '\n')
+        f.write('%d\n%d\n%d\n%d\n' % (m.width, m.height, m.tile_width, m.tile_height))
         for layer in m.layers:
             f.write(''.join(map(chr, layer)))
 
