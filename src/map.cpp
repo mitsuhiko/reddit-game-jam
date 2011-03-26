@@ -1,4 +1,7 @@
 #include <pd/map.hpp>
+#include <pd/game.hpp>
+#include <pd/texture.hpp>
+#include <pd/drawtools.hpp>
 #include <sstream>
 #include <cstdio>
 
@@ -47,7 +50,8 @@ bool pd::map::load(std::string filename)
 		fread(m_foreground[x], 1, m_width, fp);
 	}
 
-	printf("Read map %s, with tileset %s, size %ix%i and tile size %ix%i\n.",
+	m_tileset = pd::get_resource<pd::texture>(tileset);
+	printf("Read map %s, with tileset %s, size %ix%i and tile size %ix%i.\n",
 		filename.c_str(), tileset, m_width, m_height,
 		m_tile_width, m_tile_height);
 
@@ -57,5 +61,5 @@ bool pd::map::load(std::string filename)
 
 void pd::map::render()
 {
-
+	pd::draw_textured_quad(20, 20, m_tileset);
 }
