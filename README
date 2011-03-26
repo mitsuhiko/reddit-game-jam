@@ -24,7 +24,7 @@ The following things must be true for the TMX file to be accepted:
 
   1. exactly one tileset
   2. two layers, one background one foreground which is also used
-     for basic collisions
+     for basic collisions. Must be called "Background" and "Foreground"
   3. use the default settings in the export format (base64, compressed)
 
 We use the text only format for BMFont, so use this to generate fonts.
