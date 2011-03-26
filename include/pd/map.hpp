@@ -13,7 +13,6 @@ namespace pd {
         typedef unsigned char tile_id_t;
 
 	    map(std::string filename);
-	    bool load(std::string filename);
 	    void render();
 	    ~map();
 
@@ -31,6 +30,8 @@ namespace pd {
         }
 
     private:
+	    void load(std::string filename);
+
 	    int m_width;
 	    int m_height;
 	    int m_tile_width;
