@@ -22,7 +22,7 @@ bool pd::map::load(std::string filename)
 {
 	FILE* fp;
 	fp = fopen(filename.c_str(), "r");
-	if (fp == NULL) {
+	if (!fp) {
         std::stringstream ss;
         ss << "Unable to load map from '" << filename << "'";
         pd::critical_error("Cannot load map", ss.str());
