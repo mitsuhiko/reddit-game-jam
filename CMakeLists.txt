@@ -16,6 +16,7 @@ set(GAME_SOURCES
 
 	src/screen.cpp
 	src/main_menu.cpp
+	src/game_session.cpp
 )
 set(GAME_HEADERS
 	include/pd/pd.hpp
@@ -35,6 +36,7 @@ set(GAME_HEADERS
 
 	include/pd/screen.hpp
 	include/pd/main_menu.hpp
+	include/pd/game_session.hpp
 )
 
 if(APPLE)

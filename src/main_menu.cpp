@@ -3,6 +3,7 @@
 #include <pd/texture.hpp>
 #include <pd/font.hpp>
 #include <pd/drawtools.hpp>
+#include <pd/game_session.hpp>
 
 pd::main_menu *pd::main_menu::s_instance;
 
@@ -13,13 +14,18 @@ namespace {
         void (*callback)();
     };
 
+    void on_new_game()
+    {
+        pd::game::instance().screen(new pd::game_session());
+    }
+
     void on_quit()
     {
         pd::game::instance().stop();
     }
 
     static menu_item items[] = {
-        {"New Game", 0},
+        {"New Game", on_new_game},
         {"About", 0},
         {"Quit", on_quit}
     };
