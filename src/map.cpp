@@ -6,6 +6,7 @@
 #include <sstream>
 #include <fstream>
 
+
 pd::map::map(std::string filename)
 {
     load(filename);
@@ -53,17 +54,22 @@ void pd::map::load(std::string filename)
     }
 }
 
-void pd::map::render()
+void pd::map::draw_tile(int x, int y, pd::map::tile_id_t tile) const
+{
+    if (!tile)
+        return;
+    std::map<tile_id_t, pd::texture *>::const_iterator iter = m_tiles.find(tile);
+    assert(iter != m_tiles.end());
+    pd::draw_textured_quad((float)x * m_tile_width,
+        (float)y * m_tile_height, iter->second);
+}
+
+void pd::map::render() const
 {
     for (int y = 0; y < m_height; y++) {
         for (int x = 0; x < m_width; x++) {
-            tile_id_t tile = get_bg(x, y);
-            if (!tile)
-                continue;
-            std::map<tile_id_t, pd::texture *>::iterator iter = m_tiles.find(tile);
-            assert(iter != m_tiles.end());
-            pd::draw_textured_quad((float)x * m_tile_width,
-                (float)y * m_tile_height, iter->second);
+            draw_tile(x, y, get_bg(x, y));
+            draw_tile(x, y, get_fg(x, y));
         }
     }
 }

@@ -13,7 +13,7 @@ namespace pd {
         typedef unsigned char tile_id_t;
 
 	    map(std::string filename);
-	    void render();
+	    void render() const;
 	    ~map();
 
         int width() const { return m_width; }
@@ -31,6 +31,7 @@ namespace pd {
 
     private:
 	    void load(std::string filename);
+        void draw_tile(int x, int y, tile_id_t tile) const;
 
 	    int m_width;
 	    int m_height;
