@@ -10,3 +10,18 @@ without installation so make sure to set the prefix to just ``local``
 because this is where the CMakeLists.txt file looks for it.  Do not
 attempt other versions of the libraries as these are hardcoded in the
 CMakeLists.txt file for the time being.
+
+The following tools are necessary / useful:
+
+  - Tiled               http://www.mapeditor.org/
+
+In order to convert maps into our format one can use the convert-tmx.py
+script in the scripts folder.  It accepts the tmx file as first argument
+and the path to the resulting map file as the second.
+
+The following things must be true for the TMX file to be accepted:
+
+  1. exactly one tileset
+  2. two layers, one background one foreground which is also used
+     for basic collisions
+  3. use the default settings in the export format (base64, compressed)
