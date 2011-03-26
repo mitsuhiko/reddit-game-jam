@@ -1,19 +1,17 @@
 #include <pd/game.hpp>
-#include <pd/texture.hpp>
-#include <pd/sprite.hpp>
-#include <pd/drawtools.hpp>
-#include <pd/font.hpp>
+#include <pd/main_menu.hpp>
 
 const int width = 800;
 const int height = 450;
 
-static pd::texture *test_texture;
-static pd::sprite *test_sprite;
-static pd::font *test_font;
+pd::game *pd::game::s_instance;
 
 
 pd::game::game()
 {
+    assert(!s_instance);
+    s_instance = this;
+
     if (SDL_Init(SDL_INIT_VIDEO) < 0)
         pd::critical_error("Could not initialize SDL", SDL_GetError());
     
@@ -44,19 +42,13 @@ pd::game::game()
 
     m_win = win;
     m_glctx = ctx;
+    m_screen = pd::main_menu::instance();
     m_running = true;
-
-    test_texture = pd::load_texture("textures/debug.png");
-    test_sprite = new pd::sprite(test_texture, 100.0f, 100.0f);
-    test_font = new pd::bitmap_font("fonts/simple.fnt");
 }
 
 pd::game::~game()
 {
-    delete test_font;
-    delete test_sprite;
-    delete test_texture;
-
+    s_instance = 0;
     SDL_GL_DeleteContext(m_glctx);
     SDL_DestroyWindow(m_win);
     SDL_Quit();
@@ -70,12 +62,8 @@ void pd::game::run()
         m_start_time = SDL_GetTicks();
         float dt = (m_end_time - old_start) / 1000.0f;
 
-        while (SDL_PollEvent(&evt)) {
-            if (evt.type == SDL_QUIT)
-                stop();
-            else
-                handle_event(evt, dt);
-        }
+        while (SDL_PollEvent(&evt))
+            handle_event(evt, dt);
         update(dt);
         render(dt);
 
@@ -86,16 +74,20 @@ void pd::game::run()
 
 void pd::game::update(float dt)
 {
+    if (m_screen)
+        m_screen->update(dt);
 }
 
 void pd::game::render(float dt) const
 {
-    pd::clear_screen(0x336699ff);
-    test_sprite->render(dt);
-
-    pd::draw_text("Hello World!\nWe can render text and stuff", 10.0f, 10.0f, test_font);
+    if (m_screen)
+        m_screen->render(dt);
 }
 
 void pd::game::handle_event(SDL_Event &evt, float dt)
 {
+    if (evt.type == SDL_QUIT)
+        stop();
+    if (m_screen)
+        m_screen->handle_event(evt, dt);
 }

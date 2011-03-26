@@ -11,6 +11,10 @@ set(GAME_SOURCES
 	src/drawtools.cpp
 	src/sprite.cpp
     src/font.cpp
+    src/resource_manager.cpp
+
+	src/screen.cpp
+	src/main_menu.cpp
 )
 set(GAME_HEADERS
 	include/pd/pd.hpp
@@ -24,6 +28,11 @@ set(GAME_HEADERS
 	include/pd/sprite.hpp
     include/pd/font.hpp
 	include/pd/lexical_cast.hpp
+	include/pd/resource_base.hpp
+	include/pd/resource_manager.hpp
+
+	include/pd/screen.hpp
+	include/pd/main_menu.hpp
 )
 
 if(APPLE)

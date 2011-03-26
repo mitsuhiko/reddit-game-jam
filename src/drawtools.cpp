@@ -37,6 +37,11 @@ void pd::draw_textured_quad(float x, float y, float width, float height, const p
     glDrawArrays(GL_QUADS, 0, 4);
 }
 
+void pd::draw_textured_quad(float x, float y, const pd::texture *texture)
+{
+    pd::draw_textured_quad(x, y, (float)texture->width(), (float)texture->height(), texture);
+}
+
 void pd::draw_text(const std::string &text, float x, float y, const pd::font *font)
 {
     float cx = x;

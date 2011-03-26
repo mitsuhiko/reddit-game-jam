@@ -1,6 +1,7 @@
 #include <pd/font.hpp>
 #include <pd/texture.hpp>
 #include <pd/lexical_cast.hpp>
+#include <pd/path.hpp>
 #include <vector>
 #include <fstream>
 #include <sstream>
@@ -69,7 +70,7 @@ pd::bitmap_font::bitmap_font(const std::string &filename)
         } else if (tokens[0] == "page") {
             if (m_texture)
                 pd::critical_error("Font format error", "Font texture specified twice");
-            m_texture = pd::load_texture("fonts/" + unquote(opts["file"]));
+            m_texture = pd::load_texture(pd::path::join_with_dir(filename, unquote(opts["file"])));
         } else if (tokens[0] == "char") {
             if (!m_texture)
                 pd::critical_error("Font format error", "Char def before font texture def");
