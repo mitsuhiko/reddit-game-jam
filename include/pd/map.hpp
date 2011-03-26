@@ -2,6 +2,7 @@
 #define _INC_PD_MAP_HPP_
 #include <pd/pd.hpp>
 #include <pd/resource_base.hpp>
+#include <map>
 
 namespace pd {
 
@@ -37,6 +38,7 @@ namespace pd {
 	    tile_id_t *m_background;
 	    tile_id_t *m_foreground;
 	    pd::texture *m_tileset;
+        std::map<tile_id_t, pd::texture *> m_tiles;
     };
 }
 #endif
