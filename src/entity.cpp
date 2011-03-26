@@ -15,7 +15,7 @@ pd::entity::entity(pd::game_session *session, float x, float y, float width,
     b2BodyDef bodydef;
     bodydef.type = b2_dynamicBody;
     bodydef.position.Set(pd::pixel_to_meter(x), pd::pixel_to_meter(y));
-    bodydef.fixedRotation = m_locked_rotation;
+    bodydef.fixedRotation = locked_rotation;
     m_body = m_world->CreateBody(&bodydef);
 
     b2FixtureDef fixturedef;
@@ -46,10 +46,6 @@ void pd::entity::render(float dt) const
 {
     pd::push_matrix();
     pd::translate(x(), y());
-    if (flipped())
-        pd::scale(-1.0f, 1.0f);
-    //pd::rotate_around_point(rotation(), width() / 2.0f, height() / 2.0f);
-    pd::rotate(45.0f);
     local_render(dt);
     pd::pop_matrix();
 }
