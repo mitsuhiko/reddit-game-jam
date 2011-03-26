@@ -66,6 +66,8 @@ find_library(SDLMAIN_LIBRARY
 
 find_package(OpenGL REQUIRED)
 
+add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/libs/Box2D)
+
 set(EXTRA_LIBS "")
 if(APPLE)
     set(CMAKE_C_FLAGS "-g -Wall")
@@ -95,8 +97,9 @@ target_link_libraries(
 	${SDL_LIBRARY}
 	${SDLMAIN_LIBRARY}
 	${FREETYPE_LIBRARY}
-    ${GLEW_LIBRARY}
+    ${GLEW_LIBRARY}	
 	${EXTRA_LIBS}
+	Box2D
 )
 
 if(APPLE)
