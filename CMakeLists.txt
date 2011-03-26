@@ -9,6 +9,7 @@ set(GAME_SOURCES
     src/image.cpp
     src/texture.cpp
 	src/drawtools.cpp
+	src/color.cpp
 	src/entity.cpp
 	src/player.cpp
     src/font.cpp

@@ -24,6 +24,8 @@ namespace pd {
         {
         }
 
+        color(const std::string &value);
+
         void to_float(float &r_out, float &g_out, float &b_out, float &a_out) const
         {
             r_out = r / 255.0f;

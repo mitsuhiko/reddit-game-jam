@@ -28,16 +28,18 @@ void pd::map::load(std::string filename)
         pd::critical_error("Cannot load map", ss.str());
     }
 
-    std::string tileset, width, height, tile_width, tile_height;
+    std::string tileset, width, height, tile_width, tile_height, background_color;
     std::getline(in, tileset, '\0');
     std::getline(in, width, '\0');
     std::getline(in, height, '\0');
     std::getline(in, tile_width, '\0');
     std::getline(in, tile_height, '\0');
+    std::getline(in, background_color, '\0');
     m_width = pd::lexical_cast<int>(width);
     m_height = pd::lexical_cast<int>(height);
     m_tile_width = pd::lexical_cast<int>(tile_width);
     m_tile_height = pd::lexical_cast<int>(tile_height);
+    m_background_color = pd::color(background_color);
     m_background = new tile_id_t[m_width * m_height];
     m_foreground = new tile_id_t[m_width * m_height];
 
@@ -66,6 +68,7 @@ void pd::map::draw_tile(int x, int y, pd::map::tile_id_t tile) const
 
 void pd::map::render() const
 {
+    pd::clear_screen(m_background_color);
     for (int y = 0; y < m_height; y++) {
         for (int x = 0; x < m_width; x++) {
             draw_tile(x, y, get_bg(x, y));

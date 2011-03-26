@@ -40,7 +40,6 @@ void pd::game_session::handle_event(SDL_Event &evt, float dt)
 
 void pd::game_session::render(float dt) const
 {
-    pd::clear_screen(0x000000ff);
 	m_map->render();
 
     for (std::vector<pd::entity *>::const_iterator iter = m_entities.begin();

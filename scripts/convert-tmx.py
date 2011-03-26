@@ -15,6 +15,7 @@ class Map(object):
         self.tile_width = tile_width
         self.tile_height = tile_height
         self.tileset = tileset
+        self.background_color = '#000000'
         self.layers = []
 
 
@@ -60,8 +61,12 @@ def read_tmx_file(filename):
               int(root.attrib['tileheight']),
               relative_resource_path(tileset.getchildren()[0].attrib['source']))
 
-    map.layers.append(prepare_layer(root, 'Background'))
-    map.layers.append(prepare_layer(root, 'Foreground'))
+    for property in root.findall('properties/property'):
+        if property.attrib['name'] == 'background_color':
+            map.background_color = property.attrib['value']
+
+    map.layers.append(prepare_layer(root, 'background'))
+    map.layers.append(prepare_layer(root, 'foreground'))
     return map
 
 
@@ -69,6 +74,7 @@ def write_simple_format(m, filename):
     with open(filename, 'wb') as f:
         f.write(m.tileset + '\0')
         f.write('%d\0%d\0%d\0%d\0' % (m.width, m.height, m.tile_width, m.tile_height))
+        f.write(m.background_color + '\0')
         for layer in m.layers:
             f.write(''.join(map(chr, layer)))
 

@@ -6,7 +6,7 @@
 
 pd::player::player(float x, float y)
     : pd::entity(x, y),
-      m_walk_anim(pd::get_resource<pd::texture>("textures/test-pirate.png"), 9, 0.12f)
+      m_walk_anim(pd::get_resource<pd::texture>("textures/test-pirate.png"), 9, 0.1f)
 {
     m_stance = kinetic_stance;
 }
