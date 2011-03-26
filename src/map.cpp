@@ -1,5 +1,6 @@
 #include <pd/map.hpp>
 #include <pd/game.hpp>
+#include <pd/game_session.hpp>
 #include <pd/texture.hpp>
 #include <pd/drawtools.hpp>
 #include <pd/lexical_cast.hpp>
@@ -7,21 +8,10 @@
 #include <fstream>
 
 
-pd::map::map(std::string filename)
+pd::map::map(pd::game_session *session, std::string filename)
 {
-    m_world = NULL;
-    load(filename);
-}
+    m_session = session;
 
-pd::map::~map()
-{
-    delete[] m_background;
-    delete[] m_foreground;
-}
-
-/* Loads map and loads texture from map file. */
-void pd::map::load(std::string filename)
-{
     std::ifstream in(filename.c_str());
     if (!in.good()) {
         std::stringstream ss;
@@ -55,6 +45,31 @@ void pd::map::load(std::string filename)
             m_tiles[i++] = tile;
         }
     }
+
+    for (int y = 0; y < m_height; y++) {
+        int row_start = -1;
+        for (int x = 0; x < m_width; x++) {
+            tile_id_t tile = get_fg(x, y);
+            if (row_start < 0) {
+                if (tile)
+                    row_start = x;
+                continue;
+            }
+            if (tile)
+                continue;
+            create_ground_box(row_start, y, x - row_start);
+            row_start = -1;
+        }
+
+        if (row_start >= 0)
+            create_ground_box(row_start, y, m_width - 1);
+    }
+}
+
+pd::map::~map()
+{
+    delete[] m_background;
+    delete[] m_foreground;
 }
 
 void pd::map::draw_tile(int x, int y, pd::map::tile_id_t tile) const
@@ -80,14 +95,12 @@ void pd::map::render() const
 
 void pd::map::create_ground_box(int x, int y, int length)
 {
-    assert(m_world);
-
     b2BodyDef bodydef;
     bodydef.type = b2_staticBody;
     bodydef.position.Set(pd::pixel_to_meter((float)m_tile_width * (x + length / 2.0f)),
                          pd::pixel_to_meter((float)m_tile_height * y));
     bodydef.fixedRotation = true;
-    b2Body *body = m_world->CreateBody(&bodydef);
+    b2Body *body = m_session->box2d_world()->CreateBody(&bodydef);
     b2FixtureDef fixturedef;
     b2PolygonShape fixedbox;
     fixedbox.SetAsBox(pd::pixel_to_meter(m_tile_width * length / 2.0f),
@@ -96,27 +109,4 @@ void pd::map::create_ground_box(int x, int y, int length)
     fixturedef.density = 0;
     fixturedef.friction = 1.5f;
     body->CreateFixture(&fixturedef);
-}
-
-/* Builds a collision mask using RLE. */
-void pd::map::build_box2d_object()
-{   
-    for (int y = 0; y < m_height; y++) {
-        int row_start = -1;
-        for (int x = 0; x < m_width; x++) {
-            tile_id_t tile = get_fg(x, y);
-            if (row_start < 0) {
-                if (tile)
-                    row_start = x;
-                continue;
-            }
-            if (tile)
-                continue;
-            create_ground_box(row_start, y, x - row_start);
-            row_start = -1;
-        }
-
-        if (row_start >= 0)
-            create_ground_box(row_start, y, m_width - 1);
-    }
 }

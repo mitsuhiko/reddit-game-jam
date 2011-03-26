@@ -63,14 +63,15 @@ pd::game_session::game_session()
 
     // create test environment
     m_world = new b2World(b2Vec2(0, 9.79f), true);
-	m_map = pd::get_resource<pd::map>("maps/demo.map");
-    m_map->world(m_world);
+	m_map = new pd::map(this, "maps/demo.map");
 
     m_player = new pd::player(this, 400.0f, 200.0f);
 }
 
 pd::game_session::~game_session()
 {
+    delete m_map;
+
     for (std::vector<pd::entity *>::const_iterator iter = m_entities.begin();
          iter != m_entities.end(); ++iter)
         delete *iter;
