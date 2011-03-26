@@ -93,7 +93,7 @@ void pd::game::render(float dt) const
     pd::clear_screen(0x336699ff);
     test_sprite->render(dt);
 
-    pd::draw_text("Hello World!", 10.0f, 10.0f, test_font);
+    pd::draw_text("Hello World!\nWe can render text and stuff", 10.0f, 10.0f, test_font);
 }
 
 void pd::game::handle_event(SDL_Event &evt, float dt)
