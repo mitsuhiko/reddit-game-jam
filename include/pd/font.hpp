@@ -1,6 +1,7 @@
 #ifndef _INC_PD_FONT_HPP_
 #define _INC_PD_FONT_HPP_
 #include <pd/pd.hpp>
+#include <pd/resource_base.hpp>
 #include <map>
 
 namespace pd {
@@ -32,13 +33,18 @@ namespace pd {
         virtual int height() const = 0;
     };
 
-    class bitmap_font : public font {
+    class bitmap_font : public font, public pd::resource_base {
     public:
         bitmap_font(const std::string &filename);
         ~bitmap_font();
         const glyph_info &get(unsigned char charpoint) const;
         const pd::texture *texture() const { return m_texture; }
         int height() const { return m_height; }
+
+        static bitmap_font *load_as_resource(const std::string &filename)
+        {
+            return new pd::bitmap_font(filename);
+        }
 
     private:
         std::map<unsigned char, glyph_info> m_glyphs;

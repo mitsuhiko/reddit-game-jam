@@ -1,10 +1,16 @@
 #ifndef _INC_PD_TEXTURE_HPP_
 #define _INC_PD_TEXTURE_HPP_
 #include <pd/pd.hpp>
+#include <pd/resource_base.hpp>
 
 namespace pd {
 
-    class texture {
+    class texture;
+
+    texture *texture_from_surface(SDL_Surface *surface);
+    texture *load_texture(const std::string &filename);
+
+    class texture : public pd::resource_base {
     public:
         virtual ~texture() {}
 
@@ -18,10 +24,12 @@ namespace pd {
         virtual const texture *parent() const = 0;
 
         texture *slice(int x, int y, int width, int height);
-    };
 
-    texture *texture_from_surface(SDL_Surface *surface);
-    texture *load_texture(const std::string &filename);
+        static texture *load_as_resource(const std::string &filename)
+        {
+            return load_texture(filename);
+        }
+    };
 
     class simple_texture : public texture {
     public:

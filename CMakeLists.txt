@@ -11,7 +11,14 @@ set(GAME_SOURCES
 	src/drawtools.cpp
 	src/sprite.cpp
     src/font.cpp
+<<<<<<< HEAD
 	src/map.cpp
+=======
+    src/resource_manager.cpp
+
+	src/screen.cpp
+	src/main_menu.cpp
+>>>>>>> 7039d450137dfa4dd1984632571208f718af328f
 )
 set(GAME_HEADERS
 	include/pd/pd.hpp
@@ -25,7 +32,15 @@ set(GAME_HEADERS
 	include/pd/sprite.hpp
     include/pd/font.hpp
 	include/pd/lexical_cast.hpp
+<<<<<<< HEAD
 	include/pd/map.hpp
+=======
+	include/pd/resource_base.hpp
+	include/pd/resource_manager.hpp
+
+	include/pd/screen.hpp
+	include/pd/main_menu.hpp
+>>>>>>> 7039d450137dfa4dd1984632571208f718af328f
 )
 
 if(APPLE)
