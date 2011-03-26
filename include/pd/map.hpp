@@ -4,6 +4,7 @@
 #include <string>
 #include <pd/texture.hpp>
 #include <pd/resource_base.hpp>
+#include <pd/drawtools.hpp>
 
 namespace pd {
 class map : resource_base
@@ -20,7 +21,7 @@ public:
 	map(std::string filename);
 	bool load(std::string filename);
 	void render();
-	~map(void);
+	~map();
 };
 }
 #endif // map_h_guard

@@ -6,7 +6,7 @@ pd::map::map(std::string filename)
 	this->load(filename);
 }
 
-pd::map::~map(void)
+pd::map::~map()
 {
 	for (int x = 0; x != m_tile_width; x++) {
 		delete[] m_background[x];
@@ -41,6 +41,7 @@ bool pd::map::load( std::string filename )
 		fread(m_foreground[x], 1, m_width, fp);
 	}
 
+	m_text = pd::texture::load_as_resource(tileset);
 	printf("Read map %s, with tileset %s, size %ix%i and tile size %ix%i.\n",
 		filename.c_str(), tileset, m_width, m_height,
 		m_tile_width, m_tile_height);
@@ -51,5 +52,5 @@ bool pd::map::load( std::string filename )
 
 void pd::map::render()
 {
-
+	pd::draw_textured_quad(20, 20, m_text);
 }
