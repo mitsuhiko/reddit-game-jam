@@ -84,8 +84,8 @@ void pd::map::create_ground_box(int x, int y, int length)
 
     b2BodyDef bodydef;
     bodydef.type = b2_staticBody;
-    bodydef.position.Set(pd::pixel_to_meter(m_tile_width * (x + length / 2.0f)),
-                         pd::pixel_to_meter(m_tile_height * y));
+    bodydef.position.Set(pd::pixel_to_meter((float)m_tile_width * (x + length / 2.0f)),
+                         pd::pixel_to_meter((float)m_tile_height * y));
     bodydef.fixedRotation = true;
     b2Body *body = m_world->CreateBody(&bodydef);
     b2FixtureDef fixturedef;
