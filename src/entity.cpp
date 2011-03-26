@@ -29,6 +29,5 @@ pd::entity::entity(pd::game_session *session, float x, float y, float width,
 
 pd::entity::~entity()
 {
-    m_session->remove_entity(this);
     m_world->DestroyBody(m_body);
 }
