@@ -3,6 +3,7 @@
 #include <pd/pd.hpp>
 #include <pd/entity.hpp>
 #include <pd/animation.hpp>
+#include <Box2D/Box2D.h>
 
 namespace pd {
 
@@ -16,7 +17,7 @@ namespace pd {
             kinetic_stance
         };
 
-        player(float x = 0.0f, float y = 0.0f);
+        player(b2World *world, float x = 0.0f, float y = 0.0f);
         stance_type stance() const { return m_stance; }
         void stance(stance_type val) { m_stance = val; }
 

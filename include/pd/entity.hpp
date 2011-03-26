@@ -1,6 +1,7 @@
 #ifndef _INC_PD_ENTITY_HPP_
 #define _INC_PD_ENTITY_HPP_
 #include <pd/pd.hpp>
+#include <Box2D/Box2D.h>
 
 namespace pd {
 
@@ -8,7 +9,7 @@ namespace pd {
 
     class entity {
     public:
-        entity(float x = 0.0f, float y = 0.0f);
+        entity(b2World *world, float x = 0.0f, float y = 0.0f);
         virtual ~entity() {}
 
         float x() const { return m_x; }
@@ -21,6 +22,7 @@ namespace pd {
         virtual void render(float dt) const = 0;
 
     private:
+        b2World *m_world;
         float m_x;
         float m_y;
     };

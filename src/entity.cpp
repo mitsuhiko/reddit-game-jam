@@ -3,8 +3,9 @@
 #include <pd/drawtools.hpp>
 
 
-pd::entity::entity(float x, float y)
+pd::entity::entity(b2World *world, float x, float y)
 {
+    m_world = world;
     m_x = x;
     m_y = y;
 }
