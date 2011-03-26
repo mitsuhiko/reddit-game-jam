@@ -14,6 +14,10 @@ pd::player::player(b2World *world, float x, float y)
     density(20.0f);
     friction(1.02f);
     build_box2d_object();
+
+    m_thermal_energy = 1.0f;
+    m_electromagnetic_energy = 1.0f;
+    m_kinetic_energy = 1.0f;
 }
 
 void pd::player::update(float dt)
