@@ -76,3 +76,25 @@ void pd::map::render() const
         }
     }
 }
+
+void pd::map::create_ground_box( float x, float y, float width )
+{
+    b2BodyDef groundbodydef;
+    groundbodydef.position.Set(0.0f, -10.0f);
+    b2Body* groundBody = m_world->CreateBody(&groundbodydef);
+    b2PolygonShape groundBox;
+    groundBox.SetAsBox(50.0f, 10.0f);
+}
+
+/* Builds a collision mask using RLE. */
+void pd::map::build_box2d_object()
+{
+    tile_id_t last_tile = 0;
+    for (int x = 0; x < m_width;  x++) {
+        for (int y = 0; y < m_height; y++) {
+            if (!last_tile) {
+            }
+
+        }
+    }
+}

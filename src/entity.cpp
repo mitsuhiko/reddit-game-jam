@@ -5,14 +5,16 @@
 #include <pd/game_session.hpp>
 
 pd::entity::entity(pd::game_session *session, float x, float y, float width,
-                   float height, float density, float friction)
+                   float height, float density, float friction, bool locked_rotation)
 {
+    m_session = session;
     m_world = session->box2d_world();
     session->add_entity(this);
 
     b2BodyDef bodydef;
     bodydef.type = b2_dynamicBody;
     bodydef.position.Set(pd::pixel_to_meter(x), pd::pixel_to_meter(y));
+    bodydef.fixedRotation = m_locked_rotation;
     m_body = m_world->CreateBody(&bodydef);
 
     b2FixtureDef fixturedef;
@@ -27,5 +29,6 @@ pd::entity::entity(pd::game_session *session, float x, float y, float width,
 
 pd::entity::~entity()
 {
+    m_session->remove_entity(this);
     m_world->DestroyBody(m_body);
 }
