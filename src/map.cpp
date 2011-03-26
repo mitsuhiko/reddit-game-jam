@@ -92,7 +92,7 @@ void pd::map::create_ground_box(float x, float y, float width)
                       pd::pixel_to_meter(m_tile_height / 2.0f));
     fixturedef.shape = &fixedbox;
     fixturedef.density = 0;
-    fixturedef.friction = 0.5f;
+    fixturedef.friction = 1.5f;
     body->CreateFixture(&fixturedef);
 }
 

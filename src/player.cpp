@@ -4,7 +4,7 @@
 #include <pd/game.hpp>
 
 pd::player::player(pd::game_session *session, float x, float y)
-    : pd::entity(session, x, y, 30.0f, 50.0f, 20.0f, 1.02f, true),
+    : pd::entity(session, x, y, 30.0f, 60.0f, 20.0f, 2.32f, true),
       m_walk_anim(pd::get_resource<pd::texture>("textures/test-pirate.png"), 9, 0.1f)
 {
     m_stance = kinetic_stance;

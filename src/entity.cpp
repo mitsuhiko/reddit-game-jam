@@ -34,5 +34,5 @@ pd::entity::~entity()
 
 void pd::entity::move(float dx, float dy)
 {
-    m_body->ApplyForce(b2Vec2(dx, dy), b2Vec2());
+    m_body->ApplyForce(b2Vec2(dx, dy), m_body->GetWorldCenter());
 }
