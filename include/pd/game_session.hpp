@@ -11,7 +11,6 @@ namespace pd {
 
     class game_session : public screen {
     public:
-		pd::map *m_map;
 
         game_session();
         ~game_session();
@@ -19,6 +18,9 @@ namespace pd {
         void update(float dt);
         void handle_event(SDL_Event &evt, float dt);
         void render(float dt) const;
+
+    private:
+		pd::map *m_map;
     };
 }
 
