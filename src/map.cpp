@@ -100,24 +100,31 @@ void pd::map::create_ground_box(float x, float y, float width)
 void pd::map::build_box2d_object()
 {
     create_ground_box(0, 450, 1500);
-    tile_id_t last_tile = 0;
-    int start_point = 0;
-    int current_width = 0;
-
+    
+    // Count tiles.
     for (int y = 0; y < m_height;  y++) {
         for (int x = 0; x < m_width; x++) {
-            tile_id_t tile = get_fg(x, y); 
-            if (!last_tile) {
-                start_point = x;
+            if (get_fg(x,y)) {
+                printf("*");
+            } else {
+                //printf(" ");
             }
-            if (!tile && start_point != x) {
-                create_ground_box((float)x * m_tile_width, (float)y * m_tile_height,
-                    (float)current_width * m_tile_width);
-                start_point = 0;
-                current_width = 0;
+        }
+        //printf("\n");
+    }
+    
+    // Simplified RLE.
+    for (int y = 0; y < m_height;  y++) {
+        int count = 0;
+        tile_id_t last_tile = 0;
+        for (int x = 0; x < m_width; x++) {
+            tile_id_t tile = get_fg(x, y);
+            if (tile) {
+                count++;
             }
-            else {
-                current_width++;
+            if (last_tile > 0 && !tile) {
+                printf("Built new ground box at %i, %i, size %i.\n", (x - count) * m_tile_width, y * m_tile_height, count * m_tile_width);
+                create_ground_box((x - count) * m_tile_width, y * m_tile_height, count * m_tile_width);
             }
             last_tile = tile;
         }
