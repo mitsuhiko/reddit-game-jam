@@ -23,6 +23,8 @@ namespace pd {
 
         float width() const { return m_width; }
         float height() const { return m_height; }
+        b2Body * body() const { return m_body; }
+        void body(b2Body * val) { m_body = val; }
         float density() const { return m_fixture->GetDensity(); }
         void density(float val) { m_fixture->SetDensity(val); }
         float friction() const { return m_fixture->GetFriction(); }

@@ -86,10 +86,20 @@ void pd::game_session::update(float dt)
     }
 
     uint8_t *state = SDL_GetKeyboardState(NULL);
-    if (state[SDL_SCANCODE_D] || state[SDL_SCANCODE_RIGHT])
+    if (state[SDL_SCANCODE_D] || state[SDL_SCANCODE_RIGHT]) {
         m_player->move(1200.0f, 0.0f);
-    if (state[SDL_SCANCODE_A] || state[SDL_SCANCODE_LEFT])
+    } else {
+        if (m_player->body()->GetLinearVelocity().x > 0) {
+             m_player->move(-1900.0f, 0.0f);
+        }
+    }
+    if (state[SDL_SCANCODE_A] || state[SDL_SCANCODE_LEFT]) {
         m_player->move(-1200.0f, 0.0f);
+    } else {
+        if (m_player->body()->GetLinearVelocity().x < 0) {
+            m_player->move(1900.0f, 0.0f);
+        }
+    }
     if (state[SDL_SCANCODE_SPACE])
         m_player->move(0.0f, -1 * 1200.0f);
 }
