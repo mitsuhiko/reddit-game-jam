@@ -31,8 +31,8 @@ void pd::main_menu::handle_event(SDL_Event &evt, float dt)
 void pd::main_menu::render(float dt) const
 {
     pd::clear_screen(0x333333ff);
-    pd::draw_textured_quad(10.0f, 10.0f, m_logo);
-    pd::draw_text("New Game", 50.0f, 120.0f, m_font);
-    pd::draw_text("About", 50.0f, 150.0f, m_font);
-    pd::draw_text("Quit", 50.0f, 180.0f, m_font);
+    pd::draw_textured_quad(280.0f, 50.0f, m_logo);
+    pd::draw_text("New Game", 600.0f, 280.0f, m_font);
+    pd::draw_text("About", 600.0f, 310.0f, m_font);
+    pd::draw_text("Quit", 600.0f, 340.0f, m_font);
 }
