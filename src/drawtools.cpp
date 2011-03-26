@@ -4,6 +4,18 @@
 #include <vector>
 
 
+void pd::reset_color()
+{
+    glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+}
+
+void pd::set_color(pd::color color)
+{
+    float col[4];
+    color.to_float(col);
+    glColor4fv(col);
+}
+
 void pd::clear_screen(pd::color color)
 {
     float col[4];

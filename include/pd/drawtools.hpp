@@ -9,6 +9,8 @@ namespace pd {
     class font;
 
     void clear_screen(pd::color color);
+    void reset_color();
+    void set_color(pd::color color);
     void draw_textured_quad(float x, float y, float width, float height, const pd::texture *texture);
     void draw_textured_quad(float x, float y, const pd::texture *texture);
     void draw_text(const std::string &text, float x, float y, const pd::font *font);

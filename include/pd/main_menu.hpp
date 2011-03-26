@@ -22,6 +22,7 @@ namespace pd {
         static main_menu *s_instance;
         pd::texture *m_logo;
         pd::font *m_font;
+        int m_active_item;
     };
 }
 

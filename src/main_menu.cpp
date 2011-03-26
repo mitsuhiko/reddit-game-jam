@@ -6,11 +6,32 @@
 
 pd::main_menu *pd::main_menu::s_instance;
 
+namespace {
+
+    struct menu_item {
+        const char *caption;
+        void (*callback)();
+    };
+
+    void on_quit()
+    {
+        pd::game::instance().stop();
+    }
+
+    static menu_item items[] = {
+        {"New Game", 0},
+        {"About", 0},
+        {"Quit", on_quit}
+    };
+    static const int item_count = (sizeof(items) / sizeof(items[0]));
+}
+
 
 pd::main_menu::main_menu()
 {
     m_logo = pd::get_resource<pd::texture>("textures/logo.png");
     m_font = pd::get_resource<pd::bitmap_font>("fonts/simple.fnt");
+    m_active_item = 0;
 }
 
 pd::main_menu *pd::main_menu::instance()
@@ -26,13 +47,34 @@ void pd::main_menu::update(float dt)
 
 void pd::main_menu::handle_event(SDL_Event &evt, float dt)
 {
+    if (evt.type == SDL_KEYDOWN) {
+        switch (evt.key.keysym.sym) {
+        case SDLK_UP:
+        case SDLK_w:
+            if (m_active_item > 0)
+                m_active_item--;
+            break;
+        case SDLK_DOWN:
+        case SDLK_s:
+            if (m_active_item < item_count - 1)
+                m_active_item++;
+            break;
+        case SDLK_SPACE:
+        case SDLK_RETURN:
+            if (items[m_active_item].callback)
+                items[m_active_item].callback();
+        }
+    }
 }
 
 void pd::main_menu::render(float dt) const
 {
     pd::clear_screen(0x333333ff);
+    pd::reset_color();
     pd::draw_textured_quad(280.0f, 50.0f, m_logo);
-    pd::draw_text("New Game", 600.0f, 280.0f, m_font);
-    pd::draw_text("About", 600.0f, 310.0f, m_font);
-    pd::draw_text("Quit", 600.0f, 340.0f, m_font);
+
+    for (int i = 0; i < item_count; i++) {
+        pd::set_color(i == m_active_item ? 0x59b1d2ff : 0xffffffff);
+        pd::draw_text(items[i].caption, 600.0f, 280.0f + (i * 30.0f), m_font);
+    }
 }

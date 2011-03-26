@@ -101,5 +101,8 @@ const pd::glyph_info &pd::bitmap_font::get(unsigned char c) const
 
 pd::bitmap_font::~bitmap_font()
 {
+    std::map<unsigned char, glyph_info>::iterator iter;
+    for (iter = m_glyphs.begin(); iter != m_glyphs.end(); ++iter)
+        delete iter->second.texture;
     delete m_texture;
 }
