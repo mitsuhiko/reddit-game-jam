@@ -9,6 +9,7 @@ set(GAME_SOURCES
     src/image.cpp
     src/texture.cpp
 	src/drawtools.cpp
+	src/sprite.cpp
 )
 set(GAME_HEADERS
 	include/pd/pd.hpp
@@ -19,6 +20,7 @@ set(GAME_HEADERS
 	include/pd/math.hpp
 	include/pd/drawtools.hpp
 	include/pd/color.hpp
+	include/pd/sprite.hpp
 )
 
 if(APPLE)

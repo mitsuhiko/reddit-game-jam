@@ -8,7 +8,7 @@ namespace pd {
     class texture;
 
     void clear_screen(pd::color color);
-    void draw_textured_quad(float x, float y, float width, float height, pd::texture *texture);
+    void draw_textured_quad(float x, float y, float width, float height, const pd::texture *texture);
 }
 
 #endif

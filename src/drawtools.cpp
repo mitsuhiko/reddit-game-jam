@@ -10,7 +10,7 @@ void pd::clear_screen(pd::color color)
     glClear(GL_COLOR_BUFFER_BIT);
 }
 
-void pd::draw_textured_quad(float x, float y, float width, float height, pd::texture *texture)
+void pd::draw_textured_quad(float x, float y, float width, float height, const pd::texture *texture)
 {
     glBindTexture(GL_TEXTURE_2D, texture->id());
     float vertices[] = {
