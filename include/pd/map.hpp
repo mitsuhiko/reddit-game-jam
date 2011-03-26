@@ -1,17 +1,19 @@
-#pragma once
+#ifndef map_h_guard
+#define map_h_guard
+
 #include <string>
 #include <pd/texture.hpp>
 namespace pd {
 class map
 {
 public:
-	int width;
-	int height;
-	int tile_width;
-	int tile_height;
-	char** background;
-	char** foreground;
-	pd::texture *text;
+	int m_width;
+	int m_height;
+	int m_tile_width;
+	int m_tile_height;
+	char** m_background;
+	char** m_foreground;
+	pd::texture *m_text;
 
 	map(std::string filename);
 	bool load(std::string filename);
@@ -19,3 +21,4 @@ public:
 	~map(void);
 };
 }
+#endif // map_h_guard
