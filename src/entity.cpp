@@ -10,6 +10,8 @@ pd::entity::entity(pd::game_session *session, float x, float y, float width,
     m_session = session;
     m_world = session->box2d_world();
     m_flipped = false;
+    m_width = width;
+    m_height = height;
     session->add_entity(this);
 
     b2BodyDef bodydef;
@@ -45,7 +47,12 @@ void pd::entity::move(float dx, float dy)
 void pd::entity::render(float dt) const
 {
     pd::push_matrix();
-    pd::translate(x(), y());
+    pd::translate(x() - width() / 2.0f, y());
+    if (m_flipped) {
+        pd::scale(-1.0f, 1.0f);
+        pd::translate(-width(), 0.0f);
+    }
+    pd::rotate_around_point(rotation(), width() / 2.0f, height() / 2.0f);
     local_render(dt);
     pd::pop_matrix();
 }
