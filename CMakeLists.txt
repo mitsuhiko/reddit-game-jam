@@ -86,6 +86,7 @@ include_directories(
 	${CMAKE_CURRENT_SOURCE_DIR}/libs/vendor
 	${CMAKE_CURRENT_SOURCE_DIR}/libs/vendor/utfcpp
 	${CMAKE_CURRENT_SOURCE_DIR}/libs/freetype-2.4.4/include
+        ${CMAKE_CURRENT_SOURCE_DIR}/libs/Box2D
 )
 
 add_executable(
