@@ -99,13 +99,26 @@ void pd::map::create_ground_box(float x, float y, float width)
 /* Builds a collision mask using RLE. */
 void pd::map::build_box2d_object()
 {
-    create_ground_box(0, 300, 1500);
+    create_ground_box(0, 450, 1500);
     tile_id_t last_tile = 0;
-    for (int x = 0; x < m_width;  x++) {
-        for (int y = 0; y < m_height; y++) {
-            if (!last_tile) {
-            }
+    int start_point = 0;
+    int current_width = 0;
 
+    for (int y = 0; y < m_height;  y++) {
+        for (int x = 0; x < m_width; x++) {
+            tile_id_t tile = get_fg(x, y); 
+            if (!last_tile) {
+                start_point = x;
+            }
+            if (!tile && start_point != x) {
+                create_ground_box(x * m_tile_width, y * m_tile_height, current_width * m_tile_width);
+                start_point = 0;
+                current_width = 0;
+            }
+            else {
+                current_width++;
+            }
+            last_tile = tile;
         }
     }
 }
