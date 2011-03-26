@@ -3,21 +3,21 @@
 
 pd::map::map(std::string filename)
 {
-	this->load(filename);
+	load(filename);
 }
 
 pd::map::~map(void)
 {
 	for (int x = 0; x != m_tile_width; x++) {
-		free(m_background[x]);
-		free(m_foreground[x]);
+		delete[] m_background[x];
+		delete[] m_foreground[x];
 	}
-	free (m_background);
-	free(m_foreground);
+	delete[] m_background;
+	delete[] m_foreground;
 }
 
 /* Loads map and loads texture from map file. */
-bool pd::map::load( std::string filename )
+bool pd::map::load(std::string filename)
 {
 	FILE* fp;
 	fp = fopen(filename.c_str(), "r");
@@ -30,14 +30,14 @@ bool pd::map::load( std::string filename )
 	m_height = atoi(height);
 	m_tile_width = atoi(tile_width);
 	m_tile_height = atoi(tile_height);
-	m_background = (char**)malloc(m_width);
-	m_foreground = (char**)malloc(m_width);
+	m_background = new tile_id_t*[m_width];
+	m_foreground = new tile_id_t*[m_width];
 	for (int x = 0; x != m_tile_width; x++) {
-		m_background[x] = (char*)malloc(m_height);
-		fread(m_background[x], 1, m_width, fp);
+		m_background[x] = new tile_id_t[m_height];
+        fread(m_background[x], 1, m_width, fp);
 	}
 	for (int x = 0; x != m_tile_width; x++) {
-		m_foreground[x] = (char*)malloc(m_height);
+		m_foreground[x] = new tile_id_t[m_height];
 		fread(m_foreground[x], 1, m_width, fp);
 	}
 
