@@ -39,7 +39,7 @@ namespace pd {
     private:
 	    void load(std::string filename);
         void draw_tile(int x, int y, tile_id_t tile) const;
-        void create_ground_box(float x, float y, float width);
+        void create_ground_box(int x, int y, int length);
         void build_box2d_object();
         
 	    int m_width;

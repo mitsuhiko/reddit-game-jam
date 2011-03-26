@@ -78,17 +78,19 @@ void pd::map::render() const
     }
 }
 
-void pd::map::create_ground_box(float x, float y, float width)
+void pd::map::create_ground_box(int x, int y, int length)
 {
     assert(m_world);
+
     b2BodyDef bodydef;
     bodydef.type = b2_staticBody;
-    bodydef.position.Set(pd::pixel_to_meter(x), pd::pixel_to_meter(y));
+    bodydef.position.Set(pd::pixel_to_meter(m_tile_width * (x + length / 2.0f)),
+                         pd::pixel_to_meter(m_tile_height * y));
     bodydef.fixedRotation = true;
     b2Body *body = m_world->CreateBody(&bodydef);
     b2FixtureDef fixturedef;
     b2PolygonShape fixedbox;
-    fixedbox.SetAsBox(pd::pixel_to_meter(width / 2.0f),
+    fixedbox.SetAsBox(pd::pixel_to_meter(m_tile_width * length / 2.0f),
                       pd::pixel_to_meter(m_tile_height / 2.0f));
     fixturedef.shape = &fixedbox;
     fixturedef.density = 0;
@@ -98,35 +100,23 @@ void pd::map::create_ground_box(float x, float y, float width)
 
 /* Builds a collision mask using RLE. */
 void pd::map::build_box2d_object()
-{
-    create_ground_box(0, 450, 1500);
-    
-    // Count tiles.
-    for (int y = 0; y < m_height;  y++) {
-        for (int x = 0; x < m_width; x++) {
-            if (get_fg(x,y)) {
-                printf("*");
-            } else {
-                //printf(" ");
-            }
-        }
-        //printf("\n");
-    }
-    
-    // Simplified RLE.
-    for (int y = 0; y < m_height;  y++) {
-        int count = 0;
-        tile_id_t last_tile = 0;
+{   
+    for (int y = 0; y < m_height; y++) {
+        int row_start = -1;
         for (int x = 0; x < m_width; x++) {
             tile_id_t tile = get_fg(x, y);
-            if (tile) {
-                count++;
+            if (row_start < 0) {
+                if (tile)
+                    row_start = x;
+                continue;
             }
-            if (last_tile > 0 && !tile) {
-                printf("Built new ground box at %i, %i, size %i.\n", (x - count) * m_tile_width, y * m_tile_height, count * m_tile_width);
-                create_ground_box((x - count) * m_tile_width, y * m_tile_height, count * m_tile_width);
-            }
-            last_tile = tile;
+            if (tile)
+                continue;
+            create_ground_box(row_start, y, x - row_start);
+            row_start = -1;
         }
+
+        if (row_start >= 0)
+            create_ground_box(row_start, y, m_width - 1);
     }
 }
