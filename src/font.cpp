@@ -48,7 +48,7 @@ namespace {
 pd::bitmap_font::bitmap_font(const std::string &filename)
 : m_dummy_char(0, 0, 0, 0)
 {
-    std::ifstream in(filename);
+    std::ifstream in(filename.c_str());
     if (!in.good()) {
         std::stringstream ss;
         ss << "Font '" << filename << "' was not found";

@@ -16,7 +16,7 @@ namespace pd {
         if (is_power_of_two(value))
             return value;
         value -= 1;
-        for (int i = 1; i < sizeof(T) * 8; i <<= 1)
+        for (size_t i = 1; i < sizeof(T) * 8; i <<= 1)
             value = value | value >> i;
         return value + 1;
     }
