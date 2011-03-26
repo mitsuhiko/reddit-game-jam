@@ -1,25 +1,10 @@
 #include <pd/game.hpp>
-<<<<<<< HEAD
-#include <pd/texture.hpp>
-#include <pd/sprite.hpp>
-#include <pd/drawtools.hpp>
-#include <pd/font.hpp>
-#include <pd/map.hpp>
-=======
 #include <pd/main_menu.hpp>
->>>>>>> 7039d450137dfa4dd1984632571208f718af328f
 
 const int width = 800;
 const int height = 450;
 
-<<<<<<< HEAD
-static pd::texture *test_texture;
-static pd::sprite *test_sprite;
-static pd::font *test_font;
-static pd::map *test_map;
-=======
 pd::game *pd::game::s_instance;
->>>>>>> 7039d450137dfa4dd1984632571208f718af328f
 
 
 pd::game::game()
@@ -59,14 +44,6 @@ pd::game::game()
     m_glctx = ctx;
     m_screen = pd::main_menu::instance();
     m_running = true;
-<<<<<<< HEAD
-
-    test_texture = pd::load_texture("textures/debug.png");
-    test_sprite = new pd::sprite(test_texture, 100.0f, 100.0f);
-    test_font = new pd::bitmap_font("fonts/simple.fnt");
-	test_map = new pd::map("maps/testing.map");
-=======
->>>>>>> 7039d450137dfa4dd1984632571208f718af328f
 }
 
 pd::game::~game()
