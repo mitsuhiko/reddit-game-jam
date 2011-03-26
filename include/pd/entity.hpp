@@ -16,6 +16,8 @@ namespace pd {
 
         float x() const { return pd::meter_to_pixel(m_body->GetPosition().x); }
         float y() const { return pd::meter_to_pixel(m_body->GetPosition().y); }
+        float rotation() const { return pd::rad_to_deg(m_body->GetAngle()); }
+        void rotation(float angle) { m_body->SetTransform(m_body->GetPosition(), pd::deg_to_rad(angle)); }
         float width() const { return m_width; }
         float height() const { return m_height; }
         float density() const { return m_fixture->GetDensity(); }

@@ -4,6 +4,8 @@
 
 namespace pd {
 
+    static const double pi = 3.14159265358979323846;
+
     // Pixels to meters translation.
     template <class T>
     T pixel_to_meter(T a)
@@ -15,6 +17,18 @@ namespace pd {
     T meter_to_pixel(T a)
     {
         return a * 30;
+    }
+
+    template <class T>
+    T deg_to_rad(T value)
+    {
+        return (T)(value * pi / 180.0);
+    }
+
+    template <class T>
+    T rad_to_deg(T value)
+    {
+        return (T)(value * 180.0 / pi);
     }
 
     template <class T>
