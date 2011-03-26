@@ -35,6 +35,19 @@ def load_layer(data):
     return result
 
 
+def prepare_layer(root, name):
+    for layer in root.findall('layer'):
+        if layer.attrib['name'] != name:
+            continue
+        data = layer.find('data')
+        assert data.attrib['encoding'] == 'base64'
+        val = data.text.decode('base64')
+        if data.attrib.get('compression'):
+            val = val.decode(data.attrib['compression'])
+        return load_layer(val)
+    raise TypeError('Could not find layer ' + name)
+
+
 def read_tmx_file(filename):
     with open(filename) as f:
         doc = et.parse(f)
@@ -47,13 +60,8 @@ def read_tmx_file(filename):
               int(root.attrib['tileheight']),
               relative_resource_path(tileset.getchildren()[0].attrib['source']))
 
-    for layer in root.findall('layer'):
-        data = layer.find('data')
-        assert data.attrib['encoding'] == 'base64'
-        val = data.text.decode('base64')
-        if data.attrib.get('compression'):
-            val = val.decode(data.attrib['compression'])
-        map.layers.append(load_layer(val))
+    map.layers.append(prepare_layer(root, 'Background'))
+    map.layers.append(prepare_layer(root, 'Foreground'))
     return map
 
 

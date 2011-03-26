@@ -22,8 +22,8 @@ namespace pd {
         int tile_width() const { return m_tile_width; }
         int tile_height() const { return m_tile_height; }
 
-        tile_id_t get_bg(int x, int y) const { return m_background[x * y]; }
-        tile_id_t get_fg(int x, int y) const { return m_foreground[x * y]; }
+        tile_id_t get_bg(int x, int y) const { return m_background[(y * m_width) + x]; }
+        tile_id_t get_fg(int x, int y) const { return m_foreground[(y * m_width) + x]; }
 
         static map *load_as_resource(const std::string &filename)
         {
