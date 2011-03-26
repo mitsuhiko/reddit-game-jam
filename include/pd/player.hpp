@@ -19,6 +19,9 @@ namespace pd {
         player(float x = 0.0f, float y = 0.0f);
         stance_type stance() const { return m_stance; }
         void stance(stance_type val) { m_stance = val; }
+        float thermal_energy() const { return m_thermal_energy; }
+        float electromagnetic_energy() const { return m_electromagnetic_energy; }
+        float kinetic_energy() const { return m_kinetic_energy; }
 
         void update(float dt);
         void render(float dt) const;
@@ -26,6 +29,9 @@ namespace pd {
     private:
         stance_type m_stance;
         pd::animation m_walk_anim;
+        float m_thermal_energy;
+        float m_electromagnetic_energy;
+        float m_kinetic_energy;
     };
 }
 
