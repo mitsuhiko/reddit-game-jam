@@ -11,7 +11,7 @@ namespace pd {
     class entity {
     public:
         entity(pd::game_session *session, float x = 0.0f, float y = 0.0f, float width = 0.0f,
-            float height = 0.0f, float density = 0.0f, float friction = 0.0f);
+            float height = 0.0f, float density = 0.0f, float friction = 0.0f, bool locked_rotation = false);
         virtual ~entity();
 
         float x() const { return pd::meter_to_pixel(m_body->GetPosition().x); }
@@ -26,11 +26,13 @@ namespace pd {
         virtual void render(float dt) const = 0;
 
     private:
+        pd::game_session *m_session;
         b2World *m_world;
         b2Body *m_body;
         b2Fixture *m_fixture;
         float m_width;
         float m_height;
+        bool m_locked_rotation;
     };
 }
 

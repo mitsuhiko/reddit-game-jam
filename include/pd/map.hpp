@@ -3,6 +3,7 @@
 #include <pd/pd.hpp>
 #include <pd/resource_base.hpp>
 #include <pd/color.hpp>
+#include <Box2D/Box2D.h>
 #include <map>
 
 namespace pd {
@@ -23,6 +24,8 @@ namespace pd {
         int tile_width() const { return m_tile_width; }
         int tile_height() const { return m_tile_height; }
         pd::color background_color() const { return m_background_color; }
+        b2World * world() const { return m_world; }
+        void world(b2World * val) { m_world = val; }
 
         tile_id_t get_bg(int x, int y) const { return m_background[(y * m_width) + x]; }
         tile_id_t get_fg(int x, int y) const { return m_foreground[(y * m_width) + x]; }
@@ -35,7 +38,9 @@ namespace pd {
     private:
 	    void load(std::string filename);
         void draw_tile(int x, int y, tile_id_t tile) const;
-
+        void create_ground_box(float x, float y, float width);
+        void build_box2d_object();
+        
 	    int m_width;
 	    int m_height;
 	    int m_tile_width;
@@ -43,6 +48,7 @@ namespace pd {
 	    tile_id_t *m_background;
 	    tile_id_t *m_foreground;
 	    pd::texture *m_tileset;
+        b2World *m_world;
         pd::color m_background_color;
         std::map<tile_id_t, pd::texture *> m_tiles;
     };
