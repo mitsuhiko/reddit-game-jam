@@ -8,7 +8,7 @@
 pd::game_session::game_session()
 {
     pd::game::instance().resmgr().push();
-    m_world = new b2World(b2Vec2(0, 9.79), true);
+    m_world = new b2World(b2Vec2(0, 9.79f), true);
 	m_map = pd::get_resource<pd::map>("maps/demo.map");
 
     m_player = new pd::player(m_world, 40.0f, 300.0f);
@@ -26,9 +26,10 @@ pd::game_session::~game_session()
 void pd::game_session::update(float dt)
 {
     m_world->Step(dt, 10, 10);
-    for (std::vector<pd::entity *>::iterator iter = m_entities.begin();
-         iter != m_entities.end(); ++iter)
+    for (std::vector<pd::entity *>::iterator iter = m_entities.begin(); iter != m_entities.end(); ++iter) {
         (*iter)->update(dt);
+        (*iter)->sync();
+    }
 }
 
 void pd::game_session::handle_event(SDL_Event &evt, float dt)
