@@ -2,6 +2,7 @@
 #include <pd/texture.hpp>
 #include <pd/drawtools.hpp>
 #include <pd/game.hpp>
+#include <pd/game_session.hpp>
 
 
 pd::enemy::enemy(pd::game_session *session, float x, float y,
@@ -11,4 +12,5 @@ pd::enemy::enemy(pd::game_session *session, float x, float y,
                  20.0f, 0.8f, true)
 {
     this->stance(stance);
+    m_player = session->player();
 }
