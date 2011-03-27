@@ -57,6 +57,7 @@ namespace pd {
         float health() const { return m_health; }
         void health(float val) { m_health = val; }
         virtual void take_damage(float val, damage_type type);
+        bool can_see(const pd::entity *entity, float max_distance);
 
         stance_type stance() const { return m_stance; }
         void stance(stance_type val) { m_stance = val; }

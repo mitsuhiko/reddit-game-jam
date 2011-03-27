@@ -85,7 +85,6 @@ bool pd::entity::colliding_right() const
     return false;
 }
 
-
 bool pd::entity::colliding_left() const
 {
     for (b2ContactEdge* ce = m_body->GetContactList(); ce; ce = ce->next) {
@@ -100,6 +99,36 @@ bool pd::entity::colliding_left() const
 
 }
 
+bool pd::entity::can_see(const pd::entity *entity, float max_distance)
+{
+    b2Vec2 start(pd::pixel_to_meter(x()), pd::pixel_to_meter(y()));
+    b2Vec2 end = start;
+    end.x += pd::pixel_to_meter(flipped() ? -max_distance : max_distance);
+
+    struct callback_ : public b2RayCastCallback {
+        callback_(const pd::entity *entity)
+        {
+            found = false;
+            search_entity = entity;
+        }
+
+        float ReportFixture(b2Fixture* fixture, const b2Vec2 &point,
+                            const b2Vec2 &normal, float fraction)
+        {
+            pd::box2d_data_tuple *tup = (pd::box2d_data_tuple *)fixture->GetBody()->GetUserData();
+            if (tup && tup->type == pd::box2d_data_tuple::entity_type &&
+                tup->ptr == search_entity)
+                found = true;
+            return fraction;
+        }
+
+        const pd::entity *search_entity;
+        bool found;
+    } callback(entity);
+
+    session()->box2d_world()->RayCast(&callback, start, end);
+    return callback.found;
+}
 
 pd::vec2 pd::entity::linear_velocity() const
 {
