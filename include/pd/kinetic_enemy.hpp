@@ -19,6 +19,8 @@ namespace pd {
         stance_type m_stance;
         pd::animation m_walk_anim;
         pd::texture *m_dash_texture;
+        bool m_dashing;
+        int m_walking_direction;
     };
 }
 

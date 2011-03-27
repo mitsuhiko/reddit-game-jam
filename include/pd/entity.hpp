@@ -50,6 +50,8 @@ namespace pd {
         bool flipped() const { return m_flipped; }
         void flipped(bool val) { m_flipped = val; }
         bool airborne() const;
+        bool colliding_right() const;
+        bool colliding_left() const;
         pd::vec2 linear_velocity() const;
 
         float health() const { return m_health; }
