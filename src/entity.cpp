@@ -25,8 +25,13 @@ pd::entity::entity(pd::game_session *session, float x, float y, float width,
 
     b2FixtureDef fixturedef;
     b2PolygonShape dynamicbox;
+    /*// Good old box.
     dynamicbox.SetAsBox(pd::pixel_to_meter(width / 2.0f),
                         pd::pixel_to_meter(height / 2.0f));
+    */
+
+    b2Vec2 vertices[] = { b2Vec2(-1, -1), b2Vec2(1, -1), b2Vec2(1, 1), b2Vec2(-1, 1) };
+    dynamicbox.Set(vertices, sizeof(vertices) / sizeof(b2Vec2));
     fixturedef.shape = &dynamicbox;
     fixturedef.density = density;
     fixturedef.friction = friction;
