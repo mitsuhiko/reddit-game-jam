@@ -17,7 +17,7 @@ pd::player::player(pd::game_session *session, float x, float y)
       m_thermal_idle_anim(pd::get_resource<pd::texture>("textures/character_thermal_idle.png"), 17, 0.05f),
       m_flamethrower_anim(pd::get_resource<pd::texture>("textures/flamer.png"), 5, 0.1f)
 {
-    stance(kinetic_stance);
+    stance(thermal_stance);
 
     m_energy = 1.0f;
     health(200.0f);
