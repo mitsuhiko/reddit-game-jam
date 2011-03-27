@@ -16,6 +16,7 @@ set(GAME_SOURCES
 	src/map.cpp
     src/resource_manager.cpp
     src/animation.cpp
+	src/camera.cpp
 
 	src/screen.cpp
 	src/main_menu.cpp
@@ -38,6 +39,7 @@ set(GAME_HEADERS
 	include/pd/resource_base.hpp
 	include/pd/resource_manager.hpp
 	include/pd/animation.hpp
+	include/pd/camera.hpp
 
 	include/pd/screen.hpp
 	include/pd/main_menu.hpp

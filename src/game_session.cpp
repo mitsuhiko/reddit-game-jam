@@ -4,6 +4,7 @@
 #include <pd/drawtools.hpp>
 #include <pd/texture.hpp>
 #include <pd/player.hpp>
+#include <pd/camera.hpp>
 
 namespace pd {
 
@@ -61,8 +62,7 @@ pd::game_session::game_session()
     m_small_thermal_energy_bar = new pd::game_power_bar(interface_texture,
         437, 67, 543, 86, 559, 68, 646, 78, 15, 5);
 
-    m_cam_x = 400.0f;
-    m_cam_y = 150.0f;
+    m_cam = new pd::camera();
 
     // create test environment
     m_world = new b2World(b2Vec2(0, 9.79f), true);
@@ -95,7 +95,7 @@ void pd::game_session::update(float dt)
     if (state[SDL_SCANCODE_A] || state[SDL_SCANCODE_LEFT])
         m_player->move_left();
 
-    update_cam(dt);
+    m_cam->look_at(m_player->x(), m_player->y(), dt);
 }
 
 void pd::game_session::handle_event(SDL_Event &evt, float dt)
@@ -125,11 +125,16 @@ void pd::game_session::handle_event(SDL_Event &evt, float dt)
 
 void pd::game_session::render(float dt) const
 {
+    pd::push_matrix();
+
+    m_cam->apply();
 	m_map->render();
 
     for (std::vector<pd::entity *>::const_iterator iter = m_entities.begin();
          iter != m_entities.end(); ++iter)
         (*iter)->render(dt);
+
+    pd::pop_matrix();
     
     render_gui(dt);
 }
@@ -154,13 +159,6 @@ void pd::game_session::render_gui(float dt) const
     DRAW_BAR(kinetic);
     DRAW_BAR(electromagnetic);
     DRAW_BAR(thermal);
-}
-
-void pd::game_session::update_cam(float dt)
-{
-    // XXX: looks like m_player->x() and m_player->y() are not world coordinates.
-    // for being totally wrong it still works surprisingly well, so we must have
-    // another error somewhere else.  investigate
 }
 
 void pd::game_session::add_entity(pd::entity *entity)

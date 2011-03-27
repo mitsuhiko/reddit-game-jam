@@ -4,7 +4,6 @@
 #include <pd/screen.hpp>
 #include <pd/map.hpp>
 #include <vector>
-#include <Box2D/Box2D.h>
 
 namespace pd {
 
@@ -12,6 +11,7 @@ namespace pd {
     class font;
     class entity;
     class player;
+    class camera;
 
     /* implemented in the game_session.cpp */
     class game_power_bar;
@@ -41,8 +41,7 @@ namespace pd {
         b2World *m_world;
         std::vector<pd::entity *> m_entities;
 
-        float m_cam_x;
-        float m_cam_y;
+        pd::camera *m_cam;
 
         pd::game_power_bar *m_kinetic_energy_bar;
         pd::game_power_bar *m_electromagnetic_energy_bar;

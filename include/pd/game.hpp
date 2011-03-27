@@ -27,6 +27,10 @@ namespace pd {
         void screen(pd::screen *val) { m_screen = val; }
         static pd::game &instance() { return *s_instance; }
 
+        void get_size(int &width, int &height) const { return SDL_GetWindowSize(m_win, &width, &height); }
+        int width() const { int width, height; get_size(width, height); return width; }
+        int height() const { int width, height; get_size(width, height); return height; }
+
         pd::resource_manager &resmgr() { return m_resmgr; }
 
     private:

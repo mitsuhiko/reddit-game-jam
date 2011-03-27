@@ -1,8 +1,8 @@
 #include <pd/game.hpp>
 #include <pd/main_menu.hpp>
 
-const int width = 800;
-const int height = 450;
+const int window_width = 800;
+const int window_height = 450;
 
 pd::game *pd::game::s_instance;
 
@@ -18,7 +18,7 @@ pd::game::game()
     SDL_Window *win = SDL_CreateWindow("Navitas",
         SDL_WINDOWPOS_CENTERED,
         SDL_WINDOWPOS_CENTERED,
-        width, height,
+        window_width, window_height,
         SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN);
     if (!win)
         pd::critical_error("Unable to create render window", SDL_GetError());
