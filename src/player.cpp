@@ -4,9 +4,10 @@
 #include <pd/game.hpp>
 
 
+static const float max_airborne_velocity = 3.0f;
 static const float max_velocity = 6.0f;
-static const float jump_impulse = 300.0f;
-static const float movement_force = 1700.0f;
+static const float jump_impulse = 240.0f;
+static const float movement_force = 1500.0f;
 
 
 pd::player::player(pd::game_session *session, float x, float y)
@@ -24,7 +25,7 @@ void pd::player::move_left()
 {
     flipped(true);
     const b2Vec2 &vec = body()->GetLinearVelocity();
-    if (vec.x < -max_velocity)
+    if (vec.x < -(on_ground() ? max_velocity : max_airborne_velocity))
         return;
     body()->ApplyForce(b2Vec2(-movement_force, 0.0f), body()->GetWorldCenter());
 }
@@ -33,7 +34,7 @@ void pd::player::move_right()
 {
     flipped(false);
     const b2Vec2 &vec = body()->GetLinearVelocity();
-    if (vec.x > max_velocity)
+    if (vec.x > (on_ground() ? max_velocity : max_airborne_velocity))
         return;
     body()->ApplyForce(b2Vec2(movement_force, 0.0f), body()->GetWorldCenter());
 }
