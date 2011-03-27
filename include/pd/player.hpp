@@ -15,6 +15,7 @@ namespace pd {
         void move_left();
         void move_right();
         void jump();
+        void stop();
 
         void update(float dt);
         void local_render(float dt) const;
@@ -22,6 +23,7 @@ namespace pd {
     private:
         pd::animation m_walk_anim;
         float m_energy;
+        int m_ticks_until_stop;
     };
 }
 

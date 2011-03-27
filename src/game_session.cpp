@@ -85,10 +85,13 @@ void pd::game_session::update(float dt)
     }
 
     uint8_t *state = SDL_GetKeyboardState(NULL);
-    if (state[SDL_SCANCODE_D] || state[SDL_SCANCODE_RIGHT])
+    if (state[SDL_SCANCODE_D] || state[SDL_SCANCODE_RIGHT]) {
         m_player->move_right();
-    if (state[SDL_SCANCODE_A] || state[SDL_SCANCODE_LEFT])
+    } else if (state[SDL_SCANCODE_A] || state[SDL_SCANCODE_LEFT]) {
         m_player->move_left();
+    } else {
+        m_player->stop();
+    }
 
     m_cam->look_at(m_player->x(), m_player->y(), dt);
 }
