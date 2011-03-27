@@ -18,6 +18,7 @@ namespace pd {
     private:
         stance_type m_stance;
         pd::animation m_walk_anim;
+        pd::texture *m_dash_texture;
     };
 }
 
