@@ -19,6 +19,7 @@ namespace pd {
         stance_type m_stance;
         pd::animation m_walk_anim;
         pd::animation m_dash_anim;
+        glm::vec2 m_velocity;
         bool m_dashing;
         float m_dash_countdown;
     };

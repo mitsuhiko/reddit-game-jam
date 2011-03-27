@@ -27,8 +27,39 @@ namespace pd {
         int tile_height() const { return m_tile_height; }
         pd::color background_color() const { return m_background_color; }
 
-        tile_id_t get_bg(int x, int y) const { return m_background[(y * m_width) + x]; }
-        tile_id_t get_fg(int x, int y) const { return m_foreground[(y * m_width) + x]; }
+        tile_id_t get_bg(int x, int y) const
+        {
+            if (x < 0 || x >= m_width || y < 0 || y >= m_height)
+                return 0;
+            return m_background[(y * m_width) + x];
+        }
+
+        tile_id_t get_fg(int x, int y) const
+        {
+            if (x < 0 || x >= m_width || y < 0 || y >= m_height)
+                return 0;
+            return m_foreground[(y * m_width) + x];
+        }
+
+        pd::block *get_block(int x, int y)
+        {
+            if (x < 0 || x >= m_width || y < 0 || y >= m_height)
+                return 0;
+            return m_blocks[(y * m_width) + x];
+        }
+
+        const pd::block *get_block(int x, int y) const
+        {
+            if (x < 0 || x >= m_width || y < 0 || y >= m_height)
+                return 0;
+            return m_blocks[(y * m_width) + x];
+        }
+
+        bool occupied(int x, int y) const
+        {
+            return get_fg(x, y) != 0 || get_block(x, y) != 0;
+        }
+
         pd::game_session *session() { return m_session; }
         const pd::game_session *session() const { return m_session; }
 
@@ -42,11 +73,11 @@ namespace pd {
 	    int m_tile_height;
 	    tile_id_t *m_background;
 	    tile_id_t *m_foreground;
+        pd::block **m_blocks;
 	    pd::texture *m_tileset;
         pd::game_session *m_session;
         pd::color m_background_color;
         std::map<tile_id_t, pd::texture *> m_tiles;
-        std::vector<block *> m_blocks;
     };
 
     class block {
@@ -59,10 +90,10 @@ namespace pd {
             glass_type
         };
 
-        block(pd::map *map, pd::texture *texture, block_type type, float x, float y);
+        block(pd::map *map, pd::texture *texture, block_type type, int x, int y);
         block_type type() const { return m_type; }
-        float x() const { return m_x; }
-        float y() const { return m_y; }
+        int x() const { return m_x; }
+        int y() const { return m_y; }
         const pd::texture *texture() const { return m_texture; }
         void render() const;
 
@@ -70,8 +101,8 @@ namespace pd {
         pd::map *m_map;
         block_type m_type;
         pd::texture *m_texture;
-        float m_x;
-        float m_y;
+        int m_x;
+        int m_y;
     };
 }
 #endif

@@ -62,7 +62,7 @@ pd::game_session::game_session()
     // create test environment
 	m_map = new pd::map(this, "maps/testlevel.map");
 
-    m_player = new pd::player(this, 400.0f, 200.0f);
+    m_player = new pd::player(this, 400.0f, 0.0f);
     new pd::kinetic_enemy(this, 15.0f, 0.0f);
 }
 
@@ -70,7 +70,7 @@ pd::game_session::~game_session()
 {
     delete m_map;
 
-    for (std::vector<pd::entity *>::const_iterator iter = m_entities.begin();
+    for (std::vector<pd::entity *>::iterator iter = m_entities.begin();
          iter != m_entities.end(); ++iter)
         delete *iter;
     pd::game::instance().resmgr().pop();

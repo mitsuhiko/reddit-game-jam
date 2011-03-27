@@ -46,6 +46,7 @@ set(GAME_HEADERS
 	include/pd/resource_manager.hpp
 	include/pd/animation.hpp
 	include/pd/camera.hpp
+    include/pd/config.hpp
 
 	include/pd/screen.hpp
 	include/pd/main_menu.hpp
@@ -92,6 +93,7 @@ include_directories(
 	${CMAKE_CURRENT_SOURCE_DIR}/libs/vendor
 	${CMAKE_CURRENT_SOURCE_DIR}/libs/vendor/utfcpp
 	${CMAKE_CURRENT_SOURCE_DIR}/libs/freetype-2.4.4/include
+    ${CMAKE_CURRENT_SOURCE_DIR}/libs/glm-0.9.1.1
 )
 
 add_executable(

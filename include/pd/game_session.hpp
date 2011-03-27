@@ -32,6 +32,9 @@ namespace pd {
         void render_gui(float dt) const;
         void update_cam(float dt);
 
+        pd::map *map() { return m_map; }
+        const pd::map *map() const { return m_map; }
+
         pd::player *player() const { return m_player; }
         std::vector<pd::entity *> entities() const { return m_entities; }
 

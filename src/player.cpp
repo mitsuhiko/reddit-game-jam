@@ -7,10 +7,8 @@
 #include <vector>
 
 
-static const float max_airborne_velocity = 3.0f;
-static const float max_velocity = 6.0f;
-static const float jump_impulse = 1250.0f;
-static const float movement_force = 4000.0f;
+static const float jump_speed = 400.0f;
+
 
 pd::player::player(pd::game_session *session, float x, float y)
     : pd::entity(session, x, y, 60.0f, 90.0f),
@@ -18,10 +16,11 @@ pd::player::player(pd::game_session *session, float x, float y)
       m_flamethrower_anim(pd::get_resource<pd::texture>("textures/flamer.png"), 5, 0.1f)
 {
     stance(thermal_stance);
+    hovering(12.0f);
+    health(200.0f);
 
     m_energy = 1.0f;
     m_shooting = false;
-    health(200.0f);
 }
 
 void pd::player::take_damage(float val, damage_type type)
@@ -53,20 +52,31 @@ void pd::player::take_damage(float val, damage_type type)
         
 void pd::player::move_left(float dt)
 {
+    flipped(true);
+    if (!collides_left())
+        move(-dt * movement_speed, 0.0f);
 }
 
 void pd::player::move_right(float dt)
 {
+    flipped(false);
+    if (!collides_right())
+        move(dt * movement_speed, 0.0f);
 }
 
 void pd::player::jump()
 {
+    if (!airborne())
+        velocity(velocity() - glm::vec2(0.0f, jump_speed));
 }
 
 void pd::player::update(float dt)
 {
     m_thermal_idle_anim.update(dt);
     m_flamethrower_anim.update(dt);
+
+    move(velocity() * dt);
+    apply_gravity(dt);
 }
 
 void pd::player::local_render(float dt) const

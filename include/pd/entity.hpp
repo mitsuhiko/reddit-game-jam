@@ -29,15 +29,26 @@ namespace pd {
                float height = 0.0f);
         virtual ~entity();
 
-        float x() const { return m_x; }
-        float y() const { return m_y; }
+        const glm::vec2 &pos() const { return m_pos; }
+        const float x() const { return m_pos[0]; }
+        const float y() const { return m_pos[1]; }
+        void velocity(const glm::vec2 &vec) { m_velocity = vec; }
+        const glm::vec2 &velocity() const { return m_velocity; }
         float rotation() const { return m_rotation; }
         void rotation(float angle) { m_rotation = angle; }
+        void move(float dx, float dy) { move(glm::vec2(dx, dy)); }
+        void move(const glm::vec2 &vec) { m_pos += vec; }
 
         float width() const { return m_width; }
         float height() const { return m_height; }
+        float hovering() const { return m_hovering; }
+        void hovering(float val) { m_hovering = val; }
         bool flipped() const { return m_flipped; }
         void flipped(bool val) { m_flipped = val; }
+
+        bool can_see(const pd::entity *entity, float max_distance);
+        bool collides_right() const;
+        bool collides_left() const;
         bool airborne() const;
 
         float health() const { return m_health; }
@@ -51,19 +62,23 @@ namespace pd {
         pd::game_session *session() { return m_session; }
         const pd::game_session *session() const { return m_session; }
 
+        void apply_gravity(float dt);
+
         virtual void update(float dt) = 0;  
         virtual void render(float dt) const;
         virtual void local_render(float dt) const = 0;
 
     private:
         pd::game_session *m_session;
-        float m_x;
-        float m_y;
+        glm::vec2 m_velocity;
+        glm::vec2 m_pos;
         float m_rotation;
         stance_type m_stance;
         float m_width;
         float m_height;
         float m_health;
+        float m_hovering;
+        float m_air_time;
         bool m_flipped;
     };
 }

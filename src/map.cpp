@@ -31,8 +31,10 @@ pd::map::map(pd::game_session *session, std::string filename)
     m_tile_width = pd::lexical_cast<int>(tile_width);
     m_tile_height = pd::lexical_cast<int>(tile_height);
     m_background_color = pd::color(background_color);
+
     m_background = new tile_id_t[m_width * m_height];
     m_foreground = new tile_id_t[m_width * m_height];
+    m_blocks = new pd::block*[m_width * m_height];
 
     in.read((char *)m_background, m_width * m_height);
     in.read((char *)m_foreground, m_width * m_height);
@@ -50,28 +52,26 @@ pd::map::map(pd::game_session *session, std::string filename)
         for (int x = 0; x < m_width; x++) {
             tile_id_t tile = get_fg(x, y);
             pd::block *block = try_make_block(tile, x, y);
-            if (block) {
+            if (block)
                 m_foreground[(y * m_width) + x] = 0;
-                m_blocks.push_back(block);
-            }
+            m_blocks[(y * m_width) + x] = block;
         }
     }
 }
 
 pd::map::~map()
 {
+    for (int i = 0; i < (m_width * m_height); i++)
+        delete m_blocks[i];
+
     delete[] m_background;
     delete[] m_foreground;
-
-    for (std::vector<pd::block *>::iterator iter = m_blocks.begin();
-         iter != m_blocks.end(); ++iter)
-        delete *iter;
+    delete[] m_blocks;
 }
 
 pd::block *pd::map::try_make_block(tile_id_t tile, int x, int y)
 {
     pd::block::block_type type;
-    /* TODO: detect block and create one. 129 is the first block, 133 the last */
     switch (tile) {
     case 129:
         type = pd::block::metal_type;
@@ -95,8 +95,7 @@ pd::block *pd::map::try_make_block(tile_id_t tile, int x, int y)
     std::map<tile_id_t, pd::texture *>::iterator iter = m_tiles.find(tile);
     assert(iter != m_tiles.end());
 
-    return new pd::block(this, iter->second, type, (float)x * m_tile_width,
-                         (float)y * m_tile_height);
+    return new pd::block(this, iter->second, type, x, y);
 }
 
 void pd::map::draw_tile(int x, int y, pd::map::tile_id_t tile) const
@@ -106,7 +105,7 @@ void pd::map::draw_tile(int x, int y, pd::map::tile_id_t tile) const
     std::map<tile_id_t, pd::texture *>::const_iterator iter = m_tiles.find(tile);
     assert(iter != m_tiles.end());
     pd::draw_textured_quad((float)x * m_tile_width,
-        (float)y * m_tile_height, iter->second);
+                           (float)y * m_tile_height, iter->second);
 }
 
 void pd::map::render() const
@@ -116,15 +115,14 @@ void pd::map::render() const
         for (int x = 0; x < m_width; x++) {
             draw_tile(x, y, get_bg(x, y));
             draw_tile(x, y, get_fg(x, y));
+            const pd::block *block = get_block(x, y);
+            if (block)
+                block->render();
         }
     }
-
-    for (std::vector<pd::block *>::const_iterator iter = m_blocks.begin();
-         iter != m_blocks.end(); ++iter)
-        (*iter)->render();
 }
 
-pd::block::block(pd::map *map, pd::texture *texture, block_type type, float x, float y)
+pd::block::block(pd::map *map, pd::texture *texture, block_type type, int x, int y)
 {
     m_map = map;
     m_texture = texture;
@@ -135,6 +133,6 @@ pd::block::block(pd::map *map, pd::texture *texture, block_type type, float x, f
 
 void pd::block::render() const
 {
-    pd::draw_textured_quad(x() - m_map->tile_width() / 2.0f,
-                           y() - m_map->tile_height() / 2.0f, m_texture);
+    pd::draw_textured_quad((float)m_x * m_map->tile_width(),
+                           (float)m_y * m_map->tile_height(), m_texture);
 }

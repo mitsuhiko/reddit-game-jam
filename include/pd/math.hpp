@@ -1,6 +1,7 @@
 #ifndef _INC_PD_MATH_HPP_
 #define _INC_PD_MATH_HPP_
 #include <pd/pd.hpp>
+#include <pd/config.hpp>
 
 namespace pd {
 
@@ -14,6 +15,16 @@ namespace pd {
         else if (val == 0)
             return T(0);
         return T(-1);
+    }
+
+    template <class T>
+    T clamp(T val, T min, T max)
+    {
+        if (val < min)
+            return min;
+        if (val > max)
+            return max;
+        return val;
     }
 
     // Pixels to meters translation.
@@ -56,6 +67,11 @@ namespace pd {
         for (size_t i = 1; i < sizeof(T) * 8; i <<= 1)
             value = value | value >> i;
         return value + 1;
+    }
+
+    inline void apply_gravity(glm::vec2 &velocity, float air_time)
+    {
+        velocity.y = std::min(velocity.y + pd::gravity * air_time, pd::max_fall_speed);
     }
 }
 
