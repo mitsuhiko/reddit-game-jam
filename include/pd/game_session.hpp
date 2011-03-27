@@ -33,6 +33,7 @@ namespace pd {
         void update_cam(float dt);
 
         pd::player * player() const { return m_player; }
+        std::vector<pd::entity *> entities() const { return m_entities; }
 
         b2World *box2d_world() { return m_world; }
 
@@ -42,7 +43,6 @@ namespace pd {
         pd::player *m_player;
         b2World *m_world;
         std::vector<pd::entity *> m_entities;
-
         pd::camera *m_cam;
 
         pd::game_power_bar *m_kinetic_energy_bar;

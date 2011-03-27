@@ -3,6 +3,8 @@
 #include <pd/drawtools.hpp>
 #include <pd/game.hpp>
 #include <pd/game_session.hpp>
+#include <pd/entity.hpp>
+#include <vector>
 
 
 static const float max_airborne_velocity = 3.0f;
@@ -15,7 +17,7 @@ pd::player::player(pd::game_session *session, float x, float y)
       m_thermal_idle_anim(pd::get_resource<pd::texture>("textures/character_thermal_idle.png"), 17, 0.05f),
       m_flamethrower_anim(pd::get_resource<pd::texture>("textures/flamer.png"), 5, 0.1f)
 {
-    stance(kinetic_stance);
+    stance(thermal_stance);
 
     m_energy = 1.0f;
     health(200.0f);
@@ -93,11 +95,15 @@ void pd::player::weapon_damage_test()
         return;
 
     if (stance() == thermal_stance) {
-        b2PolygonShape polygon;
-        polygon.SetAsBox(100.0f, 40.0f);
         // TODO: check if it collides with one or multiple bodies.
         // each body has a userData which is a box2d_data_tuple
         // perform damage to all tuple entries that are entities
+        
+        for (unsigned int i = 0; i < session()->entities().size(); i++) {
+            if (can_see(session()->entities()[i], 150.0f)) {
+                session()->remove_entity(session()->entities()[i]); 
+            }
+}
     }
 }
 
