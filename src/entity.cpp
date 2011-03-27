@@ -30,8 +30,14 @@ pd::entity::entity(pd::game_session *session, float x, float y, float width,
                         pd::pixel_to_meter(height / 2.0f));
     */
 
-    b2Vec2 vertices[] = { b2Vec2(-1, -1), b2Vec2(1, -1), b2Vec2(1, 1), b2Vec2(-1, 1) };
-    dynamicbox.Set(vertices, sizeof(vertices) / sizeof(b2Vec2));
+    b2Vec2 vertices[] = {
+        b2Vec2(0.9f, -1.0f), b2Vec2(1.0f, -0.9f),
+        b2Vec2(1.0f, 0.9f), b2Vec2(0.9f, 1.0f),
+        b2Vec2(-0.9f, 1.0f),b2Vec2(-1.0f, 0.9f),
+        b2Vec2(-1.0f, -0.9f), b2Vec2(-0.9f, -1.0f)
+    };
+    int length = sizeof(vertices) / sizeof(b2Vec2);
+    dynamicbox.Set(vertices, length);
     fixturedef.shape = &dynamicbox;
     fixturedef.density = density;
     fixturedef.friction = friction;
