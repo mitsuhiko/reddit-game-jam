@@ -99,7 +99,7 @@ void pd::game_session::update(float dt)
     } else {
         m_player->stop();
     }
-    m_player->shooting(state[SDL_SCANCODE_LSHIFT] != 0);
+    m_player->shooting(state[SDL_SCANCODE_SPACE] != 0);
 
     m_cam->look_at(m_player->x(), m_player->y(), dt);
 
@@ -117,7 +117,7 @@ void pd::game_session::handle_event(SDL_Event &evt, float dt)
             // suicide, because the main menu adds a new instance of us
             delete this;
             break;
-        case SDLK_SPACE:
+        case SDLK_w:
             m_player->jump();
             break;
         case SDLK_1:
