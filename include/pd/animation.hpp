@@ -8,7 +8,7 @@ namespace pd {
 
     class animation {
     public:
-        animation(pd::texture *texture, int frames, float anim_speed);
+        animation(pd::texture *texture, int frames, float anim_speed = 0.0f);
         void update(float dt);
         void render(float x = 0.0f, float y = 0.0f) const;
         void render_frame(int frame, float x = 0.0f, float y = 0.0f) const;

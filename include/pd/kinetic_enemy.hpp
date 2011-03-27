@@ -18,8 +18,9 @@ namespace pd {
     private:
         stance_type m_stance;
         pd::animation m_walk_anim;
-        pd::texture *m_dash_texture;
+        pd::animation m_dash_anim;
         bool m_dashing;
+        float m_dash_countdown;
         int m_walking_direction;
     };
 }
