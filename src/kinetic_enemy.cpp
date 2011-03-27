@@ -40,5 +40,8 @@ void pd::kinetic_enemy::update(float dt)
 
 void pd::kinetic_enemy::local_render(float dt) const
 {
-    m_walk_anim.render();
+    if (m_dashing)
+        pd::draw_textured_quad(m_dash_texture);
+    else
+        m_walk_anim.render();
 }
