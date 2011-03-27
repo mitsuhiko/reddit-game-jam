@@ -8,32 +8,6 @@
 #include <fstream>
 
 
-pd::block::block(pd::map *map, block_type type, float x, float y)
-{
-    m_map = map;
-    m_type = type;
-
-    b2BodyDef bodydef;
-    bodydef.type = b2_dynamicBody;
-    bodydef.position.Set(pd::pixel_to_meter(x), pd::pixel_to_meter(y));
-    b2Body *body = map->session()->box2d_world()->CreateBody(&bodydef);
-    b2FixtureDef fixturedef;
-    b2PolygonShape fixedbox;
-    fixedbox.SetAsBox(pd::pixel_to_meter(map->tile_width() / 2.0f),
-                      pd::pixel_to_meter(map->tile_height() / 2.0f));
-    fixturedef.shape = &fixedbox;
-    fixturedef.density = 0;
-    fixturedef.friction = 1.5f;
-    m_fixture = body->CreateFixture(&fixturedef);
-    m_body = body;
-}
-
-pd::block::~block()
-{
-    m_map->session()->box2d_world()->DestroyBody(m_body);
-}
-
-
 pd::map::map(pd::game_session *session, std::string filename)
 {
     m_session = session;
@@ -101,12 +75,41 @@ pd::map::~map()
 {
     delete[] m_background;
     delete[] m_foreground;
+
+    for (std::vector<pd::block *>::iterator iter = m_blocks.begin();
+         iter != m_blocks.end(); ++iter)
+        delete *iter;
 }
 
 pd::block *pd::map::try_make_block(tile_id_t tile, int x, int y)
 {
+    pd::block::block_type type;
     /* TODO: detect block and create one. 129 is the first block, 133 the last */
-    return 0;
+    switch (tile) {
+    case 129:
+        type = pd::block::metal_type;
+        break;
+    case 130:
+        type = pd::block::ice_type;
+        break;
+    case 131:
+        type = pd::block::glass_type;
+        break;
+    case 132:
+        type = pd::block::lava_type;
+        break;
+    case 133:
+        type = pd::block::glass_type;
+        break;
+    default:
+        return 0;
+    }
+
+    std::map<tile_id_t, pd::texture *>::iterator iter = m_tiles.find(tile);
+    assert(iter != m_tiles.end());
+
+    return new pd::block(this, iter->second, type, (float)x * m_tile_width,
+                         (float)y * m_tile_height);
 }
 
 void pd::map::draw_tile(int x, int y, pd::map::tile_id_t tile) const
@@ -128,6 +131,10 @@ void pd::map::render() const
             draw_tile(x, y, get_fg(x, y));
         }
     }
+
+    for (std::vector<pd::block *>::const_iterator iter = m_blocks.begin();
+         iter != m_blocks.end(); ++iter)
+        (*iter)->render();
 }
 
 void pd::map::create_ground_box(int x, int y, int length)
@@ -146,4 +153,44 @@ void pd::map::create_ground_box(int x, int y, int length)
     fixturedef.density = 0;
     fixturedef.friction = 1.5f;
     body->CreateFixture(&fixturedef);
+}
+
+
+pd::block::block(pd::map *map, pd::texture *texture, block_type type, float x, float y)
+{
+    m_map = map;
+    m_texture = texture;
+    m_type = type;
+
+    b2BodyDef bodydef;
+    bodydef.type = b2_dynamicBody;
+    bodydef.position.Set(pd::pixel_to_meter(x), pd::pixel_to_meter(y));
+    bodydef.fixedRotation = false;
+    b2Body *body = map->session()->box2d_world()->CreateBody(&bodydef);
+    b2FixtureDef fixturedef;
+    b2PolygonShape fixedbox;
+    fixedbox.SetAsBox(pd::pixel_to_meter(map->tile_width() / 2.0f),
+                      pd::pixel_to_meter(map->tile_height() / 2.0f));
+    fixturedef.shape = &fixedbox;
+    fixturedef.density = 0;
+    fixturedef.friction = 1.5f;
+    m_fixture = body->CreateFixture(&fixturedef);
+    m_body = body;
+}
+
+pd::block::~block()
+{
+    m_map->session()->box2d_world()->DestroyBody(m_body);
+}
+
+void pd::block::render() const
+{
+    // XXX: why width/2 but not height/2?  What is wrong with our
+    // coordinate system :)
+    pd::push_matrix();
+    pd::translate(x() - m_map->tile_width() / 2.0f, y());
+    pd::rotate_around_point(rotation(), m_map->tile_width() / 2.0f,
+                            m_map->tile_height() / 2.0f);
+    pd::draw_textured_quad(m_texture);
+    pd::pop_matrix();
 }
