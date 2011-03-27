@@ -12,6 +12,11 @@ pd::thermal_enemy::thermal_enemy(pd::game_session *session, float x, float y)
 void pd::thermal_enemy::update(float dt)
 {
     m_walk_anim.update(dt);
+
+    // Quick and dirty AI.
+    if (!airborne()) {
+        apply_impulse(0.0f, -200.0f);
+    }
 }
 
 void pd::thermal_enemy::local_render(float dt) const

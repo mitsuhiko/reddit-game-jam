@@ -32,6 +32,8 @@ namespace pd {
         void render_gui(float dt) const;
         void update_cam(float dt);
 
+        pd::player * player() const { return m_player; }
+
         b2World *box2d_world() { return m_world; }
 
     private:
