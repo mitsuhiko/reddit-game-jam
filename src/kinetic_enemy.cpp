@@ -21,7 +21,7 @@ void pd::kinetic_enemy::update(float dt)
         if ((m_dash_countdown -= dt) >= 0.0f)
             return;
         m_dashing = true;
-        apply_impulse(4000.0f, 0.0f);
+        apply_impulse(4000.0f * (flipped() ? -1 : 1), 0.0f);
     }
 
     // Smarter than Skynet!
