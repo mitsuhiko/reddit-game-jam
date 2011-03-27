@@ -92,6 +92,7 @@ void pd::game_session::update(float dt)
     } else {
         m_player->stop();
     }
+    m_player->shooting(state[SDL_SCANCODE_LSHIFT] != 0);
 
     m_cam->look_at(m_player->x(), m_player->y(), dt);
 }

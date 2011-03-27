@@ -24,5 +24,5 @@ void pd::thermal_enemy::update(float dt)
 
 void pd::thermal_enemy::local_render(float dt) const
 {
-    m_walk_anim.render(dt);
+    m_walk_anim.render();
 }

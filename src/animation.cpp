@@ -18,10 +18,16 @@ void pd::animation::update(float dt)
         m_current_frame = (m_current_frame + 1) % m_frames;
 }
 
-void pd::animation::render(float dt) const
+void pd::animation::render(float x, float y) const
 {
+    render_frame(m_current_frame, x, y);
+}
+
+void pd::animation::render_frame(int frame, float x, float y) const
+{
+    assert(frame < m_frames);
     int slice_width = m_texture->width() / m_frames;
-    pd::texture_slice texture(m_texture, m_current_frame * slice_width,
+    pd::texture_slice texture(m_texture, frame * slice_width,
         0, slice_width, m_texture->height());
-    pd::draw_textured_quad(0.0f, 0.0f, &texture);
+    pd::draw_textured_quad(x, y, &texture);
 }
