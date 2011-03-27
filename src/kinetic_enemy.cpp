@@ -22,8 +22,7 @@ void pd::kinetic_enemy::update(float dt)
         m_dashing = 0;
         apply_impulse(600.0f * m_walking_direction, 0.0f);
     }
-    if (colliding_right())
-        printf("OMG");
+
     
     /* else {
         apply_force(700.0f * m_walking_direction, 0.0f);

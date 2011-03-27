@@ -79,8 +79,8 @@ bool pd::entity::colliding_right() const
             continue;
         b2WorldManifold worldManifold;
         ce->contact->GetWorldManifold(&worldManifold);
-        if (worldManifold.normal.x > 0.0f)
-            return false;
+        if (worldManifold.normal.x < 0.0f)
+            return true;
     }
     return false;
 }
@@ -94,7 +94,7 @@ bool pd::entity::colliding_left() const
         b2WorldManifold worldManifold;
         ce->contact->GetWorldManifold(&worldManifold);
         if (worldManifold.normal.x > 0.0f)
-            return false;
+            return true;
     }
     return false;
 
