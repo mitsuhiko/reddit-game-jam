@@ -5,6 +5,7 @@
 #include <pd/texture.hpp>
 #include <pd/player.hpp>
 #include <pd/thermal_enemy.hpp>
+#include <pd/kinetic_enemy.hpp>
 #include <pd/camera.hpp>
 
 namespace pd {
@@ -63,7 +64,8 @@ pd::game_session::game_session()
 	m_map = new pd::map(this, "maps/testlevel.map");
 
     m_player = new pd::player(this, 400.0f, 200.0f);
-    new pd::thermal_enemy(this, 200.0f, 0.0f);
+    new pd::thermal_enemy(this, 240.0f, 0.0f);
+    new pd::kinetic_enemy(this, 100.0f, 0.0f);
 }
 
 pd::game_session::~game_session()
