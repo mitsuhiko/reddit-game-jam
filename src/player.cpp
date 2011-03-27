@@ -6,13 +6,13 @@
 
 static const float max_airborne_velocity = 3.0f;
 static const float max_velocity = 6.0f;
-static const float jump_impulse = 260.0f;
-static const float movement_force = 1500.0f;
+static const float jump_impulse = 1000.0f;
+static const float movement_force = 4000.0f;
 
 
 pd::player::player(pd::game_session *session, float x, float y)
-    : pd::entity(session, x, y, 35.0f, 64.0f, -8.0f, 20.0f, 0.8f, true),
-      m_walk_anim(pd::get_resource<pd::texture>("textures/test-pirate.png"), 9, 0.1f)
+    : pd::entity(session, x, y, 60.0f, 120.0f, -20.0f, 20.0f, 0.8f, true),
+      m_thermal_idle_anim(pd::get_resource<pd::texture>("textures/character_thermal_idle.png"), 17, 0.05f)
 {
     stance(kinetic_stance);
 
@@ -43,10 +43,10 @@ void pd::player::jump()
 
 void pd::player::update(float dt)
 {
-    m_walk_anim.update(dt);
+    m_thermal_idle_anim.update(dt);
 }
 
 void pd::player::local_render(float dt) const
 {
-    m_walk_anim.render(dt);
+    m_thermal_idle_anim.render(dt);
 }
