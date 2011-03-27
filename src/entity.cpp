@@ -69,7 +69,7 @@ void pd::entity::apply_impulse(float x, float y)
 void pd::entity::render(float dt) const
 {
     pd::push_matrix();
-    pd::translate(x() - width() / 2.0f, y() + m_base_offset);
+    pd::translate(x() - width() / 2.0f, y() - height() / 2.0f + m_base_offset);
     if (m_flipped) {
         pd::scale(-1.0f, 1.0f);
         pd::translate(-width(), 0.0f);
