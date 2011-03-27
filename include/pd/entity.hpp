@@ -46,7 +46,6 @@ namespace pd {
         bool flipped() const { return m_flipped; }
         void flipped(bool val) { m_flipped = val; }
 
-        bool can_see(const pd::entity *entity, float max_distance);
         bool collides_right() const;
         bool collides_left() const;
         bool airborne() const;

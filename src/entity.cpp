@@ -24,15 +24,6 @@ pd::entity::~entity()
 {
 }
 
-bool pd::entity::can_see(const pd::entity *entity, float max_distance)
-{
-    // XXX: actual raycasts would be good
-    glm::vec2 distance = entity->pos() - pos();
-    if (glm::length(distance) > max_distance)
-        return false;
-    return pd::sign(distance.x) == (flipped() ? -1 : 1);
-}
-
 bool pd::entity::collides_left() const
 {
     const pd::map *map = session()->map();

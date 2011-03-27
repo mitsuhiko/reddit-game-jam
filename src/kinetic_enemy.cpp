@@ -32,8 +32,7 @@ void pd::kinetic_enemy::update(float dt)
         m_dashing = true;
         velocity(glm::vec2(dash_speed * (flipped() ? -1 : 1), velocity().y));
     } else {
-        if (!m_dashing && !airborne() &&
-            can_see(session()->player(), dash_activation_distance))
+        if (!m_dashing && starts_dashing())
             m_dash_countdown = dash_countdown;
 
         else if ((!flipped() && collides_right()) || (flipped() && collides_left())) {
@@ -50,12 +49,25 @@ void pd::kinetic_enemy::update(float dt)
     apply_gravity(dt);
 }
 
+bool pd::kinetic_enemy::starts_dashing() const
+{
+    if (airborne())
+        return false;
+
+    glm::vec2 distance = pos() - session()->player()->pos();
+    if (std::abs(distance.y) > 50.0f ||
+        (flipped() && distance.x < 0.0f) ||
+        (!flipped() && distance.x > 0.0f))
+        return false;
+
+    return glm::length(distance) <= dash_activation_distance;
+}
+
 void pd::kinetic_enemy::local_render(float dt) const
 {
-    if (m_dash_countdown > 0.0f)
-        m_dash_anim.render_frame(0);
-    else if (m_dashing)
-        m_dash_anim.render_frame(1);
-    else
+    if (m_dash_countdown > 0.0f || m_dashing) {
+        m_dash_anim.render_frame(m_dashing ? 1 : 0, -60.0f, 0.0f);
+    } else {
         m_walk_anim.render();
+    }
 }

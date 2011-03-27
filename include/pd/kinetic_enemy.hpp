@@ -12,6 +12,7 @@ namespace pd {
     public:
         kinetic_enemy(pd::game_session *session, float x = 0.0f, float y = 0.0f);
 
+        bool starts_dashing() const;
         void update(float dt);
         void local_render(float dt) const;
 
