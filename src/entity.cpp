@@ -35,13 +35,17 @@ pd::entity::~entity()
     m_world->DestroyBody(m_body);
 }
 
-void pd::entity::move(float dx, float dy)
+bool pd::entity::on_ground() const
 {
-    if (dx < -0.0001f)
-        m_flipped = true;
-    else if (dx > 0.0001)
-        m_flipped = false;
-    m_body->ApplyForce(b2Vec2(dx, dy), m_body->GetWorldCenter());
+    for (b2ContactEdge* ce = m_body->GetContactList(); ce; ce = ce->next) {
+        if (!ce->contact->IsTouching())
+            continue;
+        b2WorldManifold worldManifold;
+        ce->contact->GetWorldManifold(&worldManifold);
+        if (worldManifold.normal.y < 0.0f)
+            return true;
+    }
+    return false;
 }
 
 void pd::entity::render(float dt) const

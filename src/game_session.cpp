@@ -87,22 +87,10 @@ void pd::game_session::update(float dt)
     }
 
     uint8_t *state = SDL_GetKeyboardState(NULL);
-    if (state[SDL_SCANCODE_D] || state[SDL_SCANCODE_RIGHT]) {
-        m_player->move(1200.0f, 0.0f);
-    } else {
-        if (m_player->body()->GetLinearVelocity().x > 0) {
-             m_player->move(-1900.0f, 0.0f);
-        }
-    }
-    if (state[SDL_SCANCODE_A] || state[SDL_SCANCODE_LEFT]) {
-        m_player->move(-1200.0f, 0.0f);
-    } else {
-        if (m_player->body()->GetLinearVelocity().x < 0) {
-            m_player->move(1900.0f, 0.0f);
-        }
-    }
-    if (state[SDL_SCANCODE_SPACE])
-        m_player->move(0.0f, -1 * 1200.0f);
+    if (state[SDL_SCANCODE_D] || state[SDL_SCANCODE_RIGHT])
+        m_player->move_right();
+    if (state[SDL_SCANCODE_A] || state[SDL_SCANCODE_LEFT])
+        m_player->move_left();
 }
 
 void pd::game_session::handle_event(SDL_Event &evt, float dt)
@@ -113,6 +101,9 @@ void pd::game_session::handle_event(SDL_Event &evt, float dt)
             pd::game::instance().screen(pd::main_menu::instance());
             // suicide, because the main menu adds a new instance of us
             delete this;
+            break;
+        case SDLK_SPACE:
+            m_player->jump();
             break;
         case SDLK_1:
             m_player->stance(pd::player::kinetic_stance);

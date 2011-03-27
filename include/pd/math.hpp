@@ -6,6 +6,16 @@ namespace pd {
 
     static const double pi = 3.14159265358979323846;
 
+    template <class T>
+    T sign(T val)
+    {
+        if (val > 0)
+            return T(1);
+        else if (val == 0)
+            return T(0);
+        return T(-1);
+    }
+
     // Pixels to meters translation.
     template <class T>
     T pixel_to_meter(T a)

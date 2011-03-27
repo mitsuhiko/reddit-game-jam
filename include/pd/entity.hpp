@@ -31,8 +31,7 @@ namespace pd {
         void friction(float val) { m_fixture->SetFriction(val); }
         bool flipped() const { return m_flipped; }
         void flipped(bool val) { m_flipped = val; }
-
-        void move(float dx, float dy);
+        bool on_ground() const;
 
         virtual void update(float dt) = 0;
         virtual void render(float dt) const;
