@@ -85,28 +85,24 @@ void pd::player::update(float dt)
     m_flamethrower_anim.update(dt);
 
     if (m_shooting) {
-        weapon_damage_test();
+        weapon_damage_test(dt);
         m_energy = std::max(0.0f, m_energy - dt * 0.35f);
         if (m_energy == 0.0f)
             m_shooting = false;
     }
 }
 
-void pd::player::weapon_damage_test()
+void pd::player::weapon_damage_test(float dt)
 {
     if (!m_shooting)
         return;
 
     if (stance() == thermal_stance) {
-        // TODO: check if it collides with one or multiple bodies.
-        // each body has a userData which is a box2d_data_tuple
-        // perform damage to all tuple entries that are entities
-        
-        for (unsigned int i = 0; i < session()->entities().size(); i++) {
-            if (can_see(session()->entities()[i], 150.0f)) {
-                session()->remove_entity(session()->entities()[i]); 
-            }
-}
+        std::vector<pd::entity *> entities;
+        visible_entities(200.0f, entities);
+        for (std::vector<pd::entity *>::iterator iter = entities.begin();
+             iter != entities.end(); ++iter)
+            (*iter)->take_damage(500.0f * dt, pd::entity::thermal_damage);
     }
 }
 

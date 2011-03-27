@@ -130,6 +130,60 @@ bool pd::entity::can_see(const pd::entity *entity, float max_distance)
     return callback.found;
 }
 
+void pd::entity::visible_entities(float max_distance, std::vector<pd::entity *> &entities)
+{
+    b2Vec2 start(pd::pixel_to_meter(x()), pd::pixel_to_meter(y()));
+    b2Vec2 end = start;
+    end.x += pd::pixel_to_meter(flipped() ? -max_distance : max_distance);
+
+    struct callback_ : public b2RayCastCallback {
+        callback_(std::vector<pd::entity *> &entities) : entities(entities)
+        {
+        }
+
+        float ReportFixture(b2Fixture* fixture, const b2Vec2 &point,
+                            const b2Vec2 &normal, float fraction)
+        {
+            pd::box2d_data_tuple *tup = (pd::box2d_data_tuple *)fixture->GetBody()->GetUserData();
+            if (tup && tup->type == pd::box2d_data_tuple::entity_type)
+                entities.push_back((pd::entity *)tup->ptr);
+            return fraction;
+        }
+
+        std::vector<pd::entity *> &entities;
+    } callback(entities);
+
+    session()->box2d_world()->RayCast(&callback, start, end);
+}
+
+void pd::entity::entities_in_aabb(float x1, float y1, float x2, float y2,
+                                  std::vector<pd::entity *> &entities)
+{
+    b2AABB aabb;
+    aabb.lowerBound.x = x1;
+    aabb.lowerBound.y = y1;
+    aabb.upperBound.x = x2;
+    aabb.upperBound.y = y2;
+
+    struct callback_ : public b2QueryCallback {
+        callback_(std::vector<pd::entity *> &entities) : entities(entities)
+        {
+        }
+
+        bool ReportFixture(b2Fixture* fixture)
+        {
+            pd::box2d_data_tuple *tup = (pd::box2d_data_tuple *)fixture->GetBody()->GetUserData();
+            if (tup && tup->type == pd::box2d_data_tuple::entity_type)
+                entities.push_back((pd::entity *)tup->ptr);
+            return true;
+        }
+
+        std::vector<pd::entity *> &entities;
+    } callback(entities);
+
+    session()->box2d_world()->QueryAABB(&callback, aabb);
+}
+
 pd::vec2 pd::entity::linear_velocity() const
 {
     return m_body->GetLinearVelocity();

@@ -3,6 +3,8 @@
 #include <pd/pd.hpp>
 #include <pd/math.hpp>
 #include <pd/box2d_helpers.hpp>
+#include <vector>
+
 
 namespace pd {
 
@@ -60,8 +62,12 @@ namespace pd {
 
         float health() const { return m_health; }
         void health(float val) { m_health = val; }
+        bool dead() const { return m_health <= 0.0f; }
         virtual void take_damage(float val, damage_type type);
         bool can_see(const pd::entity *entity, float max_distance);
+        void visible_entities(float max_distance, std::vector<pd::entity *> &entities);
+        void entities_in_aabb(float x1, float y1, float x2, float y2,
+                              std::vector<pd::entity *> &entities);
 
         stance_type stance() const { return m_stance; }
         void stance(stance_type val) { m_stance = val; }

@@ -20,7 +20,7 @@ namespace pd {
         bool shooting() const { return m_shooting; }
         void take_damage(float val, damage_type type);
 
-        void weapon_damage_test();
+        void weapon_damage_test(float dt);
         void update(float dt);
         void local_render(float dt) const;
 
