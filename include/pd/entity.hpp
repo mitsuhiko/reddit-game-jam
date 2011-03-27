@@ -41,12 +41,15 @@ namespace pd {
         float height() const { return m_height; }
         float base_offset() const { return m_base_offset; }
         void base_offset(float val) { m_base_offset = val; }
-        b2Body * body() const { return m_body; }
+        const b2Body *body() const { return m_body; }
+        b2Body *body() { return m_body; }
         void body(b2Body * val) { m_body = val; }
         float density() const { return m_fixture->GetDensity(); }
         void density(float val) { m_fixture->SetDensity(val); }
         float friction() const { return m_fixture->GetFriction(); }
         void friction(float val) { m_fixture->SetFriction(val); }
+        bool physics_active() { return m_body->IsActive(); }
+        void physics_active(bool val) { return m_body->SetActive(val); }
         bool flipped() const { return m_flipped; }
         void flipped(bool val) { m_flipped = val; }
         bool airborne() const;

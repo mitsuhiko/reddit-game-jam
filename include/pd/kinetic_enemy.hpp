@@ -21,7 +21,6 @@ namespace pd {
         pd::animation m_dash_anim;
         bool m_dashing;
         float m_dash_countdown;
-        int m_walking_direction;
     };
 }
 
