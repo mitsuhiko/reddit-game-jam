@@ -3,6 +3,7 @@
 #include <pd/pd.hpp>
 #include <pd/math.hpp>
 #include <pd/color.hpp>
+#include <pd/box2d_helpers.hpp>
 #include <map>
 #include <vector>
 
@@ -70,6 +71,7 @@ namespace pd {
         void render() const;
 
     private:
+        pd::box2d_data_tuple m_data_tuple;
         pd::map *m_map;
         block_type m_type;
         pd::texture *m_texture;

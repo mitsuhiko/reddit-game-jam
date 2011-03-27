@@ -4,7 +4,7 @@
 #include <pd/drawtools.hpp>
 
 pd::kinetic_enemy::kinetic_enemy(pd::game_session *session, float x, float y)
-    : pd::enemy(session, x, y, 50.0f, 100.0f, 0.0f, thermal_stance),
+    : pd::enemy(session, x, y, 50.0f, 90.0f, 0.0f, thermal_stance),
     m_walk_anim(pd::get_resource<pd::texture>("textures/enemy_kinetic_walk.png"), 19, 0.035f)
 {
     m_dash_texture = pd::get_resource<pd::texture>("textures/enemy_kinetic_dash.png");

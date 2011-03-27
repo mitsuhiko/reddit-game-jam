@@ -17,6 +17,7 @@ pd::player::player(pd::game_session *session, float x, float y)
     stance(kinetic_stance);
 
     m_energy = 1.0f;
+    health(200.0f);
     m_shooting = false;
 }
 
@@ -42,6 +43,33 @@ void pd::player::jump()
 {
     if (!airborne())
         apply_impulse(0.0f, -jump_impulse);
+}
+
+void pd::player::take_damage(float val, damage_type type)
+{
+    switch (type) {
+    case pd::entity::kinetic_damage:
+        if (stance() == pd::entity::kinetic_stance) {
+            m_energy = std::min(1.0f, m_energy + val / 150.0f);
+            return;
+        }
+        break;
+    case pd::entity::electromagnetic_damage:
+        if (stance() == pd::entity::electromagnetic_stance) {
+            m_energy = std::min(1.0f, m_energy + val / 300.0f);
+            return;
+        }
+        break;
+    case pd::entity::thermal_damage:
+        if (stance() == pd::entity::thermal_stance) {
+            m_energy = std::min(1.0f, m_energy + val / 100.0f);
+            return;
+        }
+        break;
+    }
+
+    /* na, just damage like a human being */
+    pd::entity::take_damage(val, type);
 }
 
 void pd::player::update(float dt)

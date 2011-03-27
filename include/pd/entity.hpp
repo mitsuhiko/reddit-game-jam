@@ -2,6 +2,7 @@
 #define _INC_PD_ENTITY_HPP_
 #include <pd/pd.hpp>
 #include <pd/math.hpp>
+#include <pd/box2d_helpers.hpp>
 
 namespace pd {
 
@@ -15,6 +16,12 @@ namespace pd {
             thermal_stance,
             electromagnetic_stance,
             kinetic_stance
+        };
+        enum damage_type {
+            true_damage,
+            thermal_damage,
+            electromagnetic_damage,
+            kinetic_damage
         };
 
         entity(pd::game_session *session, float x = 0.0f, float y = 0.0f, float width = 0.0f,
@@ -45,6 +52,10 @@ namespace pd {
         bool airborne() const;
         pd::vec2 linear_velocity() const;
 
+        float health() const { return m_health; }
+        void health(float val) { m_health = val; }
+        virtual void take_damage(float val, damage_type type);
+
         stance_type stance() const { return m_stance; }
         void stance(stance_type val) { m_stance = val; }
 
@@ -56,6 +67,7 @@ namespace pd {
         virtual void local_render(float dt) const = 0;
 
     private:
+        pd::box2d_data_tuple m_data_tuple;
         pd::game_session *m_session;
         b2World *m_world;
         b2Body *m_body;
@@ -64,6 +76,7 @@ namespace pd {
         float m_width;
         float m_height;
         float m_base_offset;
+        float m_health;
         bool m_flipped;
     };
 }

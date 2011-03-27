@@ -18,6 +18,7 @@ namespace pd {
         void stop();
         void shooting(bool val) { m_shooting = m_energy > 0.0f && val; }
         bool shooting() const { return m_shooting; }
+        void take_damage(float val, damage_type type);
 
         void update(float dt);
         void local_render(float dt) const;
