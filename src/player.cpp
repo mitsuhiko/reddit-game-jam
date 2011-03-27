@@ -6,7 +6,7 @@
 
 static const float max_airborne_velocity = 3.0f;
 static const float max_velocity = 6.0f;
-static const float jump_impulse = 240.0f;
+static const float jump_impulse = 260.0f;
 static const float movement_force = 1500.0f;
 
 
