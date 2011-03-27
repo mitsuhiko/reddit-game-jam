@@ -24,6 +24,7 @@ namespace pd {
 
         float x() const { return pd::meter_to_pixel(m_body->GetPosition().x); }
         float y() const { return pd::meter_to_pixel(m_body->GetPosition().y); }
+        b2Vec2 position() const { return m_body->GetPosition(); }
         float rotation() const { return pd::rad_to_deg(m_body->GetAngle()); }
         void rotation(float angle) { m_body->SetTransform(m_body->GetPosition(), pd::deg_to_rad(angle)); }
         bool locked_rotation() const { return m_body->IsFixedRotation(); }

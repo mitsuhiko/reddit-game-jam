@@ -15,8 +15,11 @@ void pd::thermal_enemy::update(float dt)
 
     // Quick and dirty AI.
     if (!airborne()) {
-        apply_impulse(0.0f, -200.0f);
+        apply_impulse(0.0f, -220.0f);
     }
+    b2Vec2 force = player()->position() - position();
+    force *= 80.0f;
+    body()->ApplyForce(force, body()->GetWorldCenter());
 }
 
 void pd::thermal_enemy::local_render(float dt) const
