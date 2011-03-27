@@ -46,6 +46,7 @@ set(GAME_HEADERS
 	include/pd/resource_manager.hpp
 	include/pd/animation.hpp
 	include/pd/camera.hpp
+	include/pd/box2d_helpers.hpp
 
 	include/pd/screen.hpp
 	include/pd/main_menu.hpp

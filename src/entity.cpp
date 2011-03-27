@@ -7,6 +7,7 @@
 pd::entity::entity(pd::game_session *session, float x, float y, float width,
                    float height, float base_offset, float density,
                    float friction, bool locked_rotation)
+                   : m_data_tuple(pd::box2d_data_tuple::entity_type, this)
 {
     m_session = session;
     m_world = session->box2d_world();
@@ -15,12 +16,14 @@ pd::entity::entity(pd::game_session *session, float x, float y, float width,
     m_height = height;
     m_base_offset = base_offset;
     m_stance = neutral_stance;
+    m_health = 100.0f;
     session->add_entity(this);
 
     b2BodyDef bodydef;
     bodydef.type = b2_dynamicBody;
     bodydef.position.Set(pd::pixel_to_meter(x), pd::pixel_to_meter(y));
     bodydef.fixedRotation = locked_rotation;
+    bodydef.userData = &m_data_tuple;
     m_body = m_world->CreateBody(&bodydef);
 
     b2FixtureDef fixturedef;
@@ -82,6 +85,11 @@ void pd::entity::apply_force(float x, float y)
 void pd::entity::apply_impulse(float x, float y)
 {
     m_body->ApplyLinearImpulse(b2Vec2(x, y), m_body->GetWorldCenter());
+}
+
+void pd::entity::take_damage(float val, pd::entity::damage_type type)
+{
+    m_health = std::max(0.0f, m_health - val);
 }
 
 void pd::entity::render(float dt) const

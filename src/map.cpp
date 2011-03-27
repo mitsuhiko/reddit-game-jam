@@ -157,6 +157,7 @@ void pd::map::create_ground_box(int x, int y, int length)
 
 
 pd::block::block(pd::map *map, pd::texture *texture, block_type type, float x, float y)
+    : m_data_tuple(pd::box2d_data_tuple::block_type, this)
 {
     m_map = map;
     m_texture = texture;
