@@ -30,14 +30,19 @@ namespace pd {
         void render(float dt) const;
 
         void render_gui(float dt) const;
+        void update_cam(float dt);
 
         b2World *box2d_world() { return m_world; }
 
     private:
+
 		pd::map *m_map;
         pd::player *m_player;
         b2World *m_world;
         std::vector<pd::entity *> m_entities;
+
+        float m_cam_x;
+        float m_cam_y;
 
         pd::game_power_bar *m_kinetic_energy_bar;
         pd::game_power_bar *m_electromagnetic_energy_bar;
