@@ -28,14 +28,14 @@ void pd::kinetic_enemy::update(float dt)
         apply_impulse(500.0f, 0.0f);
         m_dashing = false;
     }
-
-    if (can_see(session()->player(), 200.0f)) {
-        m_dashing = true;
-        apply_impulse(2000.0f, 0.0f);
-    }
    
     apply_force((m_dashing ? 4000.0f : 1200.0f) * m_walking_direction, 0.0f);
     flipped(linear_velocity().x < 0.0f);
+
+    if (can_see(session()->player(), 300.0f)) {
+        m_dashing = true;
+        apply_impulse(4000.0f, 0.0f);
+    }
 }
 
 void pd::kinetic_enemy::local_render(float dt) const
