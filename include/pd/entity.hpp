@@ -31,7 +31,11 @@ namespace pd {
         void friction(float val) { m_fixture->SetFriction(val); }
         bool flipped() const { return m_flipped; }
         void flipped(bool val) { m_flipped = val; }
-        bool on_ground() const;
+        bool airborne() const;
+        pd::vec2 linear_velocity() const;
+
+        void apply_force(float x, float y);
+        void apply_impulse(float x, float y);
 
         virtual void update(float dt) = 0;
         virtual void render(float dt) const;

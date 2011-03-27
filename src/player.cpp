@@ -24,26 +24,23 @@ pd::player::player(pd::game_session *session, float x, float y)
 void pd::player::move_left()
 {
     flipped(true);
-    const b2Vec2 &vec = body()->GetLinearVelocity();
-    if (vec.x < -(on_ground() ? max_velocity : max_airborne_velocity))
-        return;
-    body()->ApplyForce(b2Vec2(-movement_force, 0.0f), body()->GetWorldCenter());
+    pd::vec2 vec = linear_velocity();
+    if (vec.x > -(airborne() ? max_airborne_velocity : max_velocity))
+         apply_force(-movement_force, 0.0f);
 }
 
 void pd::player::move_right()
 {
     flipped(false);
-    const b2Vec2 &vec = body()->GetLinearVelocity();
-    if (vec.x > (on_ground() ? max_velocity : max_airborne_velocity))
-        return;
-    body()->ApplyForce(b2Vec2(movement_force, 0.0f), body()->GetWorldCenter());
+    pd::vec2 vec = linear_velocity();
+    if (vec.x < (airborne() ? max_airborne_velocity : max_velocity))
+        apply_force(movement_force, 0.0f);
 }
 
 void pd::player::jump()
 {
-    if (!on_ground())
-        return;
-    body()->ApplyLinearImpulse(b2Vec2(0.0f, -jump_impulse), body()->GetWorldCenter());
+    if (!airborne())
+        apply_impulse(0.0f, -jump_impulse);
 }
 
 void pd::player::update(float dt)

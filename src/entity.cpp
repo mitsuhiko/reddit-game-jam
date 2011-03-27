@@ -35,7 +35,7 @@ pd::entity::~entity()
     m_world->DestroyBody(m_body);
 }
 
-bool pd::entity::on_ground() const
+bool pd::entity::airborne() const
 {
     for (b2ContactEdge* ce = m_body->GetContactList(); ce; ce = ce->next) {
         if (!ce->contact->IsTouching())
@@ -43,9 +43,24 @@ bool pd::entity::on_ground() const
         b2WorldManifold worldManifold;
         ce->contact->GetWorldManifold(&worldManifold);
         if (worldManifold.normal.y < 0.0f)
-            return true;
+            return false;
     }
-    return false;
+    return true;
+}
+
+pd::vec2 pd::entity::linear_velocity() const
+{
+    return m_body->GetLinearVelocity();
+}
+
+void pd::entity::apply_force(float x, float y)
+{
+    m_body->ApplyForce(b2Vec2(x, y), m_body->GetWorldCenter());
+}
+
+void pd::entity::apply_impulse(float x, float y)
+{
+    m_body->ApplyLinearImpulse(b2Vec2(x, y), m_body->GetWorldCenter());
 }
 
 void pd::entity::render(float dt) const
