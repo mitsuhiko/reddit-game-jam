@@ -50,7 +50,7 @@ pd::game_session::game_session()
 
     pd::texture *interface_texture = pd::get_resource<pd::texture>("textures/interface.png");
     m_kinetic_energy_bar = new pd::game_power_bar(interface_texture,
-        3, 5, 216, 41, 222, 11, 395, 34, 30, 8);
+        3, 5, 216, 41, 222, 11, 395, 32, 30, 8);
     m_electromagnetic_energy_bar = new pd::game_power_bar(interface_texture,
         3, 46, 216, 83, 222, 53, 395, 74, 30, 8);
     m_thermal_energy_bar = new pd::game_power_bar(interface_texture,
