@@ -163,9 +163,10 @@ pd::block::block(pd::map *map, pd::texture *texture, block_type type, float x, f
     m_type = type;
 
     b2BodyDef bodydef;
-    bodydef.type = b2_dynamicBody;
-    bodydef.position.Set(pd::pixel_to_meter(x), pd::pixel_to_meter(y));
-    bodydef.fixedRotation = false;
+    bodydef.type = b2_staticBody;
+    bodydef.position.Set(pd::pixel_to_meter(x + map->tile_width() / 2.0f),
+                         pd::pixel_to_meter(y + map->tile_height() / 2.0f));
+    bodydef.fixedRotation = true;
     b2Body *body = map->session()->box2d_world()->CreateBody(&bodydef);
     b2FixtureDef fixturedef;
     b2PolygonShape fixedbox;
@@ -185,10 +186,8 @@ pd::block::~block()
 
 void pd::block::render() const
 {
-    // XXX: why width/2 but not height/2?  What is wrong with our
-    // coordinate system :)
     pd::push_matrix();
-    pd::translate(x() - m_map->tile_width() / 2.0f, y());
+    pd::translate(x() - m_map->tile_width() / 2.0f, y() - m_map->tile_height() / 2.0f);
     pd::rotate_around_point(rotation(), m_map->tile_width() / 2.0f,
                             m_map->tile_height() / 2.0f);
     pd::draw_textured_quad(m_texture);
