@@ -24,6 +24,10 @@ def relative_resource_path(path):
     pos = path.find(marker)
     if pos >= 0:
         return path[pos + len(marker):]
+    marker = '/Output tiles/'
+    pos = path.find(marker)
+    if pos >= 0:
+        return 'textures/' + path[pos + len(marker):]
     return path
 
 

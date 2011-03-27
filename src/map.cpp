@@ -105,7 +105,7 @@ pd::map::~map()
 
 pd::block *pd::map::try_make_block(tile_id_t tile, int x, int y)
 {
-    /* TODO: detect block and create one */
+    /* TODO: detect block and create one. 129 is the first block, 133 the last */
     return 0;
 }
 

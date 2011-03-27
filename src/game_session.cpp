@@ -60,7 +60,7 @@ pd::game_session::game_session()
 
     // create test environment
     m_world = new b2World(b2Vec2(0, 9.79f), true);
-	m_map = new pd::map(this, "maps/demo.map");
+	m_map = new pd::map(this, "maps/testlevel.map");
 
     m_player = new pd::player(this, 400.0f, 200.0f);
     new pd::thermal_enemy(this, 200.0f, 0.0f);
