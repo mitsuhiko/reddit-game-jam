@@ -10,7 +10,7 @@ static const float jump_impulse = 1250.0f;
 static const float movement_force = 4000.0f;
 
 pd::player::player(pd::game_session *session, float x, float y)
-    : pd::entity(session, x, y, 60.0f, 120.0f, -20.0f, 20.0f, 0.0f, true),
+    : pd::entity(session, x, y, 60.0f, 120.0f, -30.0f, 20.0f, 0.0f, true),
       m_thermal_idle_anim(pd::get_resource<pd::texture>("textures/character_thermal_idle.png"), 17, 0.05f)
 {
     stance(kinetic_stance);

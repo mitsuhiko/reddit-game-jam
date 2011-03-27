@@ -4,6 +4,7 @@
 #include <pd/math.hpp>
 #include <pd/color.hpp>
 #include <map>
+#include <vector>
 
 namespace pd {
 
@@ -21,17 +22,17 @@ namespace pd {
             glass_type
         };
 
-        block(pd::map *map, block_type type)
-        {
-            m_map = map;
-            m_type = type;
-        }
-
+        block(pd::map *map, block_type type, float x, float y);
+        ~block();
         block_type type() const { return m_type; }
+        float x() const { return pd::meter_to_pixel(m_body->GetPosition().x); }
+        float y() const { return pd::meter_to_pixel(m_body->GetPosition().y); }
 
     private:
         pd::map *m_map;
         block_type m_type;
+        b2Body *m_body;
+        b2Fixture *m_fixture;
     };
 
     class map {
@@ -51,10 +52,13 @@ namespace pd {
 
         tile_id_t get_bg(int x, int y) const { return m_background[(y * m_width) + x]; }
         tile_id_t get_fg(int x, int y) const { return m_foreground[(y * m_width) + x]; }
+        pd::game_session *session() { return m_session; }
+        const pd::game_session *session() const { return m_session; }
 
     private:
         void draw_tile(int x, int y, tile_id_t tile) const;
         void create_ground_box(int x, int y, int length);
+        pd::block *try_make_block(tile_id_t tile, int x, int y);
         
 	    int m_width;
 	    int m_height;
@@ -66,6 +70,7 @@ namespace pd {
         pd::game_session *m_session;
         pd::color m_background_color;
         std::map<tile_id_t, pd::texture *> m_tiles;
+        std::vector<block *> m_blocks;
     };
 }
 #endif
