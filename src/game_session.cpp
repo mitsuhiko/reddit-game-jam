@@ -81,9 +81,14 @@ pd::game_session::~game_session()
 void pd::game_session::update(float dt)
 {
     m_world->Step(dt, 10, 10);
+
+    std::vector<pd::entity *> dead_entities;
     for (std::vector<pd::entity *>::iterator iter = m_entities.begin();
          iter != m_entities.end(); ++iter) {
-        (*iter)->update(dt);
+        if ((*iter)->dead())
+            dead_entities.push_back(*iter);
+        else
+            (*iter)->update(dt);
     }
 
     uint8_t *state = SDL_GetKeyboardState(NULL);
@@ -97,6 +102,10 @@ void pd::game_session::update(float dt)
     m_player->shooting(state[SDL_SCANCODE_LSHIFT] != 0);
 
     m_cam->look_at(m_player->x(), m_player->y(), dt);
+
+    for (std::vector<pd::entity *>::iterator iter = dead_entities.begin();
+         iter != dead_entities.end(); ++iter)
+        remove_entity(*iter);
 }
 
 void pd::game_session::handle_event(SDL_Event &evt, float dt)
