@@ -72,6 +72,35 @@ bool pd::entity::airborne() const
     return true;
 }
 
+bool pd::entity::colliding_right() const
+{
+    for (b2ContactEdge* ce = m_body->GetContactList(); ce; ce = ce->next) {
+        if (!ce->contact->IsTouching())
+            continue;
+        b2WorldManifold worldManifold;
+        ce->contact->GetWorldManifold(&worldManifold);
+        if (worldManifold.normal.x > 0.0f)
+            return false;
+    }
+    return false;
+}
+
+
+bool pd::entity::colliding_left() const
+{
+    for (b2ContactEdge* ce = m_body->GetContactList(); ce; ce = ce->next) {
+        if (!ce->contact->IsTouching())
+            continue;
+        b2WorldManifold worldManifold;
+        ce->contact->GetWorldManifold(&worldManifold);
+        if (worldManifold.normal.x > 0.0f)
+            return false;
+    }
+    return false;
+
+}
+
+
 pd::vec2 pd::entity::linear_velocity() const
 {
     return m_body->GetLinearVelocity();

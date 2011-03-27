@@ -17,12 +17,13 @@ void pd::kinetic_enemy::update(float dt)
     m_walk_anim.update(dt);
 
     // More clever than Skynet!
-    if (body()->GetLinearVelocity().x < 0.1f && body()->GetLinearVelocity().x > - 0.1f) {
+    if (body()->GetLinearVelocity().x < 0.01f && body()->GetLinearVelocity().x > - 0.01f) {
         m_walking_direction *= -1;
         m_dashing = 0;
         apply_impulse(600.0f * m_walking_direction, 0.0f);
     }
-    
+    if (colliding_right())
+        printf("OMG");
     
     /* else {
         apply_force(700.0f * m_walking_direction, 0.0f);
@@ -33,7 +34,9 @@ void pd::kinetic_enemy::update(float dt)
         }
     }
     */
-    apply_force(800.0f * m_walking_direction, 0.0f);
+    apply_force(1000.0f * m_walking_direction, 0.0f);
+
+    flipped(linear_velocity().x < 0.0f);
 }
 
 void pd::kinetic_enemy::local_render(float dt) const
