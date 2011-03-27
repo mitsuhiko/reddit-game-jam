@@ -4,7 +4,7 @@
 
 
 pd::thermal_enemy::thermal_enemy(pd::game_session *session, float x, float y)
-    : pd::enemy(session, x, y, 36.0f, 40.0f, 20.0f, thermal_stance),
+    : pd::enemy(session, x, y, 36.0f, 40.0f, 0.0f, thermal_stance),
     m_walk_anim(pd::get_resource<pd::texture>("textures/test-enemy.png"), 4, 0.2f)
 {
 }
