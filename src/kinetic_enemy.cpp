@@ -21,7 +21,6 @@ void pd::kinetic_enemy::update(float dt)
         if ((m_dash_countdown -= dt) >= 0.0f)
             return;
         m_dashing = true;
-        physics_active(true);
         apply_impulse(4000.0f, 0.0f);
     }
 
@@ -43,7 +42,7 @@ void pd::kinetic_enemy::update(float dt)
 
     if (!m_dashing && can_see(session()->player(), 300.0f)) {
         m_dash_countdown = 0.22f;
-        physics_active(false);
+        linear_velocity(pd::vec2(0.0f, 0.0f));
     }
 }
 

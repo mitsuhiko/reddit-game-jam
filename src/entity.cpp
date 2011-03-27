@@ -135,6 +135,11 @@ pd::vec2 pd::entity::linear_velocity() const
     return m_body->GetLinearVelocity();
 }
 
+void pd::entity::linear_velocity(const pd::vec2 &vec)
+{
+    m_body->SetLinearVelocity(vec);
+}
+
 void pd::entity::apply_force(float x, float y)
 {
     m_body->ApplyForce(b2Vec2(x, y), m_body->GetWorldCenter());

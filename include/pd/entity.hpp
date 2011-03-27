@@ -56,6 +56,7 @@ namespace pd {
         bool colliding_right() const;
         bool colliding_left() const;
         pd::vec2 linear_velocity() const;
+        void linear_velocity(const pd::vec2 &vec);
 
         float health() const { return m_health; }
         void health(float val) { m_health = val; }
