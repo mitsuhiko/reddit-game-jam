@@ -22,10 +22,12 @@ pd::player::player(pd::game_session *session, float x, float y)
     m_energy = 1.0f;
     health(200.0f);
     m_shooting = false;
+    m_stoped = true;
 }
 
 void pd::player::move_left()
 {
+    m_stoped = false;
     m_ticks_until_stop = SDL_GetTicks();
     flipped(true);
     pd::vec2 vec = linear_velocity();
@@ -35,6 +37,7 @@ void pd::player::move_left()
 
 void pd::player::move_right()
 {
+    m_stoped = false;
     m_ticks_until_stop = SDL_GetTicks();
     flipped(false);
     pd::vec2 vec = linear_velocity();
@@ -116,6 +119,8 @@ void pd::player::local_render(float dt) const
 
 void pd::player::stop()
 {
-    if (((SDL_GetTicks() - m_ticks_until_stop) > 100) && !airborne())
+    if (((SDL_GetTicks() - m_ticks_until_stop) > 100) && !airborne() && !m_stoped) {
         body()->SetLinearVelocity(b2Vec2(0.0f, body()->GetLinearVelocity().y));
+        m_stoped = true;
+    }
 }

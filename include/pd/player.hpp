@@ -30,6 +30,7 @@ namespace pd {
         float m_energy;
         bool m_shooting;
         int m_ticks_until_stop;
+        bool m_stoped;
     };
 }
 
