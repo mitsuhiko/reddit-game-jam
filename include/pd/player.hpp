@@ -16,13 +16,17 @@ namespace pd {
         void move_right();
         void jump();
         void stop();
+        void shooting(bool val) { m_shooting = m_energy > 0.0f && val; }
+        bool shooting() const { return m_shooting; }
 
         void update(float dt);
         void local_render(float dt) const;
 
     private:
         pd::animation m_thermal_idle_anim;
+        pd::animation m_flamethrower_anim;
         float m_energy;
+        bool m_shooting;
         int m_ticks_until_stop;
     };
 }

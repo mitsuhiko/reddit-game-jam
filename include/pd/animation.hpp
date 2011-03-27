@@ -10,7 +10,8 @@ namespace pd {
     public:
         animation(pd::texture *texture, int frames, float anim_speed);
         void update(float dt);
-        void render(float dt) const;
+        void render(float x = 0.0f, float y = 0.0f) const;
+        void render_frame(int frame, float x = 0.0f, float y = 0.0f) const;
 
         int current_frame() const { return m_current_frame; }
         int frames() const { return m_frames; }
