@@ -62,6 +62,9 @@ namespace pd {
         void apply_force(float x, float y);
         void apply_impulse(float x, float y);
 
+        pd::game_session *session() { return m_session; }
+        const pd::game_session *session() const { return m_session; }
+
         virtual void update(float dt) = 0;  
         virtual void render(float dt) const;
         virtual void local_render(float dt) const = 0;

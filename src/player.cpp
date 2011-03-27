@@ -2,6 +2,7 @@
 #include <pd/texture.hpp>
 #include <pd/drawtools.hpp>
 #include <pd/game.hpp>
+#include <pd/game_session.hpp>
 
 
 static const float max_airborne_velocity = 3.0f;
@@ -79,9 +80,24 @@ void pd::player::update(float dt)
     m_flamethrower_anim.update(dt);
 
     if (m_shooting) {
+        weapon_damage_test();
         m_energy = std::max(0.0f, m_energy - dt * 0.35f);
         if (m_energy == 0.0f)
             m_shooting = false;
+    }
+}
+
+void pd::player::weapon_damage_test()
+{
+    if (!m_shooting)
+        return;
+
+    if (stance() == thermal_stance) {
+        b2PolygonShape polygon;
+        polygon.SetAsBox(100.0f, 40.0f);
+        // TODO: check if it collides with one or multiple bodies.
+        // each body has a userData which is a box2d_data_tuple
+        // perform damage to all tuple entries that are entities
     }
 }
 
