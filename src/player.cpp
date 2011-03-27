@@ -16,9 +16,7 @@ pd::player::player(pd::game_session *session, float x, float y)
 {
     m_stance = kinetic_stance;
 
-    m_thermal_energy = 1.0f;
-    m_electromagnetic_energy = 1.0f;
-    m_kinetic_energy = 1.0f;
+    m_energy = 1.0f;
 }
 
 void pd::player::move_left()

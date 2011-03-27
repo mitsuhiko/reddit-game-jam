@@ -55,13 +55,6 @@ pd::game_session::game_session()
     m_thermal_energy_bar = new pd::game_power_bar(interface_texture,
         5, 89, 216, 127, 222, 97, 395, 118, 30, 8);
 
-    m_small_kinetic_energy_bar = new pd::game_power_bar(interface_texture,
-        437, 13, 543, 31, 559, 13, 646, 23, 15, 5);
-    m_small_electromagnetic_energy_bar = new pd::game_power_bar(interface_texture,
-        437, 39, 543, 57, 559, 41, 646, 51, 15, 5);
-    m_small_thermal_energy_bar = new pd::game_power_bar(interface_texture,
-        437, 67, 543, 86, 559, 68, 646, 78, 15, 5);
-
     m_cam = new pd::camera();
 
     // create test environment
@@ -141,24 +134,22 @@ void pd::game_session::render(float dt) const
 
 void pd::game_session::render_gui(float dt) const
 {
-    float bary = 10.0f;
+    pd::game_power_bar *bar;
+    switch (m_player->stance()) {
+    case pd::player::kinetic_stance:
+        bar = m_kinetic_energy_bar;
+        break;
+    case pd::player::electromagnetic_stance:
+        bar = m_electromagnetic_energy_bar;
+        break;
+    case pd::player::thermal_stance:
+        bar = m_thermal_energy_bar;
+        break;
+    default:
+        assert(false);
+    }
 
-    #define DRAW_BAR(Name) do { \
-        pd::game_power_bar *bar; \
-        float xoff = 0.0f; \
-        if (m_player->stance() == pd::player::Name##_stance) \
-            bar = m_##Name##_energy_bar; \
-        else { \
-            bar = m_small_##Name##_energy_bar; \
-            xoff = 20.0f; \
-        } \
-        bar->render(xoff + 10.0f, bary, m_player->Name##_energy()); \
-        bary += bar->height() + 6.0f; \
-    } while (0)
-
-    DRAW_BAR(kinetic);
-    DRAW_BAR(electromagnetic);
-    DRAW_BAR(thermal);
+    bar->render(10.0f, 10.0f, m_player->energy());
 }
 
 void pd::game_session::add_entity(pd::entity *entity)

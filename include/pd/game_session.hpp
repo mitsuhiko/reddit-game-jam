@@ -46,9 +46,6 @@ namespace pd {
         pd::game_power_bar *m_kinetic_energy_bar;
         pd::game_power_bar *m_electromagnetic_energy_bar;
         pd::game_power_bar *m_thermal_energy_bar;
-        pd::game_power_bar *m_small_kinetic_energy_bar;
-        pd::game_power_bar *m_small_electromagnetic_energy_bar;
-        pd::game_power_bar *m_small_thermal_energy_bar;
     };
 }
 

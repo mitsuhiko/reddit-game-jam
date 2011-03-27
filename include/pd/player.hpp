@@ -21,9 +21,7 @@ namespace pd {
         player(pd::game_session *session, float x = 0.0f, float y = 0.0f);
         stance_type stance() const { return m_stance; }
         void stance(stance_type val) { m_stance = val; }
-        float thermal_energy() const { return m_thermal_energy; }
-        float electromagnetic_energy() const { return m_electromagnetic_energy; }
-        float kinetic_energy() const { return m_kinetic_energy; }
+        float energy() const { return m_energy; }
         void move_left();
         void move_right();
         void jump();
@@ -34,9 +32,7 @@ namespace pd {
     private:
         stance_type m_stance;
         pd::animation m_walk_anim;
-        float m_thermal_energy;
-        float m_electromagnetic_energy;
-        float m_kinetic_energy;
+        float m_energy;
     };
 }
 
