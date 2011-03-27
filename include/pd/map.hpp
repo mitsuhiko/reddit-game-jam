@@ -8,32 +8,9 @@
 
 namespace pd {
 
-    class map;
+    class block;
     class texture;
     class game_session;
-
-    class block {
-    public:
-        enum block_type {
-            metal_type,
-            lava_type,
-            ice_type,
-            water_type,
-            glass_type
-        };
-
-        block(pd::map *map, block_type type, float x, float y);
-        ~block();
-        block_type type() const { return m_type; }
-        float x() const { return pd::meter_to_pixel(m_body->GetPosition().x); }
-        float y() const { return pd::meter_to_pixel(m_body->GetPosition().y); }
-
-    private:
-        pd::map *m_map;
-        block_type m_type;
-        b2Body *m_body;
-        b2Fixture *m_fixture;
-    };
 
     class map {
     public:
@@ -71,6 +48,33 @@ namespace pd {
         pd::color m_background_color;
         std::map<tile_id_t, pd::texture *> m_tiles;
         std::vector<block *> m_blocks;
+    };
+
+    class block {
+    public:
+        enum block_type {
+            metal_type,
+            lava_type,
+            ice_type,
+            water_type,
+            glass_type
+        };
+
+        block(pd::map *map, pd::texture *texture, block_type type, float x, float y);
+        ~block();
+        block_type type() const { return m_type; }
+        float x() const { return pd::meter_to_pixel(m_body->GetPosition().x); }
+        float y() const { return pd::meter_to_pixel(m_body->GetPosition().y); }
+        float rotation() const { return pd::rad_to_deg(m_body->GetAngle()); }
+        const pd::texture *texture() const { return m_texture; }
+        void render() const;
+
+    private:
+        pd::map *m_map;
+        block_type m_type;
+        pd::texture *m_texture;
+        b2Body *m_body;
+        b2Fixture *m_fixture;
     };
 }
 #endif

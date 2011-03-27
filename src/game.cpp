@@ -27,13 +27,14 @@ pd::game::game()
     SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
     SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
     SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS, 1);
-    SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, 8);
+    SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, 4);
     SDL_GLContext ctx = SDL_GL_CreateContext(win);
 
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
     glOrtho(0.0f, 800.0f, 450.0f, 0.0f, 0.0f, 1000.0f);
 
+    glEnable(GL_MULTISAMPLE);
     glEnable(GL_TEXTURE_2D);
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);

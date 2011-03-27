@@ -13,6 +13,10 @@ namespace pd {
     void set_color(pd::color color);
     void draw_textured_quad(float x, float y, float width, float height, const pd::texture *texture);
     void draw_textured_quad(float x, float y, const pd::texture *texture);
+    inline void draw_textured_quad(const pd::texture *texture)
+    {
+        draw_textured_quad(0.0f, 0.0f, texture);
+    }
     void draw_text(const std::string &text, float x, float y, const pd::font *font);
 
     /* alternative names for opengl methods and some other thin
