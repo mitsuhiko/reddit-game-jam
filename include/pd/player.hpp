@@ -21,7 +21,7 @@ namespace pd {
         void local_render(float dt) const;
 
     private:
-        pd::animation m_walk_anim;
+        pd::animation m_thermal_idle_anim;
         float m_energy;
         int m_ticks_until_stop;
     };

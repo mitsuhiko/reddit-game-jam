@@ -7,8 +7,32 @@
 
 namespace pd {
 
+    class map;
     class texture;
     class game_session;
+
+    class block {
+    public:
+        enum block_type {
+            metal_type,
+            lava_type,
+            ice_type,
+            water_type,
+            glass_type
+        };
+
+        block(pd::map *map, block_type type)
+        {
+            m_map = map;
+            m_type = type;
+        }
+
+        block_type type() const { return m_type; }
+
+    private:
+        pd::map *m_map;
+        block_type m_type;
+    };
 
     class map {
     public:
