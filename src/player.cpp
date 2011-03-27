@@ -3,6 +3,8 @@
 #include <pd/drawtools.hpp>
 #include <pd/game.hpp>
 #include <pd/game_session.hpp>
+#include <pd/entity.hpp>
+#include <vector>
 
 
 static const float max_airborne_velocity = 3.0f;
@@ -93,11 +95,15 @@ void pd::player::weapon_damage_test()
         return;
 
     if (stance() == thermal_stance) {
-        b2PolygonShape polygon;
-        polygon.SetAsBox(100.0f, 40.0f);
         // TODO: check if it collides with one or multiple bodies.
         // each body has a userData which is a box2d_data_tuple
         // perform damage to all tuple entries that are entities
+        
+        for (unsigned int i = 0; i < session()->entities().size(); i++) {
+            if (can_see(session()->entities()[i], 150.0f)) {
+                session()->remove_entity(session()->entities()[i]); 
+            }
+}
     }
 }
 
