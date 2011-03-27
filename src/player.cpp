@@ -3,6 +3,12 @@
 #include <pd/drawtools.hpp>
 #include <pd/game.hpp>
 
+
+static const float max_velocity = 6.0f;
+static const float jump_impulse = 300.0f;
+static const float movement_force = 1700.0f;
+
+
 pd::player::player(pd::game_session *session, float x, float y)
     : pd::entity(session, x, y, 30.0f, 60.0f, 20.0f, 0.8f, true),
       m_walk_anim(pd::get_resource<pd::texture>("textures/test-pirate.png"), 9, 0.1f)
@@ -18,25 +24,25 @@ void pd::player::move_left()
 {
     flipped(true);
     const b2Vec2 &vec = body()->GetLinearVelocity();
-    if (vec.x < -4.0f)
+    if (vec.x < -max_velocity)
         return;
-    body()->ApplyForce(b2Vec2(-1000.0f, 0.0f), body()->GetWorldCenter());
+    body()->ApplyForce(b2Vec2(-movement_force, 0.0f), body()->GetWorldCenter());
 }
 
 void pd::player::move_right()
 {
     flipped(false);
     const b2Vec2 &vec = body()->GetLinearVelocity();
-    if (vec.x > 4.0f)
+    if (vec.x > max_velocity)
         return;
-    body()->ApplyForce(b2Vec2(1000.0f, 0.0f), body()->GetWorldCenter());
+    body()->ApplyForce(b2Vec2(movement_force, 0.0f), body()->GetWorldCenter());
 }
 
 void pd::player::jump()
 {
     if (!on_ground())
         return;
-    body()->ApplyLinearImpulse(b2Vec2(0.0f, -400.0f), body()->GetWorldCenter());
+    body()->ApplyLinearImpulse(b2Vec2(0.0f, -jump_impulse), body()->GetWorldCenter());
 }
 
 void pd::player::update(float dt)
