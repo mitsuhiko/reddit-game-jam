@@ -8,6 +8,32 @@
 #include <fstream>
 
 
+pd::block::block(pd::map *map, block_type type, float x, float y)
+{
+    m_map = map;
+    m_type = type;
+
+    b2BodyDef bodydef;
+    bodydef.type = b2_dynamicBody;
+    bodydef.position.Set(pd::pixel_to_meter(x), pd::pixel_to_meter(y));
+    b2Body *body = map->session()->box2d_world()->CreateBody(&bodydef);
+    b2FixtureDef fixturedef;
+    b2PolygonShape fixedbox;
+    fixedbox.SetAsBox(pd::pixel_to_meter(map->tile_width() / 2.0f),
+                      pd::pixel_to_meter(map->tile_height() / 2.0f));
+    fixturedef.shape = &fixedbox;
+    fixturedef.density = 0;
+    fixturedef.friction = 1.5f;
+    m_fixture = body->CreateFixture(&fixturedef);
+    m_body = body;
+}
+
+pd::block::~block()
+{
+    m_map->session()->box2d_world()->DestroyBody(m_body);
+}
+
+
 pd::map::map(pd::game_session *session, std::string filename)
 {
     m_session = session;
@@ -50,6 +76,11 @@ pd::map::map(pd::game_session *session, std::string filename)
         int row_start = -1;
         for (int x = 0; x < m_width; x++) {
             tile_id_t tile = get_fg(x, y);
+            pd::block *block = try_make_block(tile, x, y);
+            if (block) {
+                m_foreground[(y * m_width) + x] = tile = 0;
+                m_blocks.push_back(block);
+            }
             if (row_start < 0) {
                 if (tile)
                     row_start = x;
@@ -70,6 +101,12 @@ pd::map::~map()
 {
     delete[] m_background;
     delete[] m_foreground;
+}
+
+pd::block *pd::map::try_make_block(tile_id_t tile, int x, int y)
+{
+    /* TODO: detect block and create one */
+    return 0;
 }
 
 void pd::map::draw_tile(int x, int y, pd::map::tile_id_t tile) const
