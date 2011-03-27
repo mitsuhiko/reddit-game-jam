@@ -12,6 +12,8 @@ set(GAME_SOURCES
 	src/color.cpp
 	src/entity.cpp
 	src/player.cpp
+	src/enemy.cpp
+	src/thermal_enemy.cpp
     src/font.cpp
 	src/map.cpp
     src/resource_manager.cpp
@@ -33,6 +35,8 @@ set(GAME_HEADERS
 	include/pd/color.hpp
 	include/pd/entity.hpp
 	include/pd/player.hpp
+	include/pd/enemy.hpp
+	include/pd/thermal_enemy.hpp
     include/pd/font.hpp
 	include/pd/lexical_cast.hpp
 	include/pd/map.hpp

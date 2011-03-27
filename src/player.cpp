@@ -11,10 +11,10 @@ static const float movement_force = 1500.0f;
 
 
 pd::player::player(pd::game_session *session, float x, float y)
-    : pd::entity(session, x, y, 30.0f, 60.0f, 20.0f, 0.8f, true),
+    : pd::entity(session, x, y, 35.0f, 64.0f, -8.0f, 20.0f, 0.8f, true),
       m_walk_anim(pd::get_resource<pd::texture>("textures/test-pirate.png"), 9, 0.1f)
 {
-    m_stance = kinetic_stance;
+    stance(kinetic_stance);
 
     m_energy = 1.0f;
 }

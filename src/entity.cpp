@@ -5,13 +5,16 @@
 #include <pd/game_session.hpp>
 
 pd::entity::entity(pd::game_session *session, float x, float y, float width,
-                   float height, float density, float friction, bool locked_rotation)
+                   float height, float base_offset, float density,
+                   float friction, bool locked_rotation)
 {
     m_session = session;
     m_world = session->box2d_world();
     m_flipped = false;
     m_width = width;
     m_height = height;
+    m_base_offset = base_offset;
+    m_stance = neutral_stance;
     session->add_entity(this);
 
     b2BodyDef bodydef;
@@ -22,8 +25,8 @@ pd::entity::entity(pd::game_session *session, float x, float y, float width,
 
     b2FixtureDef fixturedef;
     b2PolygonShape dynamicbox;
-    dynamicbox.SetAsBox(pd::pixel_to_meter(width / 2),
-                        pd::pixel_to_meter(height / 2));
+    dynamicbox.SetAsBox(pd::pixel_to_meter(width / 2.0f),
+                        pd::pixel_to_meter(height / 2.0f));
     fixturedef.shape = &dynamicbox;
     fixturedef.density = density;
     fixturedef.friction = friction;
@@ -66,7 +69,7 @@ void pd::entity::apply_impulse(float x, float y)
 void pd::entity::render(float dt) const
 {
     pd::push_matrix();
-    pd::translate(x() - width() / 2.0f, y());
+    pd::translate(x() - width() / 2.0f, y() + m_base_offset);
     if (m_flipped) {
         pd::scale(-1.0f, 1.0f);
         pd::translate(-width(), 0.0f);
