@@ -118,6 +118,7 @@ void pd::game_session::handle_event(SDL_Event &evt, float dt)
             delete this;
             break;
         case SDLK_w:
+        case SDLK_UP:
             m_player->jump();
             break;
         case SDLK_1:
