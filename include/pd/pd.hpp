@@ -17,7 +17,7 @@
 #  include <io.h>
 #  include <conio.h>
 #  define PD_PLATFORM PD_PLATFORM_WINDOWS
-#   pragma warning(disable: 4355)
+#  pragma warning(disable: 4355)
 #else
 #  error "Current platform not supported"
 #endif
