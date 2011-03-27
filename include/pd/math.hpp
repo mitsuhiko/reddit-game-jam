@@ -6,8 +6,6 @@ namespace pd {
 
     static const double pi = 3.14159265358979323846;
 
-    typedef b2Vec2 vec2;
-
     template <class T>
     T sign(T val)
     {

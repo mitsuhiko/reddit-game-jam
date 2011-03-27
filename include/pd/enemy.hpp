@@ -11,12 +11,9 @@ namespace pd {
     class enemy : public pd::entity {
     public:
         enemy(pd::game_session *session, float x, float y,
-              float width, float height, float base_offset,
-              stance_type stance);
-        pd::player * player() const { return m_player; }
+              float width, float height, stance_type stance);
     private:
         stance_type m_stance;
-        pd::player *m_player;
     };
 }
 

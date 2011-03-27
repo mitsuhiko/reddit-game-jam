@@ -35,9 +35,6 @@
 #  undef main
 #endif
 
-/* same goes with box2d */
-#include <Box2D/Box2D.h>
-
 /* logging */
 #define PD_LOG(Comp, Expr) do { \
     std::clog << "[" << Comp << "] " << Expr << std::endl; \

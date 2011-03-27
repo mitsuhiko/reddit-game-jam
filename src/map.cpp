@@ -47,27 +47,14 @@ pd::map::map(pd::game_session *session, std::string filename)
     }
 
     for (int y = 0; y < m_height; y++) {
-        int row_start = -1;
         for (int x = 0; x < m_width; x++) {
             tile_id_t tile = get_fg(x, y);
             pd::block *block = try_make_block(tile, x, y);
             if (block) {
-                m_foreground[(y * m_width) + x] = tile = 0;
+                m_foreground[(y * m_width) + x] = 0;
                 m_blocks.push_back(block);
             }
-            if (row_start < 0) {
-                if (tile)
-                    row_start = x;
-                continue;
-            }
-            if (tile)
-                continue;
-            create_ground_box(row_start, y, x - row_start);
-            row_start = -1;
         }
-
-        if (row_start >= 0)
-            create_ground_box(row_start, y, m_width - 1);
     }
 }
 
@@ -137,60 +124,17 @@ void pd::map::render() const
         (*iter)->render();
 }
 
-void pd::map::create_ground_box(int x, int y, int length)
-{
-    b2BodyDef bodydef;
-    bodydef.type = b2_staticBody;
-    bodydef.position.Set(pd::pixel_to_meter((float)m_tile_width * (x + length / 2.0f) + m_tile_width / 2.0f),
-                         pd::pixel_to_meter((float)m_tile_height * y + m_tile_height / 2.0f));
-    bodydef.fixedRotation = true;
-    b2Body *body = m_session->box2d_world()->CreateBody(&bodydef);
-    b2FixtureDef fixturedef;
-    b2PolygonShape fixedbox;
-    fixedbox.SetAsBox(pd::pixel_to_meter(m_tile_width * length / 2.0f),
-                      pd::pixel_to_meter(m_tile_height / 2.0f));
-    fixturedef.shape = &fixedbox;
-    fixturedef.density = 0;
-    fixturedef.friction = 1.5f;
-    body->CreateFixture(&fixturedef);
-}
-
-
 pd::block::block(pd::map *map, pd::texture *texture, block_type type, float x, float y)
-    : m_data_tuple(pd::box2d_data_tuple::block_type, this)
 {
     m_map = map;
     m_texture = texture;
     m_type = type;
-
-    b2BodyDef bodydef;
-    bodydef.type = b2_staticBody;
-    bodydef.position.Set(pd::pixel_to_meter(x + map->tile_width() / 2.0f),
-                         pd::pixel_to_meter(y + map->tile_height() / 2.0f));
-    bodydef.fixedRotation = true;
-    b2Body *body = map->session()->box2d_world()->CreateBody(&bodydef);
-    b2FixtureDef fixturedef;
-    b2PolygonShape fixedbox;
-    fixedbox.SetAsBox(pd::pixel_to_meter(map->tile_width() / 2.0f),
-                      pd::pixel_to_meter(map->tile_height() / 2.0f));
-    fixturedef.shape = &fixedbox;
-    fixturedef.density = 0;
-    fixturedef.friction = 1.5f;
-    m_fixture = body->CreateFixture(&fixturedef);
-    m_body = body;
-}
-
-pd::block::~block()
-{
-    m_map->session()->box2d_world()->DestroyBody(m_body);
+    m_x = x;
+    m_y = y;
 }
 
 void pd::block::render() const
 {
-    pd::push_matrix();
-    pd::translate(x() - m_map->tile_width() / 2.0f, y() - m_map->tile_height() / 2.0f);
-    pd::rotate_around_point(rotation(), m_map->tile_width() / 2.0f,
-                            m_map->tile_height() / 2.0f);
-    pd::draw_textured_quad(m_texture);
-    pd::pop_matrix();
+    pd::draw_textured_quad(x() - m_map->tile_width() / 2.0f,
+                           y() - m_map->tile_height() / 2.0f, m_texture);
 }

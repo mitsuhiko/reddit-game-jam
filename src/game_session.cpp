@@ -60,11 +60,9 @@ pd::game_session::game_session()
     m_cam = new pd::camera();
 
     // create test environment
-    m_world = new b2World(b2Vec2(0, 9.79f), true);
 	m_map = new pd::map(this, "maps/testlevel.map");
 
     m_player = new pd::player(this, 400.0f, 200.0f);
-    //new pd::thermal_enemy(this, 240.0f, 0.0f);
     new pd::kinetic_enemy(this, 15.0f, 0.0f);
 }
 
@@ -80,8 +78,6 @@ pd::game_session::~game_session()
 
 void pd::game_session::update(float dt)
 {
-    m_world->Step(dt, 10, 10);
-
     std::vector<pd::entity *> dead_entities;
     for (std::vector<pd::entity *>::iterator iter = m_entities.begin();
          iter != m_entities.end(); ++iter) {
@@ -93,11 +89,9 @@ void pd::game_session::update(float dt)
 
     uint8_t *state = SDL_GetKeyboardState(NULL);
     if (state[SDL_SCANCODE_D] || state[SDL_SCANCODE_RIGHT]) {
-        m_player->move_right();
+        m_player->move_right(dt);
     } else if (state[SDL_SCANCODE_A] || state[SDL_SCANCODE_LEFT]) {
-        m_player->move_left();
-    } else {
-        m_player->stop();
+        m_player->move_left(dt);
     }
     m_player->shooting(state[SDL_SCANCODE_LSHIFT] != 0);
 

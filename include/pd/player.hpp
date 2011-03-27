@@ -12,15 +12,14 @@ namespace pd {
     public:
         player(pd::game_session *session, float x = 0.0f, float y = 0.0f);
         float energy() const { return m_energy; }
-        void move_left();
-        void move_right();
-        void jump();
-        void stop();
         void shooting(bool val) { m_shooting = m_energy > 0.0f && val; }
         bool shooting() const { return m_shooting; }
-        void take_damage(float val, damage_type type);
+        
+        void move_left(float dt);
+        void move_right(float dt);
+        void jump();
 
-        void weapon_damage_test(float dt);
+        void take_damage(float val, damage_type type);
         void update(float dt);
         void local_render(float dt) const;
 
@@ -29,7 +28,6 @@ namespace pd {
         pd::animation m_flamethrower_anim;
         float m_energy;
         bool m_shooting;
-        int m_ticks_until_stop;
     };
 }
 

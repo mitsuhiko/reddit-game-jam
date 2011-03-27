@@ -46,7 +46,6 @@ set(GAME_HEADERS
 	include/pd/resource_manager.hpp
 	include/pd/animation.hpp
 	include/pd/camera.hpp
-	include/pd/box2d_helpers.hpp
 
 	include/pd/screen.hpp
 	include/pd/main_menu.hpp
@@ -80,8 +79,6 @@ find_library(SDLMAIN_LIBRARY
 
 find_package(OpenGL REQUIRED)
 
-add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/libs/Box2D)
-
 set(EXTRA_LIBS "")
 if(APPLE)
     set(CMAKE_C_FLAGS "-g -Wall")
@@ -95,7 +92,6 @@ include_directories(
 	${CMAKE_CURRENT_SOURCE_DIR}/libs/vendor
 	${CMAKE_CURRENT_SOURCE_DIR}/libs/vendor/utfcpp
 	${CMAKE_CURRENT_SOURCE_DIR}/libs/freetype-2.4.4/include
-        ${CMAKE_CURRENT_SOURCE_DIR}/libs/Box2D
 )
 
 add_executable(
@@ -114,7 +110,6 @@ target_link_libraries(
 	${FREETYPE_LIBRARY}
     ${GLEW_LIBRARY}	
 	${EXTRA_LIBS}
-	Box2D
 )
 
 if(APPLE)
