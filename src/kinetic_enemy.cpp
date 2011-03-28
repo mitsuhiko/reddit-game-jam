@@ -31,22 +31,13 @@ void pd::kinetic_enemy::update(pd::timedelta_t dt)
             return;
         m_dashing = true;
         velocity(glm::vec2(dash_speed * (flipped() ? -1 : 1), velocity().y));
-    } else {
-        if (!m_dashing && starts_dashing())
-            m_dash_countdown = dash_countdown;
-
-        else if ((!flipped() && collides_right()) || (flipped() && collides_left())) {
-            flipped(!flipped());
-            velocity(glm::vec2(movement_speed * (flipped() ? -1 : 1), velocity().y));
-            m_dashing = false;
-        }
-
+    } else if (!m_dashing && starts_dashing()) {
+        m_dash_countdown = dash_countdown;
+        velocity();
+    } else if ((!flipped() && collides_right()) || (flipped() && collides_left())) {
+        velocity(glm::vec2(movement_speed * (flipped() ? -1 : 1), velocity().y));
+        m_dashing = false;
     }
-
-    if (m_dash_countdown < 0.0f)
-        move(velocity() * dt);
-
-    apply_gravity(dt);
 }
 
 bool pd::kinetic_enemy::starts_dashing() const

@@ -79,22 +79,29 @@ pd::game_session::~game_session()
 void pd::game_session::update(pd::timedelta_t dt)
 {
     std::vector<pd::entity *> dead_entities;
+    uint8_t *state = SDL_GetKeyboardState(0);
+
+    // player controls
+    if (state[SDL_SCANCODE_D] || state[SDL_SCANCODE_RIGHT])
+        m_player->move_right();
+    else if (state[SDL_SCANCODE_A] || state[SDL_SCANCODE_LEFT])
+        m_player->move_left();
+    else
+        m_player->stop();
+    m_player->shooting(state[SDL_SCANCODE_LSHIFT] != 0);
+
+    // entity updating and physics
     for (std::vector<pd::entity *>::iterator iter = m_entities.begin();
          iter != m_entities.end(); ++iter) {
         if ((*iter)->dead())
             dead_entities.push_back(*iter);
-        else
+        else {
             (*iter)->update(dt);
+            (*iter)->apply_physics(dt);
+        }
     }
 
-    uint8_t *state = SDL_GetKeyboardState(NULL);
-    if (state[SDL_SCANCODE_D] || state[SDL_SCANCODE_RIGHT]) {
-        m_player->move_right(dt);
-    } else if (state[SDL_SCANCODE_A] || state[SDL_SCANCODE_LEFT]) {
-        m_player->move_left(dt);
-    }
-    m_player->shooting(state[SDL_SCANCODE_LSHIFT] != 0);
-
+    // camera
     m_cam->look_at(m_player->x(), m_player->y(), dt);
 
     for (std::vector<pd::entity *>::iterator iter = dead_entities.begin();

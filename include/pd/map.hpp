@@ -3,6 +3,7 @@
 #include <pd/pd.hpp>
 #include <pd/math.hpp>
 #include <pd/color.hpp>
+#include <pd/aabb.hpp>
 #include <map>
 #include <vector>
 
@@ -53,6 +54,12 @@ namespace pd {
             if (x < 0 || x >= m_width || y < 0 || y >= m_height)
                 return 0;
             return m_blocks[(y * m_width) + x];
+        }
+
+        pd::aabb bounding_box(int x, int y) const
+        {
+            glm::vec2 pos(m_tile_width * x, m_tile_height * y);
+            return pd::aabb(pos, pos + glm::vec2(m_tile_width, m_tile_height));
         }
 
         bool occupied(int x, int y) const

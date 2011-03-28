@@ -3,12 +3,14 @@
 #include <pd/drawtools.hpp>
 #include <pd/game.hpp>
 #include <pd/game_session.hpp>
+#include <pd/config.hpp>
+
 
 pd::entity::entity(pd::game_session *session, float x, float y, float width,
                    float height)
 {
     m_session = session;
-    m_flipped = false;
+    m_was_flipped = false;
     m_pos = glm::vec2(x, y);
     m_rotation = 0.0f;
     m_width = width;
@@ -22,6 +24,22 @@ pd::entity::entity(pd::game_session *session, float x, float y, float width,
 
 pd::entity::~entity()
 {
+}
+
+pd::aabb pd::entity::bounding_box() const
+{
+    return pd::aabb(m_pos, m_pos + glm::vec2(m_width, m_height));
+}
+
+bool pd::entity::flipped() const
+{
+    bool rv = m_was_flipped;
+    if (m_velocity.x > 10e-5f)
+        rv = false;
+    else if (m_velocity.x < -10e-5f)
+        rv = true;
+    m_was_flipped = rv;
+    return rv;
 }
 
 bool pd::entity::collides_left() const
@@ -70,7 +88,7 @@ void pd::entity::apply_gravity(pd::timedelta_t dt)
 {
     if (airborne()) {
         m_air_time += dt;
-        pd::apply_gravity(m_velocity, m_air_time);
+        m_velocity.y = std::min(m_velocity.y + pd::gravity * m_air_time, pd::max_fall_speed);
     } else {
         m_air_time = 0.0f;
         if (m_velocity.y > 0.0f)
@@ -78,11 +96,17 @@ void pd::entity::apply_gravity(pd::timedelta_t dt)
     }
 }
 
+void pd::entity::apply_physics(pd::timedelta_t dt)
+{
+    move(velocity() * dt);
+    apply_gravity(dt);
+}
+
 void pd::entity::render(pd::timedelta_t dt) const
 {
     pd::push_matrix();
     pd::translate(x() - width() / 2.0f, y() - height() / 2.0f - m_hovering);
-    if (m_flipped) {
+    if (flipped()) {
         pd::scale(-1.0f, 1.0f);
         pd::translate(-width(), 0.0f);
     }

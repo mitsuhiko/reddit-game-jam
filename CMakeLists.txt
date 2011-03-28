@@ -47,6 +47,7 @@ set(GAME_HEADERS
 	include/pd/animation.hpp
 	include/pd/camera.hpp
     include/pd/config.hpp
+    include/pd/aabb.hpp
 
 	include/pd/screen.hpp
 	include/pd/main_menu.hpp

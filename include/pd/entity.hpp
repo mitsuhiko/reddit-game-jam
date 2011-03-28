@@ -2,6 +2,7 @@
 #define _INC_PD_ENTITY_HPP_
 #include <pd/pd.hpp>
 #include <pd/math.hpp>
+#include <pd/aabb.hpp>
 #include <vector>
 
 
@@ -32,8 +33,10 @@ namespace pd {
         const glm::vec2 &pos() const { return m_pos; }
         const float x() const { return m_pos[0]; }
         const float y() const { return m_pos[1]; }
+        void velocity(float dx, float dy) { velocity(glm::vec2(dx, dy)); }
         void velocity(const glm::vec2 &vec) { m_velocity = vec; }
         const glm::vec2 &velocity() const { return m_velocity; }
+        pd::aabb bounding_box() const;
         float rotation() const { return m_rotation; }
         void rotation(float angle) { m_rotation = angle; }
         void move(float dx, float dy) { move(glm::vec2(dx, dy)); }
@@ -43,8 +46,7 @@ namespace pd {
         float height() const { return m_height; }
         float hovering() const { return m_hovering; }
         void hovering(float val) { m_hovering = val; }
-        bool flipped() const { return m_flipped; }
-        void flipped(bool val) { m_flipped = val; }
+        virtual bool flipped() const;
 
         bool collides_right() const;
         bool collides_left() const;
@@ -63,7 +65,8 @@ namespace pd {
 
         void apply_gravity(pd::timedelta_t dt);
 
-        virtual void update(pd::timedelta_t dt) = 0;  
+        virtual void update(pd::timedelta_t dt) = 0;
+        virtual void apply_physics(pd::timedelta_t dt);
         virtual void render(pd::timedelta_t dt) const;
         virtual void local_render(pd::timedelta_t dt) const = 0;
 
@@ -78,7 +81,7 @@ namespace pd {
         float m_health;
         float m_hovering;
         float m_air_time;
-        bool m_flipped;
+        mutable bool m_was_flipped;
     };
 }
 

@@ -1,7 +1,7 @@
 #ifndef _INC_PD_MATH_HPP_
 #define _INC_PD_MATH_HPP_
 #include <pd/pd.hpp>
-#include <pd/config.hpp>
+#include <limits>
 
 namespace pd {
 
@@ -69,9 +69,17 @@ namespace pd {
         return value + 1;
     }
 
-    inline void apply_gravity(glm::vec2 &velocity, float air_time)
+    template <class T>
+    bool almost_equal(T a, T b)
     {
-        velocity.y = std::min(velocity.y + pd::gravity * air_time, pd::max_fall_speed);
+        return (a - std::numeric_limits<T>::epsilon() < b &&
+                a + std::numeric_limits<T>::epsilon() > b);
+    }
+
+    template <class T, class F>
+    T lerp(T a, T b, F factor)
+    {
+        return a + (b - a) * pd::clamp(factor, F(0), F(1));
     }
 }
 

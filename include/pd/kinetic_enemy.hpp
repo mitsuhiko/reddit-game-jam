@@ -22,7 +22,7 @@ namespace pd {
         pd::animation m_dash_anim;
         glm::vec2 m_velocity;
         bool m_dashing;
-        float m_dash_countdown;
+        pd::timedelta_t m_dash_countdown;
     };
 }
 
