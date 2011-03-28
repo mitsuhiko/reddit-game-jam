@@ -22,6 +22,7 @@ namespace pd {
         void handle_event(SDL_Event &evt, pd::timedelta_t dt);
         void update(pd::timedelta_t dt);
         void render(pd::timedelta_t dt) const;
+        void swap(pd::timedelta_t dt);
 
         pd::screen *screen() { return m_screen; }
         void screen(pd::screen *val) { m_screen = val; }
@@ -38,10 +39,9 @@ namespace pd {
         SDL_GLContext m_glctx;
         pd::screen *m_screen;
         bool m_running;
-        unsigned int m_start_time;
-        unsigned int m_end_time;
         pd::resource_manager m_resmgr;
         static pd::game *s_instance;
+        unsigned int m_last_delay;
     };
 
 

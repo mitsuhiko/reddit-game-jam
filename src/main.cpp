@@ -31,8 +31,11 @@ static void initialize_win32_console(size_t width, size_t height,
 int main(int argc, char **argv)
 {
     /* on windows we have to initialize the console window */
-#if PD_PLATFORM == PD_PLATFORM_WINDOWS && !defined(NDEBUG)
+#if PD_PLATFORM == PD_PLATFORM_WINDOWS
+    SetPriorityClass(GetCurrentProcess(), HIGH_PRIORITY_CLASS);
+#ifndef NDEBUG
     initialize_win32_console(120, 30, 1000);
+#endif
 #endif
 
     /* we switch to the resource folder before the engine starts up so

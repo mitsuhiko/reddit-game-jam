@@ -1,8 +1,9 @@
 #include <pd/game.hpp>
 #include <pd/main_menu.hpp>
 
-const int window_width = 800;
-const int window_height = 450;
+static const int window_width = 800;
+static const int window_height = 450;
+static const int fps_limit = 62;
 
 pd::game *pd::game::s_instance;
 
@@ -50,6 +51,7 @@ pd::game::game()
     m_glctx = ctx;
     m_screen = pd::main_menu::instance();
     m_running = true;
+    m_last_delay = 0;
 }
 
 pd::game::~game()
@@ -60,30 +62,35 @@ pd::game::~game()
     SDL_Quit();
 }
 
+void pd::game::swap(pd::timedelta_t dt)
+{
+    pd::timedelta_t diff = (1.0f / fps_limit) - dt;
+
+    unsigned int delay = (unsigned int)std::max(0.0f, diff * 1000.0f) + m_last_delay;
+    m_last_delay = delay;
+
+    glFlush();
+    SDL_GL_SwapWindow(m_win);
+
+    if(delay >= 0.0)
+        SDL_Delay(delay);
+}
+
 void pd::game::run()
 {
     SDL_Event evt;
+    unsigned int old_ticks = 0;
+
     while (m_running) {
-        unsigned int old_start = m_start_time;
-        m_start_time = pd::get_ticks();
-        pd::timedelta_t dt = (m_end_time - old_start) / 1000.0f;
+        pd::timedelta_t dt = (pd::get_ticks() - old_ticks) / 1000.0f;
+        old_ticks = pd::get_ticks();
 
         while (SDL_PollEvent(&evt))
             handle_event(evt, dt);
         update(dt);
         render(dt);
 
-        SDL_GL_SwapWindow(m_win);
-
-        m_end_time = pd::get_ticks();
-
-        // vsync was not helpful, wait explicitly up to 60Hz
-        // or we don't have enough resolution on our clock
-        int leftover = 16 - (m_end_time - m_start_time);
-        if (leftover > 0) {
-            SDL_Delay(leftover);
-            m_end_time = pd::get_ticks();
-        }
+        swap(dt);
     }
 }
 
