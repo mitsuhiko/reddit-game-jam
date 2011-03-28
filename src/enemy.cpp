@@ -5,9 +5,8 @@
 #include <pd/game_session.hpp>
 
 
-pd::enemy::enemy(pd::game_session *session, float x, float y,
-                 float width, float height, stance_type stance)
-    : pd::entity(session, x, y, width, height)
+pd::enemy::enemy(pd::game_session *session, const glm::vec2 &pos,
+                 float width, float height)
+    : pd::entity(session, pos, width, height)
 {
-    this->stance(stance);
 }

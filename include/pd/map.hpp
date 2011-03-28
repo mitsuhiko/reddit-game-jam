@@ -19,7 +19,7 @@ namespace pd {
 
 	    map(pd::game_session *session, std::string filename);
 	    ~map();
-
+        
 	    void render() const;
 
         int width() const { return m_width; }
@@ -33,13 +33,6 @@ namespace pd {
             if (x < 0 || x >= m_width || y < 0 || y >= m_height)
                 return 0;
             return m_background[(y * m_width) + x];
-        }
-
-        tile_id_t get_fg(int x, int y) const
-        {
-            if (x < 0 || x >= m_width || y < 0 || y >= m_height)
-                return 0;
-            return m_foreground[(y * m_width) + x];
         }
 
         pd::block *get_block(int x, int y)
@@ -58,28 +51,19 @@ namespace pd {
 
         pd::aabb bounding_box(int x, int y) const
         {
-            glm::vec2 pos(m_tile_width * x, m_tile_height * y);
-            return pd::aabb(pos, pos + glm::vec2(m_tile_width, m_tile_height));
-        }
-
-        bool occupied(int x, int y) const
-        {
-            return get_fg(x, y) != 0 || get_block(x, y) != 0;
         }
 
         pd::game_session *session() { return m_session; }
         const pd::game_session *session() const { return m_session; }
 
     private:
-        void draw_tile(int x, int y, tile_id_t tile) const;
-        pd::block *try_make_block(tile_id_t tile, int x, int y);
+        void render_tile(int x, int y, tile_id_t tile) const;
         
 	    int m_width;
 	    int m_height;
 	    int m_tile_width;
 	    int m_tile_height;
 	    tile_id_t *m_background;
-	    tile_id_t *m_foreground;
         pd::block **m_blocks;
 	    pd::texture *m_tileset;
         pd::game_session *m_session;
@@ -89,25 +73,21 @@ namespace pd {
 
     class block {
     public:
-        enum block_type {
-            metal_type,
-            lava_type,
-            ice_type,
-            water_type,
-            glass_type
-        };
+        static const pd::map::tile_id_t metal_type = 129;
+        static const pd::map::tile_id_t ice_type = 130;
+        static const pd::map::tile_id_t glass_type = 131;
+        static const pd::map::tile_id_t laval_type = 132;
+        static const pd::map::tile_id_t water_type = 133;
 
-        block(pd::map *map, pd::texture *texture, block_type type, int x, int y);
-        block_type type() const { return m_type; }
+        block(pd::map *map, pd::map::tile_id_t tile, int x, int y);
+        pd::aabb bounding_box() const;
         int x() const { return m_x; }
         int y() const { return m_y; }
-        const pd::texture *texture() const { return m_texture; }
-        void render() const;
+        const pd::map::tile_id_t tile() const { return m_tile; }
 
     private:
         pd::map *m_map;
-        block_type m_type;
-        pd::texture *m_texture;
+        pd::map::tile_id_t m_tile;
         int m_x;
         int m_y;
     };

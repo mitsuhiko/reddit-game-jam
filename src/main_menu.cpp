@@ -77,10 +77,10 @@ void pd::main_menu::render(pd::timedelta_t dt) const
 {
     pd::clear_screen(0x333333ff);
     pd::reset_color();
-    pd::draw_textured_quad(280.0f, 50.0f, m_logo);
+    pd::draw_textured_quad(glm::vec2(280.0f, 50.0f), m_logo);
 
     for (int i = 0; i < item_count; i++) {
         pd::set_color(i == m_active_item ? 0x59b1d2ff : 0xffffffff);
-        pd::draw_text(items[i].caption, 600.0f, 280.0f + (i * 30.0f), m_font);
+        pd::draw_text(items[i].caption, glm::vec2(600.0f, 280.0f + (i * 30.0f)), m_font);
     }
 }

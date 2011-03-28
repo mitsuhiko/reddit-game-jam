@@ -10,14 +10,13 @@ namespace pd {
 
     class kinetic_enemy : public pd::enemy {
     public:
-        kinetic_enemy(pd::game_session *session, float x = 0.0f, float y = 0.0f);
+        kinetic_enemy(pd::game_session *session, const glm::vec2 &pos);
 
         bool starts_dashing() const;
         void update(pd::timedelta_t dt);
-        void local_render(pd::timedelta_t dt) const;
+        void render(pd::timedelta_t dt) const;
 
     private:
-        stance_type m_stance;
         pd::animation m_walk_anim;
         pd::animation m_dash_anim;
         glm::vec2 m_velocity;

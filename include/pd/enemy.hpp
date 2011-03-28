@@ -10,10 +10,8 @@ namespace pd {
 
     class enemy : public pd::entity {
     public:
-        enemy(pd::game_session *session, float x, float y,
-              float width, float height, stance_type stance);
-    private:
-        stance_type m_stance;
+        enemy(pd::game_session *session, const glm::vec2 &pos,
+              float width, float height);
     };
 }
 

@@ -4,7 +4,6 @@
 #include <pd/drawtools.hpp>
 #include <pd/texture.hpp>
 #include <pd/player.hpp>
-#include <pd/thermal_enemy.hpp>
 #include <pd/kinetic_enemy.hpp>
 #include <pd/camera.hpp>
 
@@ -17,8 +16,7 @@ namespace pd {
         {
             m_panel = tex->slice(pbx1, pby1, pbx2 - pbx1, pby2 - pby1);
             m_bar = tex->slice(bbx1, bby1, bbx2 - bbx1, bby2 - bby1);
-            m_bar_off_x = box;
-            m_bar_off_y = boy;
+            m_bar_offset = glm::vec2(box, boy);
         }
 
         ~game_power_bar()
@@ -29,18 +27,17 @@ namespace pd {
 
         int height() const { return m_panel->height(); }
 
-        void render(float x, float y, float value)
+        void render(const glm::vec2 &pos, float value)
         {
-            pd::draw_textured_quad(x, y, m_panel);
-            pd::draw_textured_quad(x + m_bar_off_x, y + m_bar_off_y,
+            pd::draw_textured_quad(pos, m_panel);
+            pd::draw_textured_quad(pos + m_bar_offset,
                 m_bar->width() * value, (float)m_bar->height(), m_bar);
         }
 
     private:
         pd::texture *m_panel;
         pd::texture *m_bar;
-        int m_bar_off_x;
-        int m_bar_off_y;
+        glm::vec2 m_bar_offset;
     };
 }
 
@@ -62,51 +59,31 @@ pd::game_session::game_session()
     // create test environment
 	m_map = new pd::map(this, "maps/testlevel.map");
 
-    m_player = new pd::player(this, 400.0f, 0.0f);
-    new pd::kinetic_enemy(this, 15.0f, 0.0f);
+    m_player = new pd::player(this, glm::vec2(400.0f, 0.0f));
+    m_enemies.push_back(new pd::kinetic_enemy(this, glm::vec2(15.0f, 0.0f)));
 }
 
 pd::game_session::~game_session()
 {
     delete m_map;
+    delete m_player;
 
-    for (std::vector<pd::entity *>::iterator iter = m_entities.begin();
-         iter != m_entities.end(); ++iter)
+    for (std::vector<pd::enemy *>::iterator iter = m_enemies.begin();
+         iter != m_enemies.end(); ++iter)
         delete *iter;
     pd::game::instance().resmgr().pop();
 }
 
 void pd::game_session::update(pd::timedelta_t dt)
 {
-    std::vector<pd::entity *> dead_entities;
     uint8_t *state = SDL_GetKeyboardState(0);
 
-    // player controls
-    if (state[SDL_SCANCODE_D] || state[SDL_SCANCODE_RIGHT])
-        m_player->move_right();
-    else if (state[SDL_SCANCODE_A] || state[SDL_SCANCODE_LEFT])
-        m_player->move_left();
-    else
-        m_player->stop();
-    m_player->shooting(state[SDL_SCANCODE_LSHIFT] != 0);
+    m_player->update(dt);
+    for (std::vector<pd::enemy *>::iterator iter = m_enemies.begin();
+         iter != m_enemies.end(); ++iter)
+        (*iter)->update(dt);
 
-    // entity updating and physics
-    for (std::vector<pd::entity *>::iterator iter = m_entities.begin();
-         iter != m_entities.end(); ++iter) {
-        if ((*iter)->dead())
-            dead_entities.push_back(*iter);
-        else {
-            (*iter)->update(dt);
-            (*iter)->apply_physics(dt);
-        }
-    }
-
-    // camera
-    m_cam->look_at(m_player->x(), m_player->y(), dt);
-
-    for (std::vector<pd::entity *>::iterator iter = dead_entities.begin();
-         iter != dead_entities.end(); ++iter)
-        remove_entity(*iter);
+    m_cam->look_at(m_player->pos(), dt);
 }
 
 void pd::game_session::handle_event(SDL_Event &evt, pd::timedelta_t dt)
@@ -115,20 +92,8 @@ void pd::game_session::handle_event(SDL_Event &evt, pd::timedelta_t dt)
         switch (evt.key.keysym.sym) {
         case SDLK_ESCAPE:
             pd::game::instance().screen(pd::main_menu::instance());
-            // suicide, because the main menu adds a new instance of us
+            // suicide, because the main menu adds a new instance
             delete this;
-            break;
-        case SDLK_SPACE:
-            m_player->jump();
-            break;
-        case SDLK_1:
-            m_player->stance(pd::player::kinetic_stance);
-            break;
-        case SDLK_2:
-            m_player->stance(pd::player::electromagnetic_stance);
-            break;
-        case SDLK_3:
-            m_player->stance(pd::player::thermal_stance);
             break;
         }
     }
@@ -141,8 +106,10 @@ void pd::game_session::render(pd::timedelta_t dt) const
     m_cam->apply();
 	m_map->render();
 
-    for (std::vector<pd::entity *>::const_iterator iter = m_entities.begin();
-         iter != m_entities.end(); ++iter)
+    m_player->render(dt);
+
+    for (std::vector<pd::enemy *>::const_iterator iter = m_enemies.begin();
+         iter != m_enemies.end(); ++iter)
         (*iter)->render(dt);
 
     pd::pop_matrix();
@@ -167,22 +134,5 @@ void pd::game_session::render_gui(pd::timedelta_t dt) const
         assert(false);
     }
 
-    bar->render(10.0f, 10.0f, m_player->energy());
-}
-
-void pd::game_session::add_entity(pd::entity *entity)
-{
-    m_entities.push_back(entity);
-}
-
-bool pd::game_session::remove_entity(pd::entity *entity)
-{
-    std::vector<pd::entity *>::iterator iter;
-    for (iter = m_entities.begin(); iter != m_entities.end(); ++iter)
-        if (*iter == entity) {
-            delete entity;
-            m_entities.erase(iter);
-            return true;
-        }
-    return false;
+    bar->render(glm::vec2(10.0f, 10.0f), m_player->energy());
 }

@@ -13,7 +13,6 @@ set(GAME_SOURCES
 	src/entity.cpp
 	src/player.cpp
 	src/enemy.cpp
-	src/thermal_enemy.cpp
 	src/kinetic_enemy.cpp
     src/font.cpp
 	src/map.cpp
@@ -37,7 +36,6 @@ set(GAME_HEADERS
 	include/pd/entity.hpp
 	include/pd/player.hpp
 	include/pd/enemy.hpp
-	include/pd/thermal_enemy.hpp
 	include/pd/kinetic_enemy.hpp
     include/pd/font.hpp
 	include/pd/lexical_cast.hpp

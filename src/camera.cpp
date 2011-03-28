@@ -9,21 +9,17 @@ pd::camera::camera()
 {
     int width, height;
     pd::game::instance().get_size(width, height);
-    m_x = width / 2.0f;
-    m_y = height / 2.0f;
+    m_pos = glm::vec2(width / 2.0f, height / 2.0f);
 }
 
-void pd::camera::look_at(float x, float y, pd::timedelta_t dt)
+void pd::camera::look_at(const glm::vec2 &pos, pd::timedelta_t dt)
 {
-    m_x += (x - m_x) * dt * adjust_speed;
-    m_y += (y - m_y) * dt * adjust_speed;
+    m_pos += (pos - m_pos) * dt * adjust_speed;
 }
 
 void pd::camera::apply()
 {
     int width, height;
     pd::game::instance().get_size(width, height);
-    float center_x = width / 2.0f;
-    float center_y = height / 2.0f;
-    pd::translate(-(m_x - center_x), -(m_y - center_y));
+    pd::translate(-m_pos + glm::vec2(width / 2.0f, height / 2.0f));
 }

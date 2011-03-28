@@ -11,38 +11,38 @@ namespace pd {
     void clear_screen(pd::color color);
     void reset_color();
     void set_color(pd::color color);
-    void draw_textured_quad(float x, float y, float width, float height, const pd::texture *texture);
-    void draw_textured_quad(float x, float y, const pd::texture *texture);
+    void draw_textured_quad(const glm::vec2 &pos, float width, float height, const pd::texture *texture);
+    void draw_textured_quad(const glm::vec2 &pos, const pd::texture *texture);
     inline void draw_textured_quad(const pd::texture *texture)
     {
-        draw_textured_quad(0.0f, 0.0f, texture);
+        draw_textured_quad(glm::vec2(), texture);
     }
-    void draw_text(const std::string &text, float x, float y, const pd::font *font);
+    void draw_text(const std::string &text, const glm::vec2 &pos, const pd::font *font);
 
     /* alternative names for opengl methods and some other thin
        wrappers around them.  Why? Consistency and a chance to
        move to custom matrix stacks. */
     inline void push_matrix() { glPushMatrix(); }
     inline void pop_matrix() { glPopMatrix(); }
-    inline void translate(float x, float y) { glTranslatef(x, y, 0.0f); }
+    inline void translate(const glm::vec2 &pos) { glTranslatef(pos.x, pos.y, 0.0f); }
 
     inline void rotate(float angle)
     {
         glRotatef(angle, 0.0f, 0.0f, 1.0f);
     }
 
-    inline void rotate_around_point(float angle, float x, float y)
+    inline void rotate_around_point(float angle, const glm::vec2 &pos)
     {
         if (angle >= -10e-5 && angle <= 10e-5f)
             return;
-        translate(x, y);
+        translate(pos);
         rotate(angle);
-        translate(-x, -y);
+        translate(-pos);
     }
 
-    inline void scale(float x, float y)
+    inline void scale(const glm::vec2 &factor)
     {
-        glScalef(x, y, 1.0f);
+        glScalef(factor.x, factor.y, 1.0f);
     }
 }
 

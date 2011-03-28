@@ -24,8 +24,10 @@ void pd::clear_screen(pd::color color)
     glClear(GL_COLOR_BUFFER_BIT);
 }
 
-void pd::draw_textured_quad(float x, float y, float width, float height, const pd::texture *texture)
+void pd::draw_textured_quad(const glm::vec2 &pos, float width, float height, const pd::texture *texture)
 {
+    float x = pos.x;
+    float y = pos.y;
     glBindTexture(GL_TEXTURE_2D, texture->id());
     float vertices[] = {
         x, y,
@@ -49,32 +51,30 @@ void pd::draw_textured_quad(float x, float y, float width, float height, const p
     glDrawArrays(GL_QUADS, 0, 4);
 }
 
-void pd::draw_textured_quad(float x, float y, const pd::texture *texture)
+void pd::draw_textured_quad(const glm::vec2 &pos, const pd::texture *texture)
 {
-    pd::draw_textured_quad(x, y, (float)texture->width(), (float)texture->height(), texture);
+    pd::draw_textured_quad(pos, (float)texture->width(), (float)texture->height(), texture);
 }
 
-void pd::draw_text(const std::string &text, float x, float y, const pd::font *font)
+void pd::draw_text(const std::string &text, const glm::vec2 &pos, const pd::font *font)
 {
-    float cx = x;
-    float cy = y;
+    glm::vec2 cur_pos = pos;
 
     /* XXX: write the quads into a vector and draw them at once */
     for (size_t i = 0; i < text.size(); i++) {
         unsigned char c = text[i];
         if (c == '\n') {
-            cx = x;
-            cy += font->height();
+            cur_pos.x = pos.x;
+            cur_pos.y += font->height();
             continue;
         }
 
         const glyph_info &glyph = font->get(c);
         if (glyph.texture)
-            draw_textured_quad(cx + glyph.xoff,
-                               cy + glyph.yoff,
+            draw_textured_quad(cur_pos + glm::vec2(glyph.xoff, glyph.yoff),
                                (float)glyph.texture->width(),
                                (float)glyph.texture->height(),
                                glyph.texture);
-        cx += glyph.advance;
+        cur_pos.x += glyph.advance;
     }
 }
