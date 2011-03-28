@@ -9,12 +9,12 @@ pd::thermal_enemy::thermal_enemy(pd::game_session *session, float x, float y)
 {
 }
 
-void pd::thermal_enemy::update(float dt)
+void pd::thermal_enemy::update(pd::timedelta_t dt)
 {
     m_walk_anim.update(dt);
 }
 
-void pd::thermal_enemy::local_render(float dt) const
+void pd::thermal_enemy::local_render(pd::timedelta_t dt) const
 {
     m_walk_anim.render();
 }

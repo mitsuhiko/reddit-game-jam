@@ -25,12 +25,12 @@ namespace pd {
         void add_entity(pd::entity *entity);
         bool remove_entity(pd::entity *entity);
 
-        void update(float dt);
-        void handle_event(SDL_Event &evt, float dt);
-        void render(float dt) const;
+        void update(pd::timedelta_t dt);
+        void handle_event(SDL_Event &evt, pd::timedelta_t dt);
+        void render(pd::timedelta_t dt) const;
 
-        void render_gui(float dt) const;
-        void update_cam(float dt);
+        void render_gui(pd::timedelta_t dt) const;
+        void update_cam(pd::timedelta_t dt);
 
         pd::map *map() { return m_map; }
         const pd::map *map() const { return m_map; }

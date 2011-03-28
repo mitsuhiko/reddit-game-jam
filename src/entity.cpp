@@ -28,7 +28,7 @@ bool pd::entity::collides_left() const
 {
     const pd::map *map = session()->map();
 
-    for (float yoff = 0.0f; yoff < m_height; yoff++) {
+    for (float yoff = map->tile_height() / 2.0f; yoff < m_height; yoff++) {
         int tile_x = (int)(x() / map->tile_width()) - 1;
         int tile_y = (int)((y() + yoff) / map->tile_height()) - 1;
         if (map->occupied(tile_x, tile_y))
@@ -42,7 +42,7 @@ bool pd::entity::collides_right() const
 {
     const pd::map *map = session()->map();
 
-    for (float yoff = 0.0f; yoff < m_height; yoff++) {
+    for (float yoff = map->tile_height() / 2.0f; yoff < m_height; yoff++) {
         int tile_x = (int)((x() + m_width) / map->tile_width()) - 1;
         int tile_y = (int)((y() + yoff) / map->tile_height()) - 1;
         if (map->occupied(tile_x, tile_y))
@@ -66,7 +66,7 @@ void pd::entity::take_damage(float val, pd::entity::damage_type type)
     m_health = std::max(0.0f, m_health - val);
 }
 
-void pd::entity::apply_gravity(float dt)
+void pd::entity::apply_gravity(pd::timedelta_t dt)
 {
     if (airborne()) {
         m_air_time += dt;
@@ -78,7 +78,7 @@ void pd::entity::apply_gravity(float dt)
     }
 }
 
-void pd::entity::render(float dt) const
+void pd::entity::render(pd::timedelta_t dt) const
 {
     pd::push_matrix();
     pd::translate(x() - width() / 2.0f, y() - height() / 2.0f - m_hovering);

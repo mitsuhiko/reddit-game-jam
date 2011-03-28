@@ -22,7 +22,7 @@ pd::kinetic_enemy::kinetic_enemy(pd::game_session *session, float x, float y)
     velocity(glm::vec2(movement_speed, 0.0f));
 }
 
-void pd::kinetic_enemy::update(float dt)
+void pd::kinetic_enemy::update(pd::timedelta_t dt)
 {
     m_walk_anim.update(dt);
 
@@ -63,7 +63,7 @@ bool pd::kinetic_enemy::starts_dashing() const
     return glm::length(distance) <= dash_activation_distance;
 }
 
-void pd::kinetic_enemy::local_render(float dt) const
+void pd::kinetic_enemy::local_render(pd::timedelta_t dt) const
 {
     if (m_dash_countdown > 0.0f || m_dashing) {
         m_dash_anim.render_frame(m_dashing ? 1 : 0, -60.0f, 0.0f);

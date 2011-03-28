@@ -47,11 +47,11 @@ pd::main_menu *pd::main_menu::instance()
     return s_instance;
 }
 
-void pd::main_menu::update(float dt)
+void pd::main_menu::update(pd::timedelta_t dt)
 {
 }
 
-void pd::main_menu::handle_event(SDL_Event &evt, float dt)
+void pd::main_menu::handle_event(SDL_Event &evt, pd::timedelta_t dt)
 {
     if (evt.type == SDL_KEYDOWN) {
         switch (evt.key.keysym.sym) {
@@ -73,7 +73,7 @@ void pd::main_menu::handle_event(SDL_Event &evt, float dt)
     }
 }
 
-void pd::main_menu::render(float dt) const
+void pd::main_menu::render(pd::timedelta_t dt) const
 {
     pd::clear_screen(0x333333ff);
     pd::reset_color();

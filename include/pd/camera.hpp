@@ -7,7 +7,7 @@ namespace pd {
     class camera {
     public:
         camera();
-        void look_at(float x, float y, float dt);
+        void look_at(float x, float y, pd::timedelta_t dt);
         void apply();
 
     private:

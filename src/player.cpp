@@ -7,7 +7,7 @@
 #include <vector>
 
 
-static const float jump_speed = 400.0f;
+static const float jump_speed = 300.0f;
 
 
 pd::player::player(pd::game_session *session, float x, float y)
@@ -50,14 +50,14 @@ void pd::player::take_damage(float val, damage_type type)
     pd::entity::take_damage(val, type);
 }
         
-void pd::player::move_left(float dt)
+void pd::player::move_left(pd::timedelta_t dt)
 {
     flipped(true);
     if (!collides_left())
         move(-dt * movement_speed, 0.0f);
 }
 
-void pd::player::move_right(float dt)
+void pd::player::move_right(pd::timedelta_t dt)
 {
     flipped(false);
     if (!collides_right())
@@ -70,7 +70,7 @@ void pd::player::jump()
         velocity(velocity() - glm::vec2(0.0f, jump_speed));
 }
 
-void pd::player::update(float dt)
+void pd::player::update(pd::timedelta_t dt)
 {
     m_thermal_idle_anim.update(dt);
     m_flamethrower_anim.update(dt);
@@ -79,7 +79,7 @@ void pd::player::update(float dt)
     apply_gravity(dt);
 }
 
-void pd::player::local_render(float dt) const
+void pd::player::local_render(pd::timedelta_t dt) const
 {    
     m_thermal_idle_anim.render();
     if (m_shooting)

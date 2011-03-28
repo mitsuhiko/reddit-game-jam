@@ -19,9 +19,9 @@ namespace pd {
         void stop() { m_running = false; }
         bool is_running() const { return m_running; }
 
-        void handle_event(SDL_Event &evt, float dt);
-        void update(float dt);
-        void render(float dt) const;
+        void handle_event(SDL_Event &evt, pd::timedelta_t dt);
+        void update(pd::timedelta_t dt);
+        void render(pd::timedelta_t dt) const;
 
         pd::screen *screen() { return m_screen; }
         void screen(pd::screen *val) { m_screen = val; }

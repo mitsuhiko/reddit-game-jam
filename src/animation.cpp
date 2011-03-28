@@ -12,7 +12,7 @@ pd::animation::animation(pd::texture *texture, int frames, float anim_speed)
     m_current_frame = 0;
 }
 
-void pd::animation::update(float dt)
+void pd::animation::update(pd::timedelta_t dt)
 {
     for (m_time += dt; m_time >= m_anim_speed; m_time -= m_anim_speed)
         m_current_frame = (m_current_frame + 1) % m_frames;

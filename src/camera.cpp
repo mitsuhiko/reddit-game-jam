@@ -13,7 +13,7 @@ pd::camera::camera()
     m_y = height / 2.0f;
 }
 
-void pd::camera::look_at(float x, float y, float dt)
+void pd::camera::look_at(float x, float y, pd::timedelta_t dt)
 {
     m_x += (x - m_x) * dt * adjust_speed;
     m_y += (y - m_y) * dt * adjust_speed;

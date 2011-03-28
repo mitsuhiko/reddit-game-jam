@@ -10,9 +10,9 @@ namespace pd {
 
     class main_menu : public screen {
     public:
-        void update(float dt);
-        void handle_event(SDL_Event &evt, float dt);
-        void render(float dt) const;
+        void update(pd::timedelta_t dt);
+        void handle_event(SDL_Event &evt, pd::timedelta_t dt);
+        void render(pd::timedelta_t dt) const;
 
         static main_menu *instance();
 

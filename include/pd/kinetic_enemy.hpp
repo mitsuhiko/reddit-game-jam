@@ -13,8 +13,8 @@ namespace pd {
         kinetic_enemy(pd::game_session *session, float x = 0.0f, float y = 0.0f);
 
         bool starts_dashing() const;
-        void update(float dt);
-        void local_render(float dt) const;
+        void update(pd::timedelta_t dt);
+        void local_render(pd::timedelta_t dt) const;
 
     private:
         stance_type m_stance;

@@ -15,13 +15,13 @@ namespace pd {
         void shooting(bool val) { m_shooting = m_energy > 0.0f && val; }
         bool shooting() const { return m_shooting; }
         
-        void move_left(float dt);
-        void move_right(float dt);
+        void move_left(pd::timedelta_t dt);
+        void move_right(pd::timedelta_t dt);
         void jump();
 
         void take_damage(float val, damage_type type);
-        void update(float dt);
-        void local_render(float dt) const;
+        void update(pd::timedelta_t dt);
+        void local_render(pd::timedelta_t dt) const;
 
     private:
         pd::animation m_thermal_idle_anim;

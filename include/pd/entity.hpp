@@ -61,11 +61,11 @@ namespace pd {
         pd::game_session *session() { return m_session; }
         const pd::game_session *session() const { return m_session; }
 
-        void apply_gravity(float dt);
+        void apply_gravity(pd::timedelta_t dt);
 
-        virtual void update(float dt) = 0;  
-        virtual void render(float dt) const;
-        virtual void local_render(float dt) const = 0;
+        virtual void update(pd::timedelta_t dt) = 0;  
+        virtual void render(pd::timedelta_t dt) const;
+        virtual void local_render(pd::timedelta_t dt) const = 0;
 
     private:
         pd::game_session *m_session;

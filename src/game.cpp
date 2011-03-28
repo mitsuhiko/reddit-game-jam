@@ -65,8 +65,8 @@ void pd::game::run()
     SDL_Event evt;
     while (m_running) {
         unsigned int old_start = m_start_time;
-        m_start_time = SDL_GetTicks();
-        float dt = (m_end_time - old_start) / 1000.0f;
+        m_start_time = pd::get_ticks();
+        pd::timedelta_t dt = (m_end_time - old_start) / 1000.0f;
 
         while (SDL_PollEvent(&evt))
             handle_event(evt, dt);
@@ -74,23 +74,32 @@ void pd::game::run()
         render(dt);
 
         SDL_GL_SwapWindow(m_win);
-        m_end_time = SDL_GetTicks();
+
+        m_end_time = pd::get_ticks();
+
+        // vsync was not helpful, wait explicitly up to 60Hz
+        // or we don't have enough resolution on our clock
+        int leftover = 16 - (m_end_time - m_start_time);
+        if (leftover > 0) {
+            SDL_Delay(leftover);
+            m_end_time = pd::get_ticks();
+        }
     }
 }
 
-void pd::game::update(float dt)
+void pd::game::update(pd::timedelta_t dt)
 {
     if (m_screen)
         m_screen->update(dt);
 }
 
-void pd::game::render(float dt) const
+void pd::game::render(pd::timedelta_t dt) const
 {
     if (m_screen)
         m_screen->render(dt);
 }
 
-void pd::game::handle_event(SDL_Event &evt, float dt)
+void pd::game::handle_event(SDL_Event &evt, pd::timedelta_t dt)
 {
     if (evt.type == SDL_QUIT)
         stop();

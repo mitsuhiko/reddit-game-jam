@@ -76,7 +76,7 @@ pd::game_session::~game_session()
     pd::game::instance().resmgr().pop();
 }
 
-void pd::game_session::update(float dt)
+void pd::game_session::update(pd::timedelta_t dt)
 {
     std::vector<pd::entity *> dead_entities;
     for (std::vector<pd::entity *>::iterator iter = m_entities.begin();
@@ -102,7 +102,7 @@ void pd::game_session::update(float dt)
         remove_entity(*iter);
 }
 
-void pd::game_session::handle_event(SDL_Event &evt, float dt)
+void pd::game_session::handle_event(SDL_Event &evt, pd::timedelta_t dt)
 {
     if (evt.type == SDL_KEYDOWN) {
         switch (evt.key.keysym.sym) {
@@ -127,7 +127,7 @@ void pd::game_session::handle_event(SDL_Event &evt, float dt)
     }
 }
 
-void pd::game_session::render(float dt) const
+void pd::game_session::render(pd::timedelta_t dt) const
 {
     pd::push_matrix();
 
@@ -143,7 +143,7 @@ void pd::game_session::render(float dt) const
     render_gui(dt);
 }
 
-void pd::game_session::render_gui(float dt) const
+void pd::game_session::render_gui(pd::timedelta_t dt) const
 {
     pd::game_power_bar *bar;
     switch (m_player->stance()) {
