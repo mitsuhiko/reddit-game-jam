@@ -27,25 +27,22 @@ pd::player::player(pd::game_session *session, const glm::vec2 &pos)
     m_energy = 1.0f;
     m_movement = 0.0f;
     m_jump_time = 0.0f;
-    m_previous_bottom = 0.0f;
     m_flipped = false;
     m_tries_jumping = false;
     m_was_jumping = false;
-    m_on_ground = false;
 }
 
 void pd::player::apply_physics(float dt)
 {
     // gravity and base velocity
     m_velocity.x += m_movement * movement_acceleration * dt;
-    m_velocity.y = pd::clamp(m_velocity.y + pd::gravity_acceleration * dt,
-                             -pd::max_fall_speed, pd::max_fall_speed);
+    m_velocity = pd::apply_gravity(m_velocity, dt);
 
     // jumping
     if (!m_tries_jumping) {
         m_jump_time = 0.0f;
     } else {
-        if ((!m_was_jumping && m_on_ground) || m_jump_time > 0.0f)
+        if ((!m_was_jumping && on_ground()) || m_jump_time > 0.0f)
             m_jump_time += dt;
 
         if (0.0f < m_jump_time && m_jump_time <= max_jump_time)
@@ -57,7 +54,7 @@ void pd::player::apply_physics(float dt)
     m_was_jumping = m_tries_jumping;
 
     // pseudo drag
-    if (m_on_ground)
+    if (on_ground())
         m_velocity.x *= ground_drag_factor;
     else
         m_velocity.x *= air_drag_factor;
@@ -74,54 +71,6 @@ void pd::player::apply_physics(float dt)
         m_velocity.x = 0.0f;
     if (pos().y == old_pos.y)
         m_velocity.y = 0.0f;
-}
-
-void pd::player::handle_collisions()
-{
-    glm::vec2 old_pos = pos();
-    pd::aabb bb = bounding_box();
-    float tile_width = (float)session()->map()->tile_width();
-    float tile_height = (float)session()->map()->tile_height();
-
-    int left_tile = (int)std::floor(bb.left() / tile_width);
-    int right_tile = (int)std::ceil(bb.right() / tile_width) - 1;
-    int top_tile = (int)std::floor(bb.top() / tile_height);
-    int bottom_tile = (int)std::ceil(bb.bottom() / tile_height) - 1;
-
-    m_on_ground = false;
-
-    for (int y = top_tile; y <= bottom_tile; y++) {
-        for (int x = left_tile; x <= right_tile; x++) {
-            const pd::block *block = session()->map()->get_block(x, y);
-
-            if (!block || block->collision() == pd::block::passable)
-                continue;
-
-            pd::aabb block_bb = block->bounding_box();
-            glm::vec2 depth = bounding_box().intersection_depth(block_bb);
-            if (depth == glm::vec2())
-                continue;
-
-            glm::vec2 abs_depth = glm::abs(depth);
-            glm::vec2 correction;
-            if (abs_depth.y < abs_depth.x ||
-                block->collision() == pd::block::semi_passable) {
-                if (m_previous_bottom <= block_bb.top())
-                    m_on_ground = true;
-
-                if (m_on_ground ||
-                    block->collision() == pd::block::impassable)
-                    correction.y = depth.y;
-            } else if (block->collision() == pd::block::impassable) {
-                correction.x = depth.x;
-            }
-
-            if (correction != glm::vec2())
-                pos(pos() + correction);
-        }
-    }
-
-    m_previous_bottom = bounding_box().bottom();
 }
 
 void pd::player::update(pd::timedelta_t dt)

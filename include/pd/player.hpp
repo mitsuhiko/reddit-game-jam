@@ -25,7 +25,6 @@ namespace pd {
         bool looks_left() const { return m_flipped; }
         
         void apply_physics(pd::timedelta_t dt);
-        void handle_collisions();
 
         void update(pd::timedelta_t dt);
         void render(pd::timedelta_t dt) const;

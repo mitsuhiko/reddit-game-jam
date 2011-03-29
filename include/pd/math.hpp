@@ -1,7 +1,9 @@
 #ifndef _INC_PD_MATH_HPP_
 #define _INC_PD_MATH_HPP_
 #include <pd/pd.hpp>
+#include <pd/config.hpp>
 #include <limits>
+
 
 namespace pd {
 
@@ -80,6 +82,16 @@ namespace pd {
     T lerp(T a, T b, F factor)
     {
         return a + (b - a) * pd::clamp(factor, F(0), F(1));
+    }
+
+    /* applies gravitiy on the velocity vector */
+    inline glm::vec2 apply_gravity(const glm::vec2 &vel, float dt)
+    {
+        return glm::vec2(
+            vel.x,
+            pd::clamp(vel.y + pd::gravity_acceleration * dt,
+                      -pd::max_fall_speed, pd::max_fall_speed)
+        );
     }
 }
 
