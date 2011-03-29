@@ -24,7 +24,6 @@ namespace pd {
         bool looks_right() const { return !m_flipped; }
         bool looks_left() const { return m_flipped; }
         
-        float apply_jump(float velocity_y, float dt);
         void apply_physics(pd::timedelta_t dt);
         void handle_collisions();
 
