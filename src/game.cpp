@@ -72,7 +72,7 @@ void pd::game::swap(pd::timedelta_t dt)
     glFlush();
     SDL_GL_SwapWindow(m_win);
 
-    if(delay >= 0.0)
+    if (delay > 0)
         SDL_Delay(delay);
 }
 

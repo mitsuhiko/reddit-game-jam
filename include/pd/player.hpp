@@ -26,7 +26,7 @@ namespace pd {
         
         float apply_jump(float velocity_y, float dt);
         void apply_physics(pd::timedelta_t dt);
-        void handle_collisions(const glm::vec2 &delta);
+        void handle_collisions();
 
         void update(pd::timedelta_t dt);
         void render(pd::timedelta_t dt) const;

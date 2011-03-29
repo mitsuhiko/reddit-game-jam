@@ -52,14 +52,19 @@ void pd::player::apply_physics(float dt)
     m_velocity.x = pd::clamp(m_velocity.x, -max_movement_speed, max_movement_speed);
 
     // apply velocity
-    handle_collisions(m_velocity * dt);
+    glm::vec2 old_pos = pos();
+    pos(glm::round(pos() + m_velocity * dt));
+
+    handle_collisions();
+    if (pos().x == old_pos.x)
+        m_velocity.x = 0.0f;
+    if (pos().y == old_pos.y)
+        m_velocity.y = 0.0f;
 }
 
-void pd::player::handle_collisions(const glm::vec2 &delta)
+void pd::player::handle_collisions()
 {
     glm::vec2 old_pos = pos();
-    pos(pos() + delta);
-
     pd::aabb bb = bounding_box();
     float tile_width = (float)session()->map()->tile_width();
     float tile_height = (float)session()->map()->tile_height();
@@ -70,8 +75,6 @@ void pd::player::handle_collisions(const glm::vec2 &delta)
     int bottom_tile = (int)std::ceil(bb.bottom() / tile_height);
 
     m_on_ground = false;
-    bool collision_detected = false;
-
 
     for (int y = top_tile; y <= bottom_tile; y++) {
         for (int x = left_tile; x <= right_tile; x++) {
@@ -81,33 +84,28 @@ void pd::player::handle_collisions(const glm::vec2 &delta)
                 continue;
 
             pd::aabb block_bb = block->bounding_box();
-            glm::vec2 depth = bounding_box().intersection_depth(block_bb);
+            glm::vec2 depth = bb.intersection_depth(block_bb);
             if (depth == glm::vec2())
                 continue;
 
             glm::vec2 abs_depth = glm::abs(depth);
-            if (abs_depth.y <= abs_depth.x ||
+            glm::vec2 correction;
+            if (abs_depth.y < abs_depth.x ||
                 block->collision() == pd::block::semi_passable) {
                 if (m_previous_bottom <= block_bb.top())
                     m_on_ground = true;
 
                 if (m_on_ground ||
-                    block->collision() == pd::block::impassable) {
-                    pos(pos() + glm::vec2(0.0f, depth.y));
-                    collision_detected = true;
-                }
-            } else if (block->collision() == pd::block::impassable) {
-                pos(pos() + glm::vec2(depth.x, 0.0f));
-                collision_detected = true;
+                    block->collision() == pd::block::impassable)
+                    correction.y = depth.y;
+            } else if (block->collision() == pd::block::impassable)
+                correction.x = depth.x;
+
+            if (correction != glm::vec2()) {
+                pos(pos() + correction);
+                bb = bounding_box();
             }
         }
-    }
-
-    if (collision_detected) {
-        if (pd::almost_equal(pos().x, old_pos.x))
-            m_velocity.x = 0.0f;
-        if (pd::almost_equal(pos().y, old_pos.y))
-            m_velocity.y = 0.0f;
     }
 
     m_previous_bottom = bb.bottom();
