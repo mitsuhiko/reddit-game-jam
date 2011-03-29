@@ -4,6 +4,8 @@
 
 namespace pd {
 
+    class player;
+
     class camera {
     public:
         camera();
@@ -12,6 +14,8 @@ namespace pd {
 
     private:
         glm::vec2 m_pos;
+        glm::vec2 m_velocity;
+        glm::vec2 m_acceleration;
     };
 }
 

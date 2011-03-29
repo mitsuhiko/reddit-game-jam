@@ -24,6 +24,7 @@ namespace pd {
         bool looks_left() const { return m_flipped; }
         
         void apply_physics(pd::timedelta_t dt);
+        const glm::vec2 &velocity() const { return m_velocity; }
 
         void update(pd::timedelta_t dt);
         void render(pd::timedelta_t dt) const;

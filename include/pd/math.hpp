@@ -2,12 +2,14 @@
 #define _INC_PD_MATH_HPP_
 #include <pd/pd.hpp>
 #include <pd/config.hpp>
+#include <cmath>
 #include <limits>
 
 
 namespace pd {
 
     static const double pi = 3.14159265358979323846;
+    static const double e = 2.718281828459045;
 
     template <class T>
     T sign(T val)
