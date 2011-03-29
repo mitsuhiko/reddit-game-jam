@@ -94,7 +94,7 @@ void pd::game_session::handle_event(SDL_Event &evt, pd::timedelta_t dt)
             pd::game::instance().screen(pd::main_menu::instance());
             // suicide, because the main menu adds a new instance
             delete this;
-            break;
+            return;
         }
     }
 }

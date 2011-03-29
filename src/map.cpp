@@ -106,3 +106,8 @@ pd::aabb pd::block::bounding_box() const
     glm::vec2 size(m_map->tile_width(), m_map->tile_height());
     return pd::aabb(pos, pos + size);
 }
+
+pd::block::block_collision pd::block::collision() const
+{
+    return pd::block::impassable;
+}

@@ -72,8 +72,8 @@ namespace pd {
     template <class T>
     bool almost_equal(T a, T b)
     {
-        return (a - std::numeric_limits<T>::epsilon() < b &&
-                a + std::numeric_limits<T>::epsilon() > b);
+        static const T e = std::numeric_limits<T>::epsilon() / T(2);
+        return (a - e < b && a + e > b);
     }
 
     template <class T, class F>

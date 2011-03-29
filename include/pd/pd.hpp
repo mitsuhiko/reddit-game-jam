@@ -39,8 +39,12 @@
 #endif
 
 /* logging */
-#define PD_LOG(Comp, Expr) do { \
-    std::clog << "[" << Comp << "] " << Expr << std::endl; \
+#define PD_LOG(Expr) do { \
+    std::string _filename(__FILE__); \
+    size_t pos = _filename.find_last_of("\\/"); \
+    if (pos != std::string::npos) \
+        _filename = _filename.substr(pos + 1); \
+    std::clog << "[" << _filename << "] " << Expr << std::endl; \
 } while (0)
 
 /* if things go south. */

@@ -17,17 +17,32 @@ namespace pd {
         };
 
         player(pd::game_session *session, const glm::vec2 &pos);
+
         float energy() const { return m_energy; }
         stance_type stance() const { return thermal_stance; }
+        bool on_ground() const { return m_on_ground; }
+        bool looks_right() const { return !m_flipped; }
+        bool looks_left() const { return m_flipped; }
         
+        float apply_jump(float velocity_y, float dt);
+        void apply_physics(pd::timedelta_t dt);
+        void handle_collisions(const glm::vec2 &delta);
+
         void update(pd::timedelta_t dt);
         void render(pd::timedelta_t dt) const;
 
     private:
+        glm::vec2 m_velocity;
         pd::animation m_thermal_idle_anim;
         pd::animation m_flamethrower_anim;
+        float m_movement;
         float m_energy;
-        pd::timedelta_t m_movement_time;
+        float m_previous_bottom;
+        float m_jump_time;
+        bool m_tries_jumping;
+        bool m_was_jumping;
+        bool m_flipped;
+        bool m_on_ground;
     };
 }
 
