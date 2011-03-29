@@ -20,7 +20,6 @@ namespace pd {
 
         float energy() const { return m_energy; }
         stance_type stance() const { return thermal_stance; }
-        bool on_ground() const { return m_on_ground; }
         bool looks_right() const { return !m_flipped; }
         bool looks_left() const { return m_flipped; }
         
@@ -40,7 +39,6 @@ namespace pd {
         bool m_tries_jumping;
         bool m_was_jumping;
         bool m_flipped;
-        bool m_on_ground;
     };
 }
 
