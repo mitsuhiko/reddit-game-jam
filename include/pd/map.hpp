@@ -49,10 +49,6 @@ namespace pd {
             return m_blocks[(y * m_width) + x];
         }
 
-        pd::aabb bounding_box(int x, int y) const
-        {
-        }
-
         pd::game_session *session() { return m_session; }
         const pd::game_session *session() const { return m_session; }
 

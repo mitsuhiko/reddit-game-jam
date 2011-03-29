@@ -76,8 +76,6 @@ pd::game_session::~game_session()
 
 void pd::game_session::update(pd::timedelta_t dt)
 {
-    uint8_t *state = SDL_GetKeyboardState(0);
-
     m_player->update(dt);
     for (std::vector<pd::enemy *>::iterator iter = m_enemies.begin();
          iter != m_enemies.end(); ++iter)
