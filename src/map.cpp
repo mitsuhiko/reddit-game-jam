@@ -83,8 +83,8 @@ void pd::map::render_tile(int x, int y, pd::map::tile_id_t tile) const
         return;
     std::map<tile_id_t, pd::texture *>::const_iterator iter = m_tiles.find(tile);
     assert(iter != m_tiles.end());
-    pd::draw_textured_quad(glm::vec2((float)x * m_tile_width,
-                                     (float)y * m_tile_height), iter->second);
+    pd::draw_quad(iter->second, glm::vec2((float)x * m_tile_width,
+                                          (float)y * m_tile_height));
 }
 
 void pd::map::render() const

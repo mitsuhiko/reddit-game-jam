@@ -1,6 +1,7 @@
 #ifndef _INC_PD_ANIMATION_HPP_
 #define _INC_PD_ANIMATION_HPP_
 #include <pd/pd.hpp>
+#include <pd/drawtools.hpp>
 
 namespace pd {
 
@@ -10,8 +11,13 @@ namespace pd {
     public:
         animation(pd::texture *texture, int frames, float anim_speed = 0.0f);
         void update(pd::timedelta_t dt);
-        void render(const glm::vec2 &pos = glm::vec2()) const;
-        void render_frame(int frame, const glm::vec2 &pos = glm::vec2()) const;
+
+        void draw(const glm::vec2 &pos = glm::vec2(),
+                  draw_effect effect = draw_without_effect,
+                  pd::color color = pd::color()) const;
+        void draw_frame(int frame, const glm::vec2 &pos = glm::vec2(),
+                        draw_effect effect = draw_without_effect,
+                        pd::color color = pd::color()) const;
 
         int current_frame() const { return m_current_frame; }
         int frames() const { return m_frames; }

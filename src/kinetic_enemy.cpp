@@ -96,19 +96,14 @@ bool pd::kinetic_enemy::can_see(const pd::entity *other) const
 
 void pd::kinetic_enemy::render(pd::timedelta_t dt) const
 {
-    pd::push_matrix();
-    pd::translate(pos());
+    draw_effect effect = draw_without_effect;
+    if (m_direction < 0.0f)
+        effect = draw_flipped_vertically;
 
-    if (m_direction < 0.0f) {
-        pd::scale(glm::vec2(-1.0f, 1.0f));
-        pd::translate(glm::vec2(-width(), 0.0f));
-    }
-
-    if (m_state == prepare_dashing_state || m_state == dashing_state) {
-        m_dash_anim.render_frame(dashing() ? 1 : 0, glm::vec2(-60.0f, 0.0f));
-    } else {
-        m_walk_anim.render();
-    }
-
-    pd::pop_matrix();
+    if (m_state == prepare_dashing_state || m_state == dashing_state)
+        m_dash_anim.draw_frame(dashing() ? 1 : 0,
+                               pos() + glm::vec2(-60.0f, 0.0f),
+                               effect);
+    else
+        m_walk_anim.draw(pos(), effect);
 }

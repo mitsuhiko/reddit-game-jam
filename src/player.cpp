@@ -97,19 +97,12 @@ void pd::player::update(pd::timedelta_t dt)
 
 void pd::player::render(pd::timedelta_t dt) const
 {
-    static const glm::vec2 hovering(0.0f, -14.0f);
+    const glm::vec2 pos = this->pos() + glm::vec2(0.0f, -14.0f);
+    draw_effect effect = draw_without_effect;
+    if (m_flipped)
+        effect = draw_flipped_vertically;
 
-    pd::push_matrix();
-    pd::translate(pos() + hovering);
-
-    if (m_flipped) {
-        pd::scale(glm::vec2(-1.0f, 1.0f));
-        pd::translate(glm::vec2(-width(), 0.0f));
-    }
-
-    m_thermal_idle_anim.render();
+    m_thermal_idle_anim.draw(pos, effect);
     if (m_shooting)
-        m_flamethrower_anim.render(glm::vec2(70.0f, 14.0f));
-
-    pd::pop_matrix();
+        m_flamethrower_anim.draw(pos + glm::vec2(70.0f, 14.0f), effect);
 }

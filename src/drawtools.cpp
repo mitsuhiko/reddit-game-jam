@@ -4,18 +4,6 @@
 #include <vector>
 
 
-void pd::reset_color()
-{
-    glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
-}
-
-void pd::set_color(pd::color color)
-{
-    float col[4];
-    color.to_float(col);
-    glColor4fv(col);
-}
-
 void pd::clear_screen(pd::color color)
 {
     float col[4];
@@ -24,7 +12,22 @@ void pd::clear_screen(pd::color color)
     glClear(GL_COLOR_BUFFER_BIT);
 }
 
-void pd::draw_textured_quad(const glm::vec2 &pos, float width, float height, const pd::texture *texture)
+void pd::draw_quad(const pd::texture *texture)
+{
+    draw_quad(texture, glm::vec2(0.0f, 0.0f),
+              texture->width(), texture->height());
+}
+
+void pd::draw_quad(const pd::texture *texture, const glm::vec2 &pos,
+                   draw_effect effect, pd::color color)
+{
+    draw_quad(texture, pos, texture->width(), texture->height(),
+              effect, color);
+}
+
+void pd::draw_quad(const pd::texture *texture, const glm::vec2 &pos,
+                   float width, float height, draw_effect effect,
+                   pd::color color)
 {
     float x = pos.x;
     float y = pos.y;
@@ -46,21 +49,28 @@ void pd::draw_textured_quad(const glm::vec2 &pos, float width, float height, con
         fac_x + off_x, off_y
     };
 
+    if ((effect & draw_flipped_horizontally) != 0) {
+        std::swap(texcoords[1], texcoords[3]);
+        std::swap(texcoords[5], texcoords[7]);
+    }
+    if ((effect & draw_flipped_vertically) != 0) {
+        std::swap(texcoords[0], texcoords[4]);
+        std::swap(texcoords[2], texcoords[6]);
+    }
+
+    float col[4];
+    color.to_float(col);
+    glColor4fv(col);
     glVertexPointer(2, GL_FLOAT, 0, vertices);
     glTexCoordPointer(2, GL_FLOAT, 0, texcoords);
     glDrawArrays(GL_QUADS, 0, 4);
 }
 
-void pd::draw_textured_quad(const glm::vec2 &pos, const pd::texture *texture)
-{
-    pd::draw_textured_quad(pos, (float)texture->width(), (float)texture->height(), texture);
-}
-
-void pd::draw_text(const std::string &text, const glm::vec2 &pos, const pd::font *font)
+void pd::draw_text(const std::string &text, const glm::vec2 &pos,
+                   const pd::font *font, pd::color color)
 {
     glm::vec2 cur_pos = pos;
 
-    /* XXX: write the quads into a vector and draw them at once */
     for (size_t i = 0; i < text.size(); i++) {
         unsigned char c = text[i];
         if (c == '\n') {
@@ -71,10 +81,9 @@ void pd::draw_text(const std::string &text, const glm::vec2 &pos, const pd::font
 
         const glyph_info &glyph = font->get(c);
         if (glyph.texture)
-            draw_textured_quad(cur_pos + glm::vec2(glyph.xoff, glyph.yoff),
-                               (float)glyph.texture->width(),
-                               (float)glyph.texture->height(),
-                               glyph.texture);
+            draw_quad(glyph.texture,
+                      cur_pos + glm::vec2(glyph.xoff, glyph.yoff),
+                      draw_without_effect, color);
         cur_pos.x += glyph.advance;
     }
 }

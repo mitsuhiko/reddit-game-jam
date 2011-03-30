@@ -18,16 +18,18 @@ void pd::animation::update(pd::timedelta_t dt)
         m_current_frame = (m_current_frame + 1) % m_frames;
 }
 
-void pd::animation::render(const glm::vec2 &pos) const
+void pd::animation::draw(const glm::vec2 &pos, draw_effect effect,
+                         pd::color color) const
 {
-    render_frame(m_current_frame, pos);
+    draw_frame(m_current_frame, pos, effect, color);
 }
 
-void pd::animation::render_frame(int frame, const glm::vec2 &pos) const
+void pd::animation::draw_frame(int frame, const glm::vec2 &pos,
+                               draw_effect effect, pd::color color) const
 {
     assert(frame < m_frames);
     int slice_width = m_texture->width() / m_frames;
     pd::texture_slice texture(m_texture, frame * slice_width,
         0, slice_width, m_texture->height());
-    pd::draw_textured_quad(pos, &texture);
+    pd::draw_quad(&texture, pos, effect, color);
 }

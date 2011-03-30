@@ -29,9 +29,9 @@ namespace pd {
 
         void render(const glm::vec2 &pos, float value)
         {
-            pd::draw_textured_quad(pos, m_panel);
-            pd::draw_textured_quad(pos + m_bar_offset,
-                m_bar->width() * value, (float)m_bar->height(), m_bar);
+            pd::draw_quad(m_panel, pos);
+            pd::draw_quad(m_bar, pos + m_bar_offset,
+                          m_bar->width() * value, (float)m_bar->height());
         }
 
     private:
