@@ -1,7 +1,6 @@
 #ifndef _INC_PD_AABB_HPP_
 #define _INC_PD_AABB_HPP_
 #include <pd/pd.hpp>
-#include <sstream>
 
 namespace pd {
 
@@ -13,12 +12,34 @@ namespace pd {
         {
         }
 
+        static pd::aabb make_box(const glm::vec2 &point,
+                                 float width, float height)
+        {
+            pd::aabb rv(point, point + glm::vec2(width, height));
+            if (rv.v1.x > rv.v2.x)
+                std::swap(rv.v1.x, rv.v2.x);
+            if (rv.v1.y > rv.v2.y)
+                std::swap(rv.v1.y, rv.v2.y);
+            return rv;
+        }
+
         float left() const { return v1.x; }
         float top() const { return v1.y; }
         float right() const { return v2.x; }
         float bottom() const { return v2.y; }
         float width() const { return right() - left(); }
         float height() const { return bottom() - top(); }
+
+        glm::vec2 center() const
+        {
+            return glm::vec2(left() + width() / 2.0f,
+                             top() + height() / 2.0f);
+        }
+
+        glm::vec2 center_top() const
+        {
+            return glm::vec2(left() + width() / 2.0f, top());
+        }
 
         bool intersects(const aabb &other) const
         {

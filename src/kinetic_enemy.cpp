@@ -56,7 +56,9 @@ void pd::kinetic_enemy::update(pd::timedelta_t dt)
 
 bool pd::kinetic_enemy::can_see(const pd::entity *other) const
 {
-    return false;
+    pd::aabb sight_box = pd::aabb::make_box(bounding_box().center_top(),
+                                            300.0f * m_direction, height());
+    return other->bounding_box().intersects(sight_box);
 }
 
 void pd::kinetic_enemy::render(pd::timedelta_t dt) const
@@ -70,7 +72,7 @@ void pd::kinetic_enemy::render(pd::timedelta_t dt) const
     }
 
     if (m_dash_countdown >= 0.0f || m_dashing) {
-        m_dash_anim.render_frame(m_dashing ? 1 : 0, glm::vec2(60.0f, 0.0f));
+        m_dash_anim.render_frame(m_dashing ? 1 : 0, glm::vec2(-60.0f, 0.0f));
     } else {
         m_walk_anim.render();
     }
