@@ -19,7 +19,7 @@ namespace pd {
     private:
         pd::animation m_walk_anim;
         pd::animation m_dash_anim;
-        glm::vec2 m_velocity;
+        int m_direction;
         bool m_dashing;
         pd::timedelta_t m_dash_countdown;
     };

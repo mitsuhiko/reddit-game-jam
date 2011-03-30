@@ -52,8 +52,7 @@ pd::map::map(pd::game_session *session, std::string filename)
     for (int y = 0; y < m_height; y++) {
         for (int x = 0; x < m_width; x++) {
             tile_id_t tile = foreground[(y * m_width) + x];
-            pd::block *block = tile ? new pd::block(this, tile, x, y) : 0;
-            m_blocks[(y * m_width) + x] = block;
+            m_blocks[(y * m_width) + x] = new pd::block(this, tile, x, y);
         }
     }
  
@@ -85,9 +84,7 @@ void pd::map::render() const
     for (int y = 0; y < m_height; y++) {
         for (int x = 0; x < m_width; x++) {
             render_tile(x, y, get_bg(x, y));
-            const pd::block *block = get_block(x, y);
-            if (block)
-                render_tile(x, y, block->tile());
+            render_tile(x, y, get_block(x, y)->tile());
         }
     }
 }
@@ -109,5 +106,7 @@ pd::aabb pd::block::bounding_box() const
 
 pd::block::block_collision pd::block::collision() const
 {
+    if (m_tile == 0)
+        return pd::block::passable;
     return pd::block::impassable;
 }

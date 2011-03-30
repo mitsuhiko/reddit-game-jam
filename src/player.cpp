@@ -59,12 +59,11 @@ void pd::player::apply_physics(float dt)
     else
         m_velocity.x *= air_drag_factor;
 
-    // maximum speed
-    m_velocity.x = pd::clamp(m_velocity.x, -max_movement_speed, max_movement_speed);
+    m_velocity.x = pd::clamp(m_velocity.x, -max_movement_speed,
+                             max_movement_speed);
 
-    // apply velocity
     glm::vec2 old_pos = pos();
-    pos(pos() + m_velocity * dt);
+    move(m_velocity * dt);
 
     handle_collisions();
     if (pos().x == old_pos.x)

@@ -43,8 +43,9 @@ void pd::entity::handle_collisions()
     for (int y = top_tile; y <= bottom_tile; y++) {
         for (int x = left_tile; x <= right_tile; x++) {
             const pd::block *block = session()->map()->get_block(x, y);
+            pd::block::block_collision collision = block->collision();
 
-            if (!block || block->collision() == pd::block::passable)
+            if (collision == pd::block::passable)
                 continue;
 
             pd::aabb block_bb = block->bounding_box();
@@ -55,14 +56,13 @@ void pd::entity::handle_collisions()
             glm::vec2 abs_depth = glm::abs(depth);
             glm::vec2 correction;
             if (abs_depth.y < abs_depth.x ||
-                block->collision() == pd::block::semi_passable) {
+                collision == pd::block::semi_passable) {
                 if (m_previous_bottom <= block_bb.top())
                     m_on_ground = true;
 
-                if (m_on_ground ||
-                    block->collision() == pd::block::impassable)
+                if (m_on_ground || collision == pd::block::impassable)
                     correction.y = depth.y;
-            } else if (block->collision() == pd::block::impassable) {
+            } else if (collision == pd::block::impassable) {
                 correction.x = depth.x;
             }
 

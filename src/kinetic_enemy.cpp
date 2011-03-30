@@ -18,12 +18,34 @@ pd::kinetic_enemy::kinetic_enemy(pd::game_session *session,
     m_dash_anim(pd::get_resource<pd::texture>("textures/enemy_kinetic_dash.png"), 2)
 {
     m_dashing = false;
+    m_direction = 1;
     m_dash_countdown = -1.0f;
 }
 
 void pd::kinetic_enemy::update(pd::timedelta_t dt)
 {
+    if (m_dash_countdown >= 0.0f) {
+        if ((m_dash_countdown -= dt) < 0.0f) {
+            m_dashing = true;
+            m_dash_countdown = -1.0f;
+        }
+        return;
+    }
+
+    const pd::map *map = session()->map();
+    float edge = pos().x + (m_direction > 0 ? width() : 0);
+    int tile_x = (int)(edge / map->tile_width()) + m_direction;
+    int tile_y = (int)((pos().y + height()) / map->tile_height());
+    const pd::block *block_same = map->get_block(tile_x, tile_y);
+    const pd::block *block_bottom = map->get_block(tile_x, tile_y + 1);
+
+    if (block_same->collision() == pd::block::impassable ||
+        block_bottom->collision() == pd::block::passable)
+        m_direction *= -1;
+
     m_walk_anim.update(dt);
+    float speed = m_dashing ? dash_speed : movement_speed;
+    move(glm::vec2(m_direction * speed, 0.0f) * dt);
 }
 
 bool pd::kinetic_enemy::starts_dashing() const
@@ -33,9 +55,19 @@ bool pd::kinetic_enemy::starts_dashing() const
 
 void pd::kinetic_enemy::render(pd::timedelta_t dt) const
 {
-    if (m_dash_countdown > 0.0f || m_dashing) {
-        m_dash_anim.render_frame(m_dashing ? 1 : 0, pos() - glm::vec2(60.0f, 0.0f));
-    } else {
-        m_walk_anim.render(pos());
+    pd::push_matrix();
+    pd::translate(pos());
+
+    if (m_direction < 0.0f) {
+        pd::scale(glm::vec2(-1.0f, 1.0f));
+        pd::translate(glm::vec2(-width(), 0.0f));
     }
+
+    if (m_dash_countdown >= 0.0f || m_dashing) {
+        m_dash_anim.render_frame(m_dashing ? 1 : 0, glm::vec2(60.0f, 0.0f));
+    } else {
+        m_walk_anim.render();
+    }
+
+    pd::pop_matrix();
 }
