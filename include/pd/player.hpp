@@ -25,6 +25,7 @@ namespace pd {
         
         void apply_physics(pd::timedelta_t dt);
         const glm::vec2 &velocity() const { return m_velocity; }
+        void velocity(const glm::vec2 &val) { m_velocity = val; }
 
         void update(pd::timedelta_t dt);
         void render(pd::timedelta_t dt) const;

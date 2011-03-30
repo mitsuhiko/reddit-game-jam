@@ -60,7 +60,7 @@ pd::game_session::game_session()
 	m_map = new pd::map(this, "maps/testlevel.map");
 
     m_player = new pd::player(this, glm::vec2(400.0f, 0.0f));
-    m_enemies.push_back(new pd::kinetic_enemy(this, glm::vec2(64.0f, 224.0f)));
+    m_enemies.push_back(new pd::kinetic_enemy(this, glm::vec2(100.0f, 0.0f)));
 }
 
 pd::game_session::~game_session()

@@ -11,6 +11,7 @@ namespace pd {
     class kinetic_enemy : public pd::enemy {
     public:
         enum state {
+            spawn_state,
             turning_state,
             walking_state,
             prepare_dashing_state,
@@ -29,6 +30,7 @@ namespace pd {
         pd::animation m_walk_anim;
         pd::animation m_dash_anim;
         int m_direction;
+        bool m_hit_player;
         state m_state;
         pd::timedelta_t m_state_countdown;
     };

@@ -12,8 +12,7 @@ static const float jump_speed = 120.0f;
 static const float movement_speed = 110.0f;
 static const float max_movement_speed = 1000.0f;
 static const float movement_acceleration = 14000.0f;
-static const float ground_drag_factor = 0.58f;
-static const float air_drag_factor = 0.45f;
+static const float drag_factor = 0.45f;
 static const float max_jump_time = 0.35f;
 static const float jump_launch_velocity = -2600.0f;
 static const float jump_control_power = 0.14f;
@@ -54,12 +53,7 @@ void pd::player::apply_physics(float dt)
     }
     m_was_jumping = m_tries_jumping;
 
-    // pseudo drag
-    if (on_ground())
-        m_velocity.x *= ground_drag_factor;
-    else
-        m_velocity.x *= air_drag_factor;
-
+    m_velocity.x *= drag_factor;
     m_velocity.x = pd::clamp(m_velocity.x, -max_movement_speed,
                              max_movement_speed);
 
