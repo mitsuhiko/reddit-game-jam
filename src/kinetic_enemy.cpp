@@ -102,7 +102,7 @@ void pd::kinetic_enemy::render(pd::timedelta_t dt) const
 
     if (m_state == prepare_dashing_state || m_state == dashing_state)
         m_dash_anim.draw_frame(dashing() ? 1 : 0,
-                               pos() + glm::vec2(-60.0f, 0.0f),
+                               pos() + glm::vec2(-26.0f, -17.0f),
                                effect);
     else
         m_walk_anim.draw(pos(), effect);
