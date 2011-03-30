@@ -35,6 +35,8 @@ namespace pd {
 
         void *m_internal_rnd;
     };
+
+    pd::rnd &default_rnd();
 }
 
 #endif

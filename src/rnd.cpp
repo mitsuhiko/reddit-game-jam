@@ -3,6 +3,13 @@
 #include <mtrand.h>
 
 
+static pd::rnd _default_rnd;
+
+pd::rnd &pd::default_rnd()
+{
+    return _default_rnd;
+}
+
 pd::rnd::rnd()
 {
     m_internal_rnd = new MTRand((uint32_t)pd::seconds_since_epoch());
