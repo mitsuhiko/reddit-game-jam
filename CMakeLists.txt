@@ -19,6 +19,8 @@ set(GAME_SOURCES
     src/resource_manager.cpp
     src/animation.cpp
 	src/camera.cpp
+	src/rnd.cpp
+	src/utils.cpp
 
 	src/screen.cpp
 	src/main_menu.cpp
@@ -46,6 +48,8 @@ set(GAME_HEADERS
 	include/pd/camera.hpp
     include/pd/config.hpp
     include/pd/aabb.hpp
+	include/pd/rnd.hpp
+	include/pd/utils.hpp
 
 	include/pd/screen.hpp
 	include/pd/main_menu.hpp
@@ -79,6 +83,8 @@ find_library(SDLMAIN_LIBRARY
 
 find_package(OpenGL REQUIRED)
 
+add_subdirectory(libs/vendor/mtrand)
+
 set(EXTRA_LIBS "")
 if(APPLE)
     set(CMAKE_C_FLAGS "-g -Wall")
@@ -91,6 +97,7 @@ include_directories(
 	${SDL_INCLUDE}
 	${CMAKE_CURRENT_SOURCE_DIR}/libs/vendor
 	${CMAKE_CURRENT_SOURCE_DIR}/libs/vendor/utfcpp
+	${CMAKE_CURRENT_SOURCE_DIR}/libs/vendor/mtrand
 	${CMAKE_CURRENT_SOURCE_DIR}/libs/freetype-2.4.4/include
     ${CMAKE_CURRENT_SOURCE_DIR}/libs/glm-0.9.1.1
 )
@@ -111,6 +118,7 @@ target_link_libraries(
 	${FREETYPE_LIBRARY}
     ${GLEW_LIBRARY}	
 	${EXTRA_LIBS}
+	mtrand
 )
 
 if(APPLE)
