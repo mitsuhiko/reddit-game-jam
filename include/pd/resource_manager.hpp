@@ -24,8 +24,11 @@ namespace pd {
             std::map<std::string, pd::resource_base *>::iterator iter;
             for (int i = m_stack.size() - 1; i >= 0; i--) {
                 iter = m_stack[i].find(filename);
-                if (iter != m_stack[i].end())
-                    return (T *)iter->second;
+                if (iter != m_stack[i].end()) {
+                    T *ptr = dynamic_cast<T *>(iter->second);
+                    assert(ptr);
+                    return ptr;
+                }
             }
             T *rv = T::load_as_resource(filename);
             rv->m_resmgr = this;
