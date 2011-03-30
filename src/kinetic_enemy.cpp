@@ -6,9 +6,9 @@
 #include <pd/game_session.hpp>
 
 static const float movement_speed = 100.0f;
-static const float dash_speed = 700.0f;
+static const float dash_speed = 500.0f;
 static const float dash_countdown = 0.3f;
-static const float dash_activation_distance = 300.0f;
+static const float see_distance = 300.0f;
 
 
 pd::kinetic_enemy::kinetic_enemy(pd::game_session *session,
@@ -32,6 +32,11 @@ void pd::kinetic_enemy::update(pd::timedelta_t dt)
         return;
     }
 
+    if (!m_dashing && can_see(session()->player())) {
+        m_dash_countdown = dash_countdown;
+        return;
+    }
+
     const pd::map *map = session()->map();
     float edge = pos().x + (m_direction > 0 ? width() : 0);
     int tile_x = (int)(edge / map->tile_width()) + m_direction;
@@ -39,15 +44,17 @@ void pd::kinetic_enemy::update(pd::timedelta_t dt)
     pd::collision_flag same_coll = map->get_collision(tile_x, tile_y);
     pd::collision_flag bottom_coll = map->get_collision(tile_x, tile_y + 1);
 
-    if (same_coll == pd::impassable || bottom_coll == pd::passable)
+    if (same_coll == pd::impassable || bottom_coll == pd::passable) {
         m_direction *= -1;
+        m_dashing = false;
+    }
 
     m_walk_anim.update(dt);
     float speed = m_dashing ? dash_speed : movement_speed;
     move(glm::vec2(m_direction * speed, 0.0f) * dt);
 }
 
-bool pd::kinetic_enemy::starts_dashing() const
+bool pd::kinetic_enemy::can_see(const pd::entity *other) const
 {
     return false;
 }

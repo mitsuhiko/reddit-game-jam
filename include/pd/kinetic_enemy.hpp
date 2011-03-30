@@ -12,7 +12,7 @@ namespace pd {
     public:
         kinetic_enemy(pd::game_session *session, const glm::vec2 &pos);
 
-        bool starts_dashing() const;
+        bool can_see(const pd::entity *other) const;
         void update(pd::timedelta_t dt);
         void render(pd::timedelta_t dt) const;
 
