@@ -13,6 +13,12 @@ namespace pd {
     class texture;
     class game_session;
 
+    enum collision_flag {
+        passable,
+        impassable,
+        semi_passable
+    };
+
     class map {
     public:
         typedef unsigned char tile_id_t;
@@ -49,6 +55,8 @@ namespace pd {
             return m_blocks[(y * m_width) + x];
         }
 
+        collision_flag get_collision(int x, int y) const;
+
         pd::game_session *session() { return m_session; }
         const pd::game_session *session() const { return m_session; }
 
@@ -69,11 +77,6 @@ namespace pd {
 
     class block {
     public:
-        enum block_collision {
-            passable,
-            impassable,
-            semi_passable
-        };
 
         static const pd::map::tile_id_t metal_type = 129;
         static const pd::map::tile_id_t ice_type = 130;
@@ -86,7 +89,7 @@ namespace pd {
         int x() const { return m_x; }
         int y() const { return m_y; }
         const pd::map::tile_id_t tile() const { return m_tile; }
-        block_collision collision() const;
+        collision_flag collision() const;
 
     private:
         pd::map *m_map;

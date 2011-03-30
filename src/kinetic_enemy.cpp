@@ -36,11 +36,10 @@ void pd::kinetic_enemy::update(pd::timedelta_t dt)
     float edge = pos().x + (m_direction > 0 ? width() : 0);
     int tile_x = (int)(edge / map->tile_width()) + m_direction;
     int tile_y = (int)((pos().y + height()) / map->tile_height());
-    const pd::block *block_same = map->get_block(tile_x, tile_y);
-    const pd::block *block_bottom = map->get_block(tile_x, tile_y + 1);
+    pd::collision_flag same_coll = map->get_collision(tile_x, tile_y);
+    pd::collision_flag bottom_coll = map->get_collision(tile_x, tile_y + 1);
 
-    if (block_same->collision() == pd::block::impassable ||
-        block_bottom->collision() == pd::block::passable)
+    if (same_coll == pd::impassable || bottom_coll == pd::passable)
         m_direction *= -1;
 
     m_walk_anim.update(dt);

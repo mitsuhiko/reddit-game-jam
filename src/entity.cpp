@@ -30,8 +30,9 @@ void pd::entity::handle_collisions()
 {
     glm::vec2 old_pos = pos();
     pd::aabb bb = bounding_box();
-    float tile_width = (float)session()->map()->tile_width();
-    float tile_height = (float)session()->map()->tile_height();
+    const pd::map *map = session()->map();
+    float tile_width = (float)map->tile_width();
+    float tile_height = (float)map->tile_height();
 
     int left_tile = (int)std::floor(bb.left() / tile_width);
     int right_tile = (int)std::ceil(bb.right() / tile_width) - 1;
@@ -42,27 +43,24 @@ void pd::entity::handle_collisions()
 
     for (int y = top_tile; y <= bottom_tile; y++) {
         for (int x = left_tile; x <= right_tile; x++) {
-            const pd::block *block = session()->map()->get_block(x, y);
-            pd::block::block_collision collision = block->collision();
+            pd::collision_flag collision = map->get_collision(x, y);
 
-            if (collision == pd::block::passable)
+            if (collision == pd::passable)
                 continue;
 
-            pd::aabb block_bb = block->bounding_box();
+            pd::aabb block_bb = map->get_block(x, y)->bounding_box();
             glm::vec2 depth = bounding_box().intersection_depth(block_bb);
             if (depth == glm::vec2())
                 continue;
 
             glm::vec2 abs_depth = glm::abs(depth);
             glm::vec2 correction;
-            if (abs_depth.y < abs_depth.x ||
-                collision == pd::block::semi_passable) {
+            if (abs_depth.y < abs_depth.x || collision == pd::semi_passable) {
                 if (m_previous_bottom <= block_bb.top())
                     m_on_ground = true;
-
-                if (m_on_ground || collision == pd::block::impassable)
+                if (m_on_ground || collision == pd::impassable)
                     correction.y = depth.y;
-            } else if (collision == pd::block::impassable) {
+            } else if (collision == pd::impassable) {
                 correction.x = depth.x;
             }
 

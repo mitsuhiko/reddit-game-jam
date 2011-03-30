@@ -30,6 +30,7 @@ pd::player::player(pd::game_session *session, const glm::vec2 &pos)
     m_flipped = false;
     m_tries_jumping = false;
     m_was_jumping = false;
+    m_shooting = false;
 }
 
 void pd::player::apply_physics(float dt)
@@ -62,6 +63,7 @@ void pd::player::apply_physics(float dt)
     m_velocity.x = pd::clamp(m_velocity.x, -max_movement_speed,
                              max_movement_speed);
 
+    // position updates
     glm::vec2 old_pos = pos();
     move(m_velocity * dt);
 
@@ -86,6 +88,7 @@ void pd::player::update(pd::timedelta_t dt)
         m_movement = 0.0f;
 
     m_tries_jumping = state[SDL_SCANCODE_SPACE] != 0;
+    m_shooting = state[SDL_SCANCODE_LSHIFT] != 0;
 
     apply_physics(dt);
 
@@ -111,7 +114,8 @@ void pd::player::render(pd::timedelta_t dt) const
     }
 
     m_thermal_idle_anim.render();
-    m_flamethrower_anim.render(glm::vec2(70.0f, 14.0f));
+    if (m_shooting)
+        m_flamethrower_anim.render(glm::vec2(70.0f, 14.0f));
 
     pd::pop_matrix();
 }

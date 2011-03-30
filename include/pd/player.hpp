@@ -40,6 +40,7 @@ namespace pd {
         bool m_tries_jumping;
         bool m_was_jumping;
         bool m_flipped;
+        bool m_shooting;
     };
 }
 
