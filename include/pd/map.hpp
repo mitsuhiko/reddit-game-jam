@@ -27,6 +27,7 @@ namespace pd {
 	    ~map();
         
 	    void render() const;
+        void draw_tile_bounds() const;
 
         int width() const { return m_width; }
         int height() const { return m_height; }

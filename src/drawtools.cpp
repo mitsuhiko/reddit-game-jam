@@ -1,6 +1,7 @@
 #include <pd/drawtools.hpp>
 #include <pd/texture.hpp>
 #include <pd/font.hpp>
+#include <pd/aabb.hpp>
 #include <vector>
 
 
@@ -86,4 +87,31 @@ void pd::draw_text(const std::string &text, const glm::vec2 &pos,
                       draw_without_effect, color);
         cur_pos.x += glyph.advance;
     }
+}
+
+void pd::draw_debug_box(const glm::vec2 &pos, float width, float height,
+                        pd::color color)
+{
+    float x = pos.x;
+    float y = pos.y;
+    float vertices[] = {
+        x, y,
+        x, y + height,
+        x + width, y + height,
+        x + width, y
+    };
+
+    glBindTexture(GL_TEXTURE_2D, 0);
+    float col[4];
+    color.to_float(col);
+    glColor4fv(col);
+    glVertexPointer(2, GL_FLOAT, 0, vertices);
+    glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+    glDrawArrays(GL_LINE_LOOP, 0, 4);
+    glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+}
+
+void pd::draw_debug_box(const pd::aabb &aabb, pd::color color)
+{
+    draw_debug_box(aabb.v1, aabb.width(), aabb.height(), color);
 }

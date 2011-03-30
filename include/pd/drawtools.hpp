@@ -7,6 +7,7 @@ namespace pd {
 
         class texture;
         class font;
+        class aabb;
 
         enum draw_effect {
             draw_without_effect = 0,
@@ -24,6 +25,11 @@ namespace pd {
                        float width, float height,
                        draw_effect effect = draw_without_effect,
                        pd::color color = pd::color());
+
+        void draw_debug_box(const glm::vec2 &pos, float width, float height,
+                            pd::color color = pd::color());
+        void draw_debug_box(const pd::aabb &aabb,
+                            pd::color color = pd::color());
 
         void draw_text(const std::string &text, const glm::vec2 &pos,
                        const pd::font *font, pd::color color = pd::color());

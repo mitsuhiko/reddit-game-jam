@@ -87,6 +87,18 @@ void pd::map::render_tile(int x, int y, pd::map::tile_id_t tile) const
                                           (float)y * m_tile_height));
 }
 
+void pd::map::draw_tile_bounds() const
+{
+    for (int y = 0; y < m_height; y++) {
+        for (int x = 0; x < m_width; x++) {
+            pd::collision_flag c = get_collision(x, y);
+            pd::draw_debug_box(glm::vec2(x * m_tile_width, y * m_tile_height),
+                               m_tile_width, m_tile_height,
+                               c ? 0xffff00ff : 0x333333ff);
+        }
+    }
+}
+
 void pd::map::render() const
 {
     pd::clear_screen(m_background_color);

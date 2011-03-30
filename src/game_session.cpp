@@ -61,6 +61,8 @@ pd::game_session::game_session()
 
     m_player = new pd::player(this, glm::vec2(400.0f, 0.0f));
     m_enemies.push_back(new pd::kinetic_enemy(this, glm::vec2(100.0f, 0.0f)));
+
+    m_draw_bounds = false;
 }
 
 pd::game_session::~game_session()
@@ -93,6 +95,9 @@ void pd::game_session::handle_event(SDL_Event &evt, pd::timedelta_t dt)
             // suicide, because the main menu adds a new instance
             delete this;
             return;
+        case SDLK_b:
+            m_draw_bounds = !m_draw_bounds;
+            break;
         }
     }
 }
@@ -109,6 +114,14 @@ void pd::game_session::render(pd::timedelta_t dt) const
     for (std::vector<pd::enemy *>::const_iterator iter = m_enemies.begin();
          iter != m_enemies.end(); ++iter)
         (*iter)->render(dt);
+
+    if (m_draw_bounds) {
+        m_map->draw_tile_bounds();
+        pd::draw_debug_box(m_player->bounding_box(), 0x336699ff);
+        for (std::vector<pd::enemy *>::const_iterator iter = m_enemies.begin();
+             iter != m_enemies.end(); ++iter)
+            pd::draw_debug_box((*iter)->bounding_box(), 0xff0000ff);
+    }
 
     pd::pop_matrix();
     
