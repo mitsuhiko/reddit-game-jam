@@ -94,7 +94,7 @@ void pd::map::draw_tile_bounds() const
             pd::collision_flag c = get_collision(x, y);
             pd::draw_debug_box(glm::vec2(x * m_tile_width, y * m_tile_height),
                                m_tile_width, m_tile_height,
-                               c ? 0xffff00ff : 0x333333ff);
+                               c ? 0xb5cf2faa : 0x33333311);
         }
     }
 }

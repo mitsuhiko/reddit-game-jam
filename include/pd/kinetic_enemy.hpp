@@ -12,10 +12,10 @@ namespace pd {
     public:
         enum state {
             spawn_state,
-            turning_state,
             walking_state,
             prepare_dashing_state,
-            dashing_state
+            dashing_state,
+            dash_recover_state
         };
 
         kinetic_enemy(pd::game_session *session, const glm::vec2 &pos);

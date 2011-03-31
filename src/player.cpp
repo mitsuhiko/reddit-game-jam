@@ -97,7 +97,7 @@ void pd::player::update(pd::timedelta_t dt)
 
 void pd::player::render(pd::timedelta_t dt) const
 {
-    const glm::vec2 pos = this->pos() + glm::vec2(0.0f, -14.0f);
+    glm::vec2 pos = this->pos() + glm::vec2(-10.0f, -14.0f);
     draw_effect effect = draw_without_effect;
     if (m_flipped)
         effect = draw_flipped_vertically;

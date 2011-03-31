@@ -1,8 +1,8 @@
 #include <pd/game.hpp>
 #include <pd/main_menu.hpp>
 
-static const int window_width = 800;
-static const int window_height = 450;
+static const int window_width = 1280;
+static const int window_height = 720;
 static const int fps_limit = 62;
 
 pd::game *pd::game::s_instance;
@@ -39,7 +39,7 @@ pd::game::game()
 
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    glOrtho(0.0f, 800.0f, 450.0f, 0.0f, 0.0f, 1000.0f);
+    glOrtho(0.0f, window_width, window_height, 0.0f, 0.0f, 1000.0f);
 
     glEnable(GL_TEXTURE_2D);
     glEnable(GL_BLEND);

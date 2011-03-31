@@ -29,8 +29,8 @@ void pd::kinetic_enemy::update(pd::timedelta_t dt)
 {
     const pd::map *map = session()->map();
     float edge = pos().x + (m_direction > 0 ? width() : 0);
-    int tile_x = (int)(edge / map->tile_width()) + m_direction;
-    int tile_y = (int)((pos().y + height()) / map->tile_height());
+    int tile_x = (int)(edge / map->tile_width());
+    int tile_y = (int)((pos().y + height()) / map->tile_height()) - 1;
     m_state_countdown -= dt;
 
     switch (m_state) {
@@ -41,16 +41,13 @@ void pd::kinetic_enemy::update(pd::timedelta_t dt)
         pd::collision_flag coll = map->get_collision(tile_x, tile_y);
         if (coll == pd::passable)
             move(glm::vec2(0.0f, dy));
-        else
+        else {
+            // beam us down to the tile height
+            pos(glm::vec2(pos().x, map->tile_height() * tile_y - height()));
             m_state = walking_state;
-        return;
-    }
-    case turning_state:
-        if (m_state_countdown < 0.0f) {
-            m_state = walking_state;
-            m_direction *= -1;
         }
         return;
+    }
     case prepare_dashing_state:
         if (m_state_countdown < 0.0f) {
             m_state = dashing_state;
@@ -68,17 +65,27 @@ void pd::kinetic_enemy::update(pd::timedelta_t dt)
         if (!m_hit_player &&
             bounding_box().intersects(session()->player()->bounding_box())) {
             m_hit_player = true;
-            // TODO: move and damage player
         }
         break;
+    case dash_recover_state:
+        if (m_state_countdown < 0.0f) {
+            m_direction *= -1;
+            m_state = walking_state;
+        }
+        return;
     }
 
     pd::collision_flag same_coll = map->get_collision(tile_x, tile_y);
     pd::collision_flag bottom_coll = map->get_collision(tile_x, tile_y + 1);
 
     if (same_coll == pd::impassable || bottom_coll == pd::passable) {
-        m_state_countdown = pd::default_rnd().range(0.2f, 0.4f);
-        m_state = turning_state;
+        if (m_state == dashing_state) {
+            m_state_countdown = pd::default_rnd().range(0.1f, 0.3f);
+            m_state = dash_recover_state;
+        } else {
+            m_state = walking_state;
+            m_direction *= -1;
+        }
     }
 
     m_walk_anim.update(dt);
@@ -96,13 +103,16 @@ bool pd::kinetic_enemy::can_see(const pd::entity *other) const
 
 void pd::kinetic_enemy::render(pd::timedelta_t dt) const
 {
+    const glm::vec2 pos = this->pos() + glm::vec2(-15.0f, -8.0f);
     draw_effect effect = draw_without_effect;
     if (m_direction < 0.0f)
         effect = draw_flipped_vertically;
 
-    if (m_state == prepare_dashing_state || m_state == dashing_state)
+    if (m_state == prepare_dashing_state ||
+        m_state == dashing_state ||
+        m_state == dash_recover_state)
         m_dash_anim.draw_frame(dashing() ? 1 : 0,
-                               pos() + glm::vec2(-26.0f, -17.0f), effect);
+                               pos + glm::vec2(-26.0f, -17.0f), effect);
     else
-        m_walk_anim.draw(pos(), effect);
+        m_walk_anim.draw(pos, effect);
 }
