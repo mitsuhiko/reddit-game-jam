@@ -16,13 +16,13 @@ void pd::clear_screen(pd::color color)
 void pd::draw_quad(const pd::texture *texture)
 {
     draw_quad(texture, glm::vec2(0.0f, 0.0f),
-              texture->width(), texture->height());
+              (float)texture->width(), (float)texture->height());
 }
 
 void pd::draw_quad(const pd::texture *texture, const glm::vec2 &pos,
                    draw_effect effect, pd::color color)
 {
-    draw_quad(texture, pos, texture->width(), texture->height(),
+    draw_quad(texture, pos, (float)texture->width(), (float)texture->height(),
               effect, color);
 }
 

@@ -93,7 +93,7 @@ void pd::map::draw_tile_bounds() const
         for (int x = 0; x < m_width; x++) {
             pd::collision_flag c = get_collision(x, y);
             pd::draw_debug_box(glm::vec2(x * m_tile_width, y * m_tile_height),
-                               m_tile_width, m_tile_height,
+                               (float)m_tile_width, (float)m_tile_height,
                                c ? 0xb5cf2faa : 0x33333311);
         }
     }

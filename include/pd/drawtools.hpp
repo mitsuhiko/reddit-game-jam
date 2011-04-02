@@ -7,7 +7,7 @@ namespace pd {
 
         class texture;
         class font;
-        class aabb;
+        struct aabb;
 
         enum draw_effect {
             draw_without_effect = 0,
