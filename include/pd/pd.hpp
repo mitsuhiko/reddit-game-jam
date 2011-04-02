@@ -62,11 +62,6 @@ namespace pd {
     }
 
     typedef float timedelta_t;
-
-    inline unsigned int get_ticks()
-    {
-        return SDL_GetTicks();
-    }
 }
 
 #endif

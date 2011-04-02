@@ -13,3 +13,9 @@ int64_t pd::seconds_since_epoch()
     return (int64_t)rv;
 #endif
 }
+
+
+uint64_t pd::get_ticks()
+{
+    return SDL_GetTicks();
+}

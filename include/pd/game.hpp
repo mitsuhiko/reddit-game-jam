@@ -41,7 +41,7 @@ namespace pd {
         bool m_running;
         pd::resource_manager m_resmgr;
         static pd::game *s_instance;
-        unsigned int m_last_delay;
+        uint64_t m_last_delay;
     };
 
 

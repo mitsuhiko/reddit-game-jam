@@ -5,6 +5,8 @@
 namespace pd {
 
     int64_t seconds_since_epoch();
+
+    uint64_t get_ticks();
 }
 
 #endif

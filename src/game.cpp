@@ -1,5 +1,6 @@
 #include <pd/game.hpp>
 #include <pd/main_menu.hpp>
+#include <pd/utils.hpp>
 
 static const int window_width = 1280;
 static const int window_height = 720;
@@ -66,7 +67,7 @@ void pd::game::swap(pd::timedelta_t dt)
 {
     pd::timedelta_t diff = (1.0f / fps_limit) - dt;
 
-    unsigned int delay = (unsigned int)std::max(0.0f, diff * 1000.0f) + m_last_delay;
+    uint64_t delay = (uint64_t)std::max(0.0f, diff * 1000.0f) + m_last_delay;
     m_last_delay = delay;
 
     glFlush();
@@ -79,7 +80,7 @@ void pd::game::swap(pd::timedelta_t dt)
 void pd::game::run()
 {
     SDL_Event evt;
-    unsigned int old_ticks = 0;
+    uint64_t old_ticks = 0;
 
     while (m_running) {
         pd::timedelta_t dt = (pd::get_ticks() - old_ticks) / 1000.0f;
