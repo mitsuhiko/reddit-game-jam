@@ -6,13 +6,29 @@
 namespace pd {
 
     template <class T>
+    struct _lexical_caster {
+        static T cast(const std::string &value, bool &ok)
+        {
+            std::stringstream ss(value);
+            T rv = T();
+            ss >> std::skipws >> rv >> std::ws;
+            ok = !ss.fail() && ss.eof();
+            return rv;
+        }
+    };
+
+    template <>
+    struct _lexical_caster<std::string> {
+        const std::string &cast(const std::string &value, bool &ok)
+        {
+            return value;
+        }
+    };
+
+    template <class T>
     T lexical_cast(const std::string &value, bool &ok)
     {
-        std::stringstream ss(value);
-        T rv = T();
-        ss >> std::skipws >> rv >> std::ws;
-        ok = !ss.fail() && ss.eof();
-        return rv;
+        return _lexical_caster<T>::cast(value, ok);
     }
 
     template <class T>
