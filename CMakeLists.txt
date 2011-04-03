@@ -50,6 +50,7 @@ set(GAME_HEADERS
     include/pd/aabb.hpp
 	include/pd/rnd.hpp
 	include/pd/utils.hpp
+    include/pd/xml.hpp
 
 	include/pd/screen.hpp
 	include/pd/main_menu.hpp
@@ -84,6 +85,7 @@ find_library(SDLMAIN_LIBRARY
 find_package(OpenGL REQUIRED)
 
 add_subdirectory(libs/vendor/mtrand)
+add_subdirectory(libs/vendor/tinyxml)
 
 set(EXTRA_LIBS "")
 if(APPLE)
@@ -119,6 +121,7 @@ target_link_libraries(
     ${GLEW_LIBRARY}	
 	${EXTRA_LIBS}
 	mtrand
+    tinyxml
 )
 
 if(APPLE)

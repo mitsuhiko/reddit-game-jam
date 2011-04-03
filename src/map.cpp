@@ -4,44 +4,93 @@
 #include <pd/texture.hpp>
 #include <pd/drawtools.hpp>
 #include <pd/lexical_cast.hpp>
+#include <pd/xml.hpp>
 #include <sstream>
-#include <fstream>
+
+
+static void read_block_data(pd::map::tile_id_t *target, int width, int height,
+                            const std::string &csv)
+{
+    std::stringstream ss(csv);
+
+    for (int y = 0; y < height; y++) {
+        std::string line;
+        std::getline(ss, line);
+        std::stringstream liness(line);
+        for (int x = 0; x < width; x++) {
+            std::string val;
+            std::getline(liness, val, ',');
+            int t = pd::lexical_cast<int>(val);
+            target[(y * width) + x] = (pd::map::tile_id_t)t;
+        }
+    }
+}
 
 
 pd::map::map(pd::game_session *session, std::string filename)
 {
     m_session = session;
 
-    std::ifstream in(filename.c_str());
-    if (!in.good()) {
+    pd::xml_document doc;
+    if (!doc.load(filename)) {
         std::stringstream ss;
         ss << "Unable to load map from '" << filename << "'";
         pd::critical_error("Cannot load map", ss.str());
     }
 
-    std::string tileset, width, height, tile_width, tile_height, background_color;
-    std::getline(in, tileset, '\0');
-    std::getline(in, width, '\0');
-    std::getline(in, height, '\0');
-    std::getline(in, tile_width, '\0');
-    std::getline(in, tile_height, '\0');
-    std::getline(in, background_color, '\0');
-    m_width = pd::lexical_cast<int>(width);
-    m_height = pd::lexical_cast<int>(height);
-    m_tile_width = pd::lexical_cast<int>(tile_width);
-    m_tile_height = pd::lexical_cast<int>(tile_height);
-    m_background_color = pd::color(background_color);
+    pd::xml_element root = doc.root();
 
-    m_background = new tile_id_t[m_width * m_height];
+    // general properties
+    m_width = pd::lexical_cast<int>(root.attr("width"));
+    m_height = pd::lexical_cast<int>(root.attr("height"));
+    m_tile_width = pd::lexical_cast<int>(root.attr("tilewidth"));
+    m_tile_height = pd::lexical_cast<int>(root.attr("tileheight"));
+    pd::xml_element properties = root.first_child("properties");
+    for (pd::xml_element prop = properties.first_child(); prop;
+         prop = prop.next_sibling()) {
+        if (prop.attr("name") == "background") {
+            m_background_color = pd::color(prop.attr("value"));
+            break;
+        }
+    }
+
+    m_background = 0;
+    tile_id_t *foreground = 0;
+
+    for (pd::xml_element layer = root.first_child("layer"); layer;
+         layer = layer.next_sibling("layer")) {
+        pd::xml_element data = layer.first_child();
+        if (data.attr("encoding") != "csv")
+            pd::critical_error("Cannot load map",
+                "Currently only CSV encoded TMX files are supported");
+
+        std::string name = layer.attr("name");
+        tile_id_t **target;
+        if (name == "background")
+            target = &m_background;
+        else if (name == "foreground")
+            target = &foreground;
+        else
+            pd::critical_error("Cannot load map",
+                "Only two layers allowed 'foreground' and 'background'");
+        if (*target)
+            pd::critical_error("Cannot load map", "Map layer defined twice");
+        *target = new pd::map::tile_id_t[m_width * m_height];
+        read_block_data(*target, m_width, m_height, data.text());
+    }
+
+    if (!m_background || !foreground)
+        pd::critical_error("Cannot load map", "Not all layers were specified");
+    
     m_blocks = new pd::block*[m_width * m_height];
 
-    in.read((char *)m_background, m_width * m_height);
-
-    tile_id_t *foreground = new tile_id_t[m_width * m_height];
-    in.read((char *)foreground, m_width * m_height);
-
-    m_tileset = pd::get_resource<pd::texture>(tileset);
-    tile_id_t i = 1;
+    pd::xml_element tileset = root.first_child("tileset");
+    std::string texture_filename = tileset.first_child().attr("source");
+    if (texture_filename.size() > 3 &&
+        texture_filename.substr(0, 3) == "../")
+        texture_filename = texture_filename.substr(3);
+    m_tileset = pd::get_resource<pd::texture>(texture_filename);
+    tile_id_t i = (tile_id_t)pd::lexical_cast<int>(tileset.attr("firstgid"));
     for (int y = 0; y < m_tileset->height(); y += m_tile_height) {
         for (int x = 0; x < m_tileset->width(); x += m_tile_width) {
             pd::texture *tile = m_tileset->slice(x, y, m_tile_width, m_tile_height);

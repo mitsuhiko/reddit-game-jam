@@ -57,7 +57,7 @@ pd::game_session::game_session()
     m_cam = new pd::camera();
 
     // create test environment
-	m_map = new pd::map(this, "maps/testlevel.map");
+	m_map = new pd::map(this, "maps/level01.tmx");
 
     m_player = new pd::player(this, pd::vec2(400.0f, 0.0f));
     m_enemies.push_back(new pd::kinetic_enemy(this, pd::vec2(100.0f, 0.0f)));
