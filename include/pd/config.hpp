@@ -7,6 +7,12 @@ namespace pd {
     namespace config {
         void load();
 
+        struct animation_config {
+            std::string texture;
+            int frames;
+            float speed;
+        };
+
         struct _world {
             float gravity_acceleration;
             float max_fall_speed;
@@ -21,6 +27,11 @@ namespace pd {
             float max_jump_time;
             float jump_launch_velocity;
             float jump_control_power;
+
+            animation_config thermal_idle;
+            animation_config kinetic_idle;
+            animation_config electromagnetic_idle;
+            animation_config flamethrower;
         };
 
         extern _world world;

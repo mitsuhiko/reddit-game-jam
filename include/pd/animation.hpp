@@ -6,9 +6,11 @@
 namespace pd {
 
     class texture;
+    namespace config { struct animation_config; }
 
     class animation {
     public:
+        animation(const pd::config::animation_config &cfg);
         animation(pd::texture *texture, int frames, float anim_speed = 0.0f);
         void update(pd::timedelta_t dt);
 

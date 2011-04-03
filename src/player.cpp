@@ -12,11 +12,10 @@ static pd::config::_player &cfg = pd::config::player;
 
 
 pd::player::player(pd::game_session *session, const pd::vec2 &pos)
-    : pd::entity(session, pos),
-      m_thermal_idle_anim(pd::get_resource<pd::texture>("textures/character_thermal_idle.png"), 17, 0.05f),
-      m_kinetic_idle_anim(pd::get_resource<pd::texture>("textures/character_kinetic_idle.png"), 11, 0.05f),
-      m_electromagnetic_idle_anim(pd::get_resource<pd::texture>("textures/character_electromagnetic_idle.png"), 16, 0.05f),
-      m_flamethrower_anim(pd::get_resource<pd::texture>("textures/flamer.png"), 5, 0.1f)
+    : pd::entity(session, pos), m_thermal_idle_anim(cfg.thermal_idle),
+      m_kinetic_idle_anim(cfg.kinetic_idle),
+      m_electromagnetic_idle_anim(cfg.electromagnetic_idle),
+      m_flamethrower_anim(cfg.flamethrower)
 {
     m_stance = thermal_stance;
     m_energy = 1.0f;

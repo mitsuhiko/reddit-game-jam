@@ -10,4 +10,27 @@
     max-time="0.35"
     launch-velocity="-2600.0"
     control-power="0.14" />
+
+  <animations>
+    <animation
+      name="thermal_idle"
+      texture="textures/character_thermal_idle.png"
+      frames="17"
+      speed="0.05" />
+    <animation
+      name="kinetic_idle"
+      texture="textures/character_kinetic_idle.png"
+      frames="11"
+      speed="0.05" />
+    <animation
+      name="electromagnetic_idle"
+      texture="textures/character_electromagnetic_idle.png"
+      frames="16"
+      speed="0.05" />
+    <animation
+      name="flamethrower"
+      texture="textures/flamer.png"
+      frames="5"
+      speed="0.1" />
+  </animations>
 </player>

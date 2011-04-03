@@ -23,8 +23,9 @@ static void load_player_config()
 
     pd::config::_player &cfg = pd::config::player;
     pd::xml_document doc("config/player.xml");
-    pd::xml_element movement = doc.root().first_child("movement");
-    pd::xml_element jumping = doc.root().first_child("jumping");
+    pd::xml_element root = doc.root();
+    pd::xml_element movement = root.first_child("movement");
+    pd::xml_element jumping = root.first_child("jumping");
 
     cfg.max_movement_speed = movement.attr<float>("max-speed");
     cfg.max_kinetic_movement_speed = movement.attr<float>("max-kinetic-speed");
@@ -34,6 +35,27 @@ static void load_player_config()
     cfg.max_jump_time = jumping.attr<float>("max-time");
     cfg.jump_launch_velocity = jumping.attr<float>("launch-velocity");
     cfg.jump_control_power = jumping.attr<float>("control-power");
+
+    pd::xml_element animations = root.first_child("animations");
+    for (pd::xml_element animation = animations.first_child();
+         animation; animation = animation.next_sibling()) {
+        pd::config::animation_config *target;
+        std::string animation_name = animation.attr("name");
+        if (animation_name == "thermal_idle")
+            target = &cfg.thermal_idle;
+        else if (animation_name == "kinetic_idle")
+            target = &cfg.kinetic_idle;
+        else if (animation_name == "electromagnetic_idle")
+            target = &cfg.electromagnetic_idle;
+        else if (animation_name == "flamethrower")
+            target = &cfg.flamethrower;
+        else
+            continue;
+
+        target->texture = animation.attr("texture");
+        target->frames = animation.attr<int>("frames");
+        target->speed = animation.attr<float>("speed");
+    }
 }
 
 void pd::config::load()

@@ -1,7 +1,18 @@
 #include <pd/animation.hpp>
+#include <pd/game.hpp>
 #include <pd/texture.hpp>
 #include <pd/drawtools.hpp>
+#include <pd/config.hpp>
 
+
+pd::animation::animation(const pd::config::animation_config &cfg)
+{
+    m_texture = pd::get_resource<pd::texture>(cfg.texture);
+    m_frames = cfg.frames;
+    m_anim_speed = cfg.speed;
+    m_time = 0.0f;
+    m_current_frame = 0;
+}
 
 pd::animation::animation(pd::texture *texture, int frames, float anim_speed)
 {
