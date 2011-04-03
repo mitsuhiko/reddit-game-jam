@@ -35,8 +35,8 @@ pd::game::game()
     if (!win)
         pd::critical_error("Unable to create render window", SDL_GetError());
 
-    SDL_GL_SetSwapInterval(1);
     SDL_GLContext ctx = SDL_GL_CreateContext(win);
+    SDL_GL_SetSwapInterval(1);
 
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
