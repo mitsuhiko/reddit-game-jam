@@ -115,8 +115,9 @@ namespace pd {
     {
         return pd::vec2(
             vel.x,
-            pd::clamp(vel.y + pd::gravity_acceleration * dt,
-                      -pd::max_fall_speed, pd::max_fall_speed)
+            pd::clamp(vel.y + pd::config::world.gravity_acceleration * dt,
+                      -pd::config::world.max_fall_speed,
+                       pd::config::world.max_fall_speed)
         );
     }
 }

@@ -4,8 +4,28 @@
 
 namespace pd {
 
-    const float gravity_acceleration = 1000.0f;
-    const float max_fall_speed = 600.0f;
+    namespace config {
+        void load();
+
+        struct _world {
+            float gravity_acceleration;
+            float max_fall_speed;
+        };
+
+        struct _player {
+            float max_movement_speed;
+            float max_kinetic_movement_speed;
+            float movement_acceleration;
+            float kinetic_movement_acceleration;
+            float friction;
+            float max_jump_time;
+            float jump_launch_velocity;
+            float jump_control_power;
+        };
+
+        extern _world world;
+        extern _player player;
+    }
 }
 
 #endif

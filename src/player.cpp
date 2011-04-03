@@ -8,15 +8,7 @@
 #include <vector>
 
 
-static const float jump_speed = 120.0f;
-static const float max_movement_speed = 240.0f;
-static const float max_kinetic_movement_speed = 500.0f;
-static const float movement_acceleration = 1400.0f;
-static const float kinetic_movement_acceleration = 2400.0f;
-static const float friction = 5.0f;
-static const float max_jump_time = 0.35f;
-static const float jump_launch_velocity = -2600.0f;
-static const float jump_control_power = 0.14f;
+static pd::config::_player &cfg = pd::config::player;
 
 
 pd::player::player(pd::game_session *session, const pd::vec2 &pos)
@@ -39,9 +31,9 @@ pd::player::player(pd::game_session *session, const pd::vec2 &pos)
 void pd::player::apply_physics(float dt)
 {
     float acceleration = m_stance == kinetic_stance ?
-        kinetic_movement_acceleration : movement_acceleration;
+        cfg.kinetic_movement_acceleration : cfg.movement_acceleration;
     float max_speed = m_stance == kinetic_stance ?
-        max_kinetic_movement_speed : max_movement_speed;
+        cfg.max_kinetic_movement_speed : cfg.max_movement_speed;
 
     // gravity and base velocity
     m_velocity.x += m_movement * acceleration * dt;
@@ -54,15 +46,15 @@ void pd::player::apply_physics(float dt)
         if ((!m_was_jumping && on_ground()) || m_jump_time > 0.0f)
             m_jump_time += dt;
 
-        if (0.0f < m_jump_time && m_jump_time <= max_jump_time)
-            m_velocity.y = jump_launch_velocity * (1.0f -
-                pd::pow(m_jump_time / max_jump_time, jump_control_power));
+        if (0.0f < m_jump_time && m_jump_time <= cfg.max_jump_time)
+            m_velocity.y = cfg.jump_launch_velocity * (1.0f -
+                pd::pow(m_jump_time / cfg.max_jump_time, cfg.jump_control_power));
         else
             m_jump_time = 0.0f;
     }
     m_was_jumping = m_tries_jumping;
 
-    m_velocity.x *= 1.0f - friction * dt;
+    m_velocity.x *= 1.0f - cfg.friction * dt;
     m_velocity.x = pd::clamp(m_velocity.x, -max_speed, max_speed);
 
     // position updates

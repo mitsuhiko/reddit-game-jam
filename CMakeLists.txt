@@ -21,6 +21,7 @@ set(GAME_SOURCES
 	src/camera.cpp
 	src/rnd.cpp
 	src/utils.cpp
+    src/config.cpp
 
 	src/screen.cpp
 	src/main_menu.cpp

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<player>
+  <movement
+    max-speed="240.0"
+    max-kinetic-speed="500.0"
+    acceleration="1400.0"
+    kinetic-acceleration="2400.0"
+    friction="5.0" />
+  <jumping
+    max-time="0.35"
+    launch-velocity="-2600.0"
+    control-power="0.14" />
+</player>
