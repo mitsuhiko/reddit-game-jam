@@ -114,6 +114,8 @@ void pd::player::update(pd::timedelta_t dt)
     apply_physics(dt);
 
     m_thermal_idle_anim.update(dt);
+    m_kinetic_idle_anim.update(dt);
+    m_electromagnetic_idle_anim.update(dt);
     m_flamethrower_anim.update(dt);
     
     if (m_velocity.x < 0)
