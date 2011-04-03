@@ -75,9 +75,9 @@ void pd::game::run()
     uint64_t old_ticks = 0;
 
     while (m_running) {
-        pd::timedelta_t dt = (pd::get_ticks() - old_ticks) /
-            (pd::timedelta_t)pd::get_tick_frequency();
-        old_ticks = pd::get_ticks();
+        uint64_t now = pd::get_ticks();
+        pd::timedelta_t dt = (now - old_ticks) / pd::get_tick_frequency();
+        old_ticks = now;
 
         // this took way too long.  We probably had a suspended mainloop
         // (debugger, window moved etc.)

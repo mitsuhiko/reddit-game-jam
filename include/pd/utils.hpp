@@ -6,7 +6,9 @@ namespace pd {
 
     int64_t seconds_since_epoch();
 
-    inline uint64_t get_tick_frequency() { return 1000; }
+    void init_clock();
+
+    pd::timedelta_t get_tick_frequency();
 
     uint64_t get_ticks();
 
