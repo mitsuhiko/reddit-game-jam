@@ -16,7 +16,7 @@ namespace pd {
             electromagnetic_stance
         };
 
-        player(pd::game_session *session, const glm::vec2 &pos);
+        player(pd::game_session *session, const pd::vec2 &pos);
 
         float energy() const { return m_energy; }
         stance_type stance() const { return thermal_stance; }
@@ -24,14 +24,14 @@ namespace pd {
         bool looks_left() const { return m_flipped; }
         
         void apply_physics(pd::timedelta_t dt);
-        const glm::vec2 &velocity() const { return m_velocity; }
-        void velocity(const glm::vec2 &val) { m_velocity = val; }
+        const pd::vec2 &velocity() const { return m_velocity; }
+        void velocity(const pd::vec2 &val) { m_velocity = val; }
 
         void update(pd::timedelta_t dt);
         void render(pd::timedelta_t dt) const;
 
     private:
-        glm::vec2 m_velocity;
+        pd::vec2 m_velocity;
         pd::animation m_thermal_idle_anim;
         pd::animation m_flamethrower_anim;
         float m_movement;

@@ -18,7 +18,7 @@ static const float jump_launch_velocity = -2600.0f;
 static const float jump_control_power = 0.14f;
 
 
-pd::player::player(pd::game_session *session, const glm::vec2 &pos)
+pd::player::player(pd::game_session *session, const pd::vec2 &pos)
     : pd::entity(session, pos, 60.0f, 100.0f),
       m_thermal_idle_anim(pd::get_resource<pd::texture>("textures/character_thermal_idle.png"), 17, 0.05f),
       m_flamethrower_anim(pd::get_resource<pd::texture>("textures/flamer.png"), 5, 0.1f)
@@ -58,7 +58,7 @@ void pd::player::apply_physics(float dt)
                              max_movement_speed);
 
     // position updates
-    glm::vec2 old_pos = pos();
+    pd::vec2 old_pos = pos();
     move(m_velocity * dt);
 
     handle_collisions();
@@ -97,12 +97,12 @@ void pd::player::update(pd::timedelta_t dt)
 
 void pd::player::render(pd::timedelta_t dt) const
 {
-    glm::vec2 pos = this->pos() + glm::vec2(-10.0f, -14.0f);
+    pd::vec2 pos = this->pos() + pd::vec2(-10.0f, -14.0f);
     draw_effect effect = draw_without_effect;
     if (m_flipped)
         effect = draw_flipped_vertically;
 
     m_thermal_idle_anim.draw(pos, effect);
     if (m_shooting)
-        m_flamethrower_anim.draw(pos + glm::vec2(70.0f, 14.0f), effect);
+        m_flamethrower_anim.draw(pos + pd::vec2(70.0f, 14.0f), effect);
 }

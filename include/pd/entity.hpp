@@ -13,13 +13,13 @@ namespace pd {
 
     class entity {
     public:
-        entity(pd::game_session *session, const glm::vec2 &pos, float width = 0.0f,
+        entity(pd::game_session *session, const pd::vec2 &pos, float width = 0.0f,
                float height = 0.0f);
         virtual ~entity();
 
-        void pos(const glm::vec2 &pos) { m_pos = pos; }
-        const glm::vec2 &pos() const { return m_pos; }
-        void move(const glm::vec2 &vec) { m_pos += vec; }
+        void pos(const pd::vec2 &pos) { m_pos = pos; }
+        const pd::vec2 &pos() const { return m_pos; }
+        void move(const pd::vec2 &vec) { m_pos += vec; }
         bool on_ground() const { return m_on_ground; }
 
         float width() const { return m_width; }
@@ -36,7 +36,7 @@ namespace pd {
 
     private:
         pd::game_session *m_session;
-        glm::vec2 m_pos;
+        pd::vec2 m_pos;
         float m_width;
         float m_height;
         bool m_on_ground;

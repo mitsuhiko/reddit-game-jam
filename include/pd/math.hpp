@@ -2,6 +2,7 @@
 #define _INC_PD_MATH_HPP_
 #include <pd/pd.hpp>
 #include <pd/config.hpp>
+#include <glm/glm.hpp>
 #include <cmath>
 #include <limits>
 
@@ -10,6 +11,17 @@ namespace pd {
 
     static const double pi = 3.14159265358979323846;
     static const double e = 2.718281828459045;
+
+    /* use glm vectors for the time being.  I don't plan on replacing them
+       anytime soon, but maybe something better comes around so better be
+       prepaired. */
+    using glm::vec2;
+    using glm::mat2;
+    using glm::mat3;
+
+    /* vector helpers */
+    using glm::abs;
+    using std::abs;
 
     template <class T>
     T sign(T val)
@@ -87,9 +99,9 @@ namespace pd {
     }
 
     /* applies gravitiy on the velocity vector */
-    inline glm::vec2 apply_gravity(const glm::vec2 &vel, float dt)
+    inline pd::vec2 apply_gravity(const pd::vec2 &vel, float dt)
     {
-        return glm::vec2(
+        return pd::vec2(
             vel.x,
             pd::clamp(vel.y + pd::gravity_acceleration * dt,
                       -pd::max_fall_speed, pd::max_fall_speed)

@@ -6,7 +6,7 @@
 #include <pd/config.hpp>
 
 
-pd::entity::entity(pd::game_session *session, const glm::vec2 &pos, float width,
+pd::entity::entity(pd::game_session *session, const pd::vec2 &pos, float width,
                    float height)
 {
     m_session = session;
@@ -23,12 +23,12 @@ pd::entity::~entity()
 
 pd::aabb pd::entity::bounding_box() const
 {
-    return pd::aabb(m_pos, m_pos + glm::vec2(m_width, m_height));
+    return pd::aabb(m_pos, m_pos + pd::vec2(m_width, m_height));
 }
 
 void pd::entity::handle_collisions()
 {
-    glm::vec2 old_pos = pos();
+    pd::vec2 old_pos = pos();
     pd::aabb bb = bounding_box();
     const pd::map *map = session()->map();
     float tile_width = (float)map->tile_width();
@@ -49,12 +49,12 @@ void pd::entity::handle_collisions()
                 continue;
 
             pd::aabb block_bb = map->get_block(x, y)->bounding_box();
-            glm::vec2 depth = bounding_box().intersection_depth(block_bb);
-            if (depth == glm::vec2())
+            pd::vec2 depth = bounding_box().intersection_depth(block_bb);
+            if (depth == pd::vec2())
                 continue;
 
-            glm::vec2 abs_depth = glm::abs(depth);
-            glm::vec2 correction;
+            pd::vec2 abs_depth = pd::abs(depth);
+            pd::vec2 correction;
             if (abs_depth.y < abs_depth.x || collision == pd::semi_passable) {
                 if (m_previous_bottom <= block_bb.top())
                     m_on_ground = true;
@@ -64,7 +64,7 @@ void pd::entity::handle_collisions()
                 correction.x = depth.x;
             }
 
-            if (correction != glm::vec2())
+            if (correction != pd::vec2())
                 pos(pos() + correction);
         }
     }

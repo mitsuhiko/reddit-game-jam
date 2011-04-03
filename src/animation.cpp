@@ -18,13 +18,13 @@ void pd::animation::update(pd::timedelta_t dt)
         m_current_frame = (m_current_frame + 1) % m_frames;
 }
 
-void pd::animation::draw(const glm::vec2 &pos, draw_effect effect,
+void pd::animation::draw(const pd::vec2 &pos, draw_effect effect,
                          pd::color color) const
 {
     draw_frame(m_current_frame, pos, effect, color);
 }
 
-void pd::animation::draw_frame(int frame, const glm::vec2 &pos,
+void pd::animation::draw_frame(int frame, const pd::vec2 &pos,
                                draw_effect effect, pd::color color) const
 {
     assert(frame < m_frames);

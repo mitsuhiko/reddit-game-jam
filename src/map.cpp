@@ -83,7 +83,7 @@ void pd::map::render_tile(int x, int y, pd::map::tile_id_t tile) const
         return;
     std::map<tile_id_t, pd::texture *>::const_iterator iter = m_tiles.find(tile);
     assert(iter != m_tiles.end());
-    pd::draw_quad(iter->second, glm::vec2((float)x * m_tile_width,
+    pd::draw_quad(iter->second, pd::vec2((float)x * m_tile_width,
                                           (float)y * m_tile_height));
 }
 
@@ -92,7 +92,7 @@ void pd::map::draw_tile_bounds() const
     for (int y = 0; y < m_height; y++) {
         for (int x = 0; x < m_width; x++) {
             pd::collision_flag c = get_collision(x, y);
-            pd::draw_debug_box(glm::vec2(x * m_tile_width, y * m_tile_height),
+            pd::draw_debug_box(pd::vec2(x * m_tile_width, y * m_tile_height),
                                (float)m_tile_width, (float)m_tile_height,
                                c ? 0xb5cf2faa : 0x33333311);
         }
@@ -122,8 +122,8 @@ pd::block::block(pd::map *map, pd::map::tile_id_t tile, int x, int y)
 
 pd::aabb pd::block::bounding_box() const
 {
-    glm::vec2 pos(m_map->tile_width() * m_x, m_map->tile_height() * m_y);
-    glm::vec2 size(m_map->tile_width(), m_map->tile_height());
+    pd::vec2 pos(m_map->tile_width() * m_x, m_map->tile_height() * m_y);
+    pd::vec2 size(m_map->tile_width(), m_map->tile_height());
     return pd::aabb(pos, pos + size);
 }
 

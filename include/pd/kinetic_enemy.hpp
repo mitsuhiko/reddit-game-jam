@@ -18,7 +18,7 @@ namespace pd {
             dash_recover_state
         };
 
-        kinetic_enemy(pd::game_session *session, const glm::vec2 &pos);
+        kinetic_enemy(pd::game_session *session, const pd::vec2 &pos);
 
         bool can_see(const pd::entity *other) const;
         bool dashing() const { return m_state == dashing_state; }

@@ -10,7 +10,7 @@ namespace pd {
 
     class enemy : public pd::entity {
     public:
-        enemy(pd::game_session *session, const glm::vec2 &pos,
+        enemy(pd::game_session *session, const pd::vec2 &pos,
               float width, float height);
     };
 }

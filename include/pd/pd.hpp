@@ -28,9 +28,6 @@
 #include <cassert>
 #include <iostream>
 
-/* glm base functionality */
-#include <glm/glm.hpp>
-
 /* we also include SDL by default */
 #include <SDL.h>
 #include <SDL_opengl.h>

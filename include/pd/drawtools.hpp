@@ -2,6 +2,7 @@
 #define _INC_PD_DRAWTOOLS_HPP_
 #include <pd/pd.hpp>
 #include <pd/color.hpp>
+#include <pd/math.hpp>
 
 namespace pd {
 
@@ -18,20 +19,20 @@ namespace pd {
         void clear_screen(pd::color color);
 
         void draw_quad(const pd::texture *texture);
-        void draw_quad(const pd::texture *texture, const glm::vec2 &pos,
+        void draw_quad(const pd::texture *texture, const pd::vec2 &pos,
                        draw_effect effect = draw_without_effect,
                        pd::color color = pd::color());
-        void draw_quad(const pd::texture *texture, const glm::vec2 &pos,
+        void draw_quad(const pd::texture *texture, const pd::vec2 &pos,
                        float width, float height,
                        draw_effect effect = draw_without_effect,
                        pd::color color = pd::color());
 
-        void draw_debug_box(const glm::vec2 &pos, float width, float height,
+        void draw_debug_box(const pd::vec2 &pos, float width, float height,
                             pd::color color = pd::color());
         void draw_debug_box(const pd::aabb &aabb,
                             pd::color color = pd::color());
 
-        void draw_text(const std::string &text, const glm::vec2 &pos,
+        void draw_text(const std::string &text, const pd::vec2 &pos,
                        const pd::font *font, pd::color color = pd::color());
 
         /* alternative names for opengl methods and some other thin
@@ -39,7 +40,7 @@ namespace pd {
            move to custom matrix stacks. */
         inline void push_matrix() { glPushMatrix(); }
         inline void pop_matrix() { glPopMatrix(); }
-        inline void translate(const glm::vec2 &pos)
+        inline void translate(const pd::vec2 &pos)
         {
             glTranslatef(pos.x, pos.y, 0.0f);
         }
@@ -49,7 +50,7 @@ namespace pd {
             glRotatef(angle, 0.0f, 0.0f, 1.0f);
         }
 
-        inline void rotate_around_point(float angle, const glm::vec2 &pos)
+        inline void rotate_around_point(float angle, const pd::vec2 &pos)
         {
             if (angle >= -10e-5 && angle <= 10e-5f)
                 return;
@@ -58,7 +59,7 @@ namespace pd {
         translate(-pos);
     }
 
-    inline void scale(const glm::vec2 &factor)
+    inline void scale(const pd::vec2 &factor)
     {
         glScalef(factor.x, factor.y, 1.0f);
     }

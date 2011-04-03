@@ -16,7 +16,7 @@ namespace pd {
         {
             m_panel = tex->slice(pbx1, pby1, pbx2 - pbx1, pby2 - pby1);
             m_bar = tex->slice(bbx1, bby1, bbx2 - bbx1, bby2 - bby1);
-            m_bar_offset = glm::vec2(box, boy);
+            m_bar_offset = pd::vec2(box, boy);
         }
 
         ~game_power_bar()
@@ -27,7 +27,7 @@ namespace pd {
 
         int height() const { return m_panel->height(); }
 
-        void render(const glm::vec2 &pos, float value)
+        void render(const pd::vec2 &pos, float value)
         {
             pd::draw_quad(m_panel, pos);
             pd::draw_quad(m_bar, pos + m_bar_offset,
@@ -37,7 +37,7 @@ namespace pd {
     private:
         pd::texture *m_panel;
         pd::texture *m_bar;
-        glm::vec2 m_bar_offset;
+        pd::vec2 m_bar_offset;
     };
 }
 
@@ -59,8 +59,8 @@ pd::game_session::game_session()
     // create test environment
 	m_map = new pd::map(this, "maps/testlevel.map");
 
-    m_player = new pd::player(this, glm::vec2(400.0f, 0.0f));
-    m_enemies.push_back(new pd::kinetic_enemy(this, glm::vec2(100.0f, 0.0f)));
+    m_player = new pd::player(this, pd::vec2(400.0f, 0.0f));
+    m_enemies.push_back(new pd::kinetic_enemy(this, pd::vec2(100.0f, 0.0f)));
 
     m_draw_bounds = false;
 }
@@ -145,5 +145,5 @@ void pd::game_session::render_gui(pd::timedelta_t dt) const
         assert(false);
     }
 
-    bar->render(glm::vec2(10.0f, 10.0f), m_player->energy());
+    bar->render(pd::vec2(10.0f, 10.0f), m_player->energy());
 }

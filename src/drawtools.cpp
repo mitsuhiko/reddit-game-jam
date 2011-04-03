@@ -15,18 +15,18 @@ void pd::clear_screen(pd::color color)
 
 void pd::draw_quad(const pd::texture *texture)
 {
-    draw_quad(texture, glm::vec2(0.0f, 0.0f),
+    draw_quad(texture, pd::vec2(0.0f, 0.0f),
               (float)texture->width(), (float)texture->height());
 }
 
-void pd::draw_quad(const pd::texture *texture, const glm::vec2 &pos,
+void pd::draw_quad(const pd::texture *texture, const pd::vec2 &pos,
                    draw_effect effect, pd::color color)
 {
     draw_quad(texture, pos, (float)texture->width(), (float)texture->height(),
               effect, color);
 }
 
-void pd::draw_quad(const pd::texture *texture, const glm::vec2 &pos,
+void pd::draw_quad(const pd::texture *texture, const pd::vec2 &pos,
                    float width, float height, draw_effect effect,
                    pd::color color)
 {
@@ -67,10 +67,10 @@ void pd::draw_quad(const pd::texture *texture, const glm::vec2 &pos,
     glDrawArrays(GL_QUADS, 0, 4);
 }
 
-void pd::draw_text(const std::string &text, const glm::vec2 &pos,
+void pd::draw_text(const std::string &text, const pd::vec2 &pos,
                    const pd::font *font, pd::color color)
 {
-    glm::vec2 cur_pos = pos;
+    pd::vec2 cur_pos = pos;
 
     for (size_t i = 0; i < text.size(); i++) {
         unsigned char c = text[i];
@@ -83,13 +83,13 @@ void pd::draw_text(const std::string &text, const glm::vec2 &pos,
         const glyph_info &glyph = font->get(c);
         if (glyph.texture)
             draw_quad(glyph.texture,
-                      cur_pos + glm::vec2(glyph.xoff, glyph.yoff),
+                      cur_pos + pd::vec2(glyph.xoff, glyph.yoff),
                       draw_without_effect, color);
         cur_pos.x += glyph.advance;
     }
 }
 
-void pd::draw_debug_box(const glm::vec2 &pos, float width, float height,
+void pd::draw_debug_box(const pd::vec2 &pos, float width, float height,
                         pd::color color)
 {
     float x = pos.x;

@@ -14,7 +14,7 @@ static const float see_distance = 150.0f;
 
 
 pd::kinetic_enemy::kinetic_enemy(pd::game_session *session,
-                                 const glm::vec2 &pos)
+                                 const pd::vec2 &pos)
     : pd::enemy(session, pos, 50.0f, 82.0f),
     m_walk_anim(pd::get_resource<pd::texture>("textures/enemy_kinetic_walk.png"), 19, 0.035f),
     m_dash_anim(pd::get_resource<pd::texture>("textures/enemy_kinetic_dash.png"), 2)
@@ -40,10 +40,10 @@ void pd::kinetic_enemy::update(pd::timedelta_t dt)
         tile_y = (int)(new_bottom / map->tile_height());
         pd::collision_flag coll = map->get_collision(tile_x, tile_y);
         if (coll == pd::passable)
-            move(glm::vec2(0.0f, dy));
+            move(pd::vec2(0.0f, dy));
         else {
             // beam us down to the tile height
-            pos(glm::vec2(pos().x, map->tile_height() * tile_y - height()));
+            pos(pd::vec2(pos().x, map->tile_height() * tile_y - height()));
             m_state = walking_state;
         }
         return;
@@ -90,7 +90,7 @@ void pd::kinetic_enemy::update(pd::timedelta_t dt)
 
     m_walk_anim.update(dt);
     float speed = dashing() ? dash_speed : movement_speed;
-    move(glm::vec2(m_direction * speed, 0.0f) * dt);
+    move(pd::vec2(m_direction * speed, 0.0f) * dt);
 }
 
 bool pd::kinetic_enemy::can_see(const pd::entity *other) const
@@ -103,7 +103,7 @@ bool pd::kinetic_enemy::can_see(const pd::entity *other) const
 
 void pd::kinetic_enemy::render(pd::timedelta_t dt) const
 {
-    const glm::vec2 pos = this->pos() + glm::vec2(-15.0f, -8.0f);
+    const pd::vec2 pos = this->pos() + pd::vec2(-15.0f, -8.0f);
     draw_effect effect = draw_without_effect;
     if (m_direction < 0.0f)
         effect = draw_flipped_vertically;
@@ -112,7 +112,7 @@ void pd::kinetic_enemy::render(pd::timedelta_t dt) const
         m_state == dashing_state ||
         m_state == dash_recover_state)
         m_dash_anim.draw_frame(dashing() ? 1 : 0,
-                               pos + glm::vec2(-26.0f, -17.0f), effect);
+                               pos + pd::vec2(-26.0f, -17.0f), effect);
     else
         m_walk_anim.draw(pos, effect);
 }
