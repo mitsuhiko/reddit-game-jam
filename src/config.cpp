@@ -5,6 +5,14 @@ pd::config::_player pd::config::player;
 pd::config::_world pd::config::world;
 
 
+static void load_animation_config(pd::config::animation_config &cfg,
+                                  pd::xml_element &animation)
+{
+    cfg.texture = animation.attr("texture");
+    cfg.frames = animation.attr<int>("frames");
+    cfg.speed = animation.attr<float>("speed");
+}
+
 static void load_world_config()
 {
     PD_LOG("Loading world config from config/world.xml");
@@ -39,22 +47,15 @@ static void load_player_config()
     pd::xml_element animations = root.first_child("animations");
     for (pd::xml_element animation = animations.first_child();
          animation; animation = animation.next_sibling()) {
-        pd::config::animation_config *target;
         std::string animation_name = animation.attr("name");
         if (animation_name == "thermal_idle")
-            target = &cfg.thermal_idle;
+            load_animation_config(cfg.thermal_idle, animation);
         else if (animation_name == "kinetic_idle")
-            target = &cfg.kinetic_idle;
+            load_animation_config(cfg.kinetic_idle, animation);
         else if (animation_name == "electromagnetic_idle")
-            target = &cfg.electromagnetic_idle;
+            load_animation_config(cfg.electromagnetic_idle, animation);
         else if (animation_name == "flamethrower")
-            target = &cfg.flamethrower;
-        else
-            continue;
-
-        target->texture = animation.attr("texture");
-        target->frames = animation.attr<int>("frames");
-        target->speed = animation.attr<float>("speed");
+            load_animation_config(cfg.flamethrower, animation);
     }
 }
 
