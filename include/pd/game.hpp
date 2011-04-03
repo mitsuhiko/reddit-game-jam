@@ -22,7 +22,7 @@ namespace pd {
         void handle_event(SDL_Event &evt, pd::timedelta_t dt);
         void update(pd::timedelta_t dt);
         void render(pd::timedelta_t dt) const;
-        void swap(pd::timedelta_t dt);
+        void swap();
 
         pd::screen *screen() { return m_screen; }
         void screen(pd::screen *val) { m_screen = val; }

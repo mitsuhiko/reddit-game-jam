@@ -14,8 +14,12 @@ int64_t pd::seconds_since_epoch()
 #endif
 }
 
-
 uint64_t pd::get_ticks()
 {
     return SDL_GetTicks();
+}
+
+void pd::delay(uint64_t delay)
+{
+    SDL_Delay((uint32_t)delay);
 }

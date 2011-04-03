@@ -63,18 +63,10 @@ pd::game::~game()
     SDL_Quit();
 }
 
-void pd::game::swap(pd::timedelta_t dt)
+void pd::game::swap()
 {
-    pd::timedelta_t diff = (1.0f / fps_limit) - dt;
-
-    uint64_t delay = (uint64_t)std::max(0.0f, diff * 1000.0f) + m_last_delay;
-    m_last_delay = delay;
-
     glFlush();
     SDL_GL_SwapWindow(m_win);
-
-    if (delay > 0)
-        SDL_Delay(delay);
 }
 
 void pd::game::run()
@@ -83,15 +75,24 @@ void pd::game::run()
     uint64_t old_ticks = 0;
 
     while (m_running) {
-        pd::timedelta_t dt = (pd::get_ticks() - old_ticks) / 1000.0f;
+        pd::timedelta_t dt = (pd::get_ticks() - old_ticks) /
+            (pd::timedelta_t)pd::get_tick_frequency();
         old_ticks = pd::get_ticks();
+
+        // this took way too long.  We probably had a suspended mainloop
+        // (debugger, window moved etc.)
+        if (dt > 0.1f)
+            dt = 1.0f / fps_limit;
 
         while (SDL_PollEvent(&evt))
             handle_event(evt, dt);
-        update(dt);
+        if (dt > 0.0f)
+            update(dt);
         render(dt);
+        swap();
 
-        swap(dt);
+        // wait a little bit so that our timer has enough precision
+        pd::delay(1);
     }
 }
 

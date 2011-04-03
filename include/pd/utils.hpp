@@ -6,7 +6,11 @@ namespace pd {
 
     int64_t seconds_since_epoch();
 
+    static uint64_t get_tick_frequency() { return 1000; }
+
     uint64_t get_ticks();
+
+    void delay(uint64_t delay);
 }
 
 #endif
