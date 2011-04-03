@@ -1,6 +1,7 @@
 #ifndef _INC_PD_XML_HPP_
 #define _INC_PD_XML_HPP_
 #include <pd/pd.hpp>
+#include <pd/lexical_cast.hpp>
 #include <iterator>
 
 #define TIXML_USE_STL
@@ -34,6 +35,16 @@ namespace pd {
         const std::string &value(const std::string &default_val = "") const
         {
             return m_attr ? m_attr->ValueStr() : default_val;
+        }
+
+        template <class T>
+        T value(const T &default_val = T()) const
+        {
+            if (!m_attr)
+                return default_val;
+            bool okay;
+            T rv = pd::lexical_cast<T>(m_attr->ValueStr(), okay);
+            return okay ? rv : default_val;
         }
 
         operator bool() const
@@ -188,6 +199,19 @@ namespace pd {
                 return default_val;
             const std::string *rv = m_elm->Attribute(name);
             return rv ? *rv : default_val;
+        }
+
+        template <class T>
+        T attr(const std::string &name, const T &default_val = T()) const
+        {
+            if (!m_elm)
+                return default_val;
+            const std::string *val = m_elm->Attribute(name);
+            if (!val)
+                return default_val;
+            bool okay;
+            T rv = pd::lexical_cast<T>(*val, okay);
+            return okay ? rv : default_val;
         }
 
     private:

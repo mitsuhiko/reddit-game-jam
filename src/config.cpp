@@ -1,6 +1,5 @@
 #include <pd/config.hpp>
 #include <pd/xml.hpp>
-#include <pd/lexical_cast.hpp>
 
 pd::config::_player pd::config::player;
 pd::config::_world pd::config::world;
@@ -12,8 +11,8 @@ static void load_world_config()
     pd::xml_document doc("config/world.xml");
     pd::xml_element physics = doc.root().first_child("physics");
 
-    cfg.gravity_acceleration = pd::lexical_cast<float>(physics.attr("gravity-acceleration"));
-    cfg.max_fall_speed = pd::lexical_cast<float>(physics.attr("max-fall-speed"));
+    cfg.gravity_acceleration = physics.attr<float>("gravity-acceleration");
+    cfg.max_fall_speed = physics.attr<float>("max-fall-speed");
 }
 
 static void load_player_config()
@@ -23,14 +22,14 @@ static void load_player_config()
     pd::xml_element movement = doc.root().first_child("movement");
     pd::xml_element jumping = doc.root().first_child("jumping");
 
-    cfg.max_movement_speed = pd::lexical_cast<float>(movement.attr("max-speed"));
-    cfg.max_kinetic_movement_speed = pd::lexical_cast<float>(movement.attr("max-kinetic-speed"));
-    cfg.movement_acceleration = pd::lexical_cast<float>(movement.attr("acceleration"));
-    cfg.kinetic_movement_acceleration = pd::lexical_cast<float>(movement.attr("kinetic-acceleration"));
-    cfg.friction = pd::lexical_cast<float>(movement.attr("friction"));
-    cfg.max_jump_time = pd::lexical_cast<float>(jumping.attr("max-time"));
-    cfg.jump_launch_velocity = pd::lexical_cast<float>(jumping.attr("launch-velocity"));
-    cfg.jump_control_power = pd::lexical_cast<float>(jumping.attr("control-power"));
+    cfg.max_movement_speed = movement.attr<float>("max-speed");
+    cfg.max_kinetic_movement_speed = movement.attr<float>("max-kinetic-speed");
+    cfg.movement_acceleration = movement.attr<float>("acceleration");
+    cfg.kinetic_movement_acceleration = movement.attr<float>("kinetic-acceleration");
+    cfg.friction = movement.attr<float>("friction");
+    cfg.max_jump_time = jumping.attr<float>("max-time");
+    cfg.jump_launch_velocity = jumping.attr<float>("launch-velocity");
+    cfg.jump_control_power = jumping.attr<float>("control-power");
 }
 
 void pd::config::load()
