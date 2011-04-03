@@ -54,18 +54,23 @@ void pd::entity::handle_collisions()
                 continue;
 
             pd::vec2 abs_depth = pd::abs(depth);
-            pd::vec2 correction;
             if (abs_depth.y < abs_depth.x || collision == pd::semi_passable) {
                 if (m_previous_bottom <= block_bb.top())
                     m_on_ground = true;
-                if (m_on_ground || collision == pd::impassable)
-                    correction.y = depth.y;
-            } else if (collision == pd::impassable) {
-                correction.x = depth.x;
-            }
-
-            if (correction != pd::vec2())
-                pos(pos() + correction);
+                if (m_on_ground || collision == pd::impassable) {
+                    // if we collided with the ground we just realign properly
+                    // with the top pixel of the block's bounding box.  Why?
+                    // because there will always be a rounding error in the depth
+                    // of the intersection and this will cause us to stick in the
+                    // ground when gravity is applied.  This is a crude hack but
+                    // it works surprisingly well.
+                    if (depth.y < 0.0f)
+                        pos(pd::vec2(pos().x, block_bb.top() - height()));
+                    else
+                        move(pd::vec2(0.0f, depth.y));
+                }
+            } else if (collision == pd::impassable)
+                move(pd::vec2(depth.x, 0.0f));
         }
     }
 
