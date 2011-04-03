@@ -1,6 +1,7 @@
 #include <pd/game.hpp>
 #include <pd/main_menu.hpp>
 #include <pd/utils.hpp>
+#include <pd/config.hpp>
 
 static const int window_width = 1280;
 static const int window_height = 720;
@@ -13,6 +14,8 @@ pd::game::game()
 {
     assert(!s_instance);
     s_instance = this;
+
+    PD_LOG("Initializing game");
 
     if (SDL_Init(SDL_INIT_VIDEO) < 0)
         pd::critical_error("Could not initialize SDL", SDL_GetError());
@@ -112,6 +115,14 @@ void pd::game::handle_event(SDL_Event &evt, pd::timedelta_t dt)
 {
     if (evt.type == SDL_QUIT)
         stop();
+    else if (evt.type == SDL_KEYDOWN) {
+        switch (evt.key.keysym.sym) {
+        case SDLK_F1:
+            PD_LOG("Reloading config files");
+            pd::config::load();
+            break;
+        }
+    }
     if (m_screen)
         m_screen->handle_event(evt, dt);
 }

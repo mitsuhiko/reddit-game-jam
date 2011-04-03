@@ -17,6 +17,7 @@ int64_t pd::seconds_since_epoch()
 void pd::init_clock()
 {
 #if PD_PLATFORM == PD_PLATFORM_WINDOWS
+    PD_LOG("Pinning application to single processor");
     ULONG_PTR affinity_mask;
     ULONG_PTR process_affinity_mask;
     ULONG_PTR system_affinity_mask;

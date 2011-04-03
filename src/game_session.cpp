@@ -95,7 +95,7 @@ void pd::game_session::handle_event(SDL_Event &evt, pd::timedelta_t dt)
             // suicide, because the main menu adds a new instance
             delete this;
             return;
-        case SDLK_b:
+        case SDLK_F2:
             m_draw_bounds = !m_draw_bounds;
             return;
         }

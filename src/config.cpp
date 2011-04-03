@@ -7,6 +7,8 @@ pd::config::_world pd::config::world;
 
 static void load_world_config()
 {
+    PD_LOG("Loading world config from config/world.xml");
+
     pd::config::_world &cfg = pd::config::world;
     pd::xml_document doc("config/world.xml");
     pd::xml_element physics = doc.root().first_child("physics");
@@ -17,6 +19,8 @@ static void load_world_config()
 
 static void load_player_config()
 {
+    PD_LOG("Loading player config from config/player.xml");
+
     pd::config::_player &cfg = pd::config::player;
     pd::xml_document doc("config/player.xml");
     pd::xml_element movement = doc.root().first_child("movement");

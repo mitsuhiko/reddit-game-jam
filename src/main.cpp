@@ -33,15 +33,19 @@ int main(int argc, char **argv)
 {
     /* on windows we have to initialize the console window */
 #if PD_PLATFORM == PD_PLATFORM_WINDOWS
-    SetPriorityClass(GetCurrentProcess(), HIGH_PRIORITY_CLASS);
 #ifndef NDEBUG
     initialize_win32_console(120, 30, 1000);
+    PD_LOG("Initialized win32 debug console");
 #endif
+
+    PD_LOG("Requesting high priority mode");
+    SetPriorityClass(GetCurrentProcess(), HIGH_PRIORITY_CLASS);
 #endif
 
     /* we switch to the resource folder before the engine starts up so
        that game and engine can reference things in the resource folder */
     std::string resource_path = pd::path::get_resource_path();
+    PD_LOG("Switching to resource folder " << resource_path);
     pd::path::set_cwd(resource_path);
 
     pd::config::load();
