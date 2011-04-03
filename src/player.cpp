@@ -47,7 +47,7 @@ void pd::player::apply_physics(float dt)
 
         if (0.0f < m_jump_time && m_jump_time <= max_jump_time)
             m_velocity.y = jump_launch_velocity * (1.0f -
-                std::pow(m_jump_time / max_jump_time, jump_control_power));
+                pd::pow(m_jump_time / max_jump_time, jump_control_power));
         else
             m_jump_time = 0.0f;
     }

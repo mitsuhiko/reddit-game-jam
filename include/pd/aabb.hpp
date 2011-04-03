@@ -17,9 +17,9 @@ namespace pd {
         {
             pd::aabb rv(point, point + pd::vec2(width, height));
             if (rv.v1.x > rv.v2.x)
-                std::swap(rv.v1.x, rv.v2.x);
+                pd::swap(rv.v1.x, rv.v2.x);
             if (rv.v1.y > rv.v2.y)
-                std::swap(rv.v1.y, rv.v2.y);
+                pd::swap(rv.v1.y, rv.v2.y);
             return rv;
         }
 

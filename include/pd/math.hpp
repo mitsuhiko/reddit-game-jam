@@ -19,9 +19,21 @@ namespace pd {
     using glm::mat2;
     using glm::mat3;
 
-    /* vector helpers */
+    /* vector and math helpers */
     using glm::abs;
+    using std::swap;
     using std::abs;
+    using std::floor;
+    using std::ceil;
+    using std::pow;
+    using std::sqrt;
+    using std::log;
+
+    template <class T>
+    T round(T val)
+    {
+        return (val > T()) ? pd::floor(val + T(0.5)) : pd::ceil(val - T(0.5));
+    }
 
     template <class T>
     T sign(T val)

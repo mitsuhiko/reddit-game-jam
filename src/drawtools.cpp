@@ -51,12 +51,12 @@ void pd::draw_quad(const pd::texture *texture, const pd::vec2 &pos,
     };
 
     if ((effect & draw_flipped_horizontally) != 0) {
-        std::swap(texcoords[1], texcoords[3]);
-        std::swap(texcoords[5], texcoords[7]);
+        pd::swap(texcoords[1], texcoords[3]);
+        pd::swap(texcoords[5], texcoords[7]);
     }
     if ((effect & draw_flipped_vertically) != 0) {
-        std::swap(texcoords[0], texcoords[4]);
-        std::swap(texcoords[2], texcoords[6]);
+        pd::swap(texcoords[0], texcoords[4]);
+        pd::swap(texcoords[2], texcoords[6]);
     }
 
     float col[4];

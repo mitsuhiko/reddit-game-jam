@@ -34,10 +34,10 @@ void pd::entity::handle_collisions()
     float tile_width = (float)map->tile_width();
     float tile_height = (float)map->tile_height();
 
-    int left_tile = (int)std::floor(bb.left() / tile_width);
-    int right_tile = (int)std::ceil(bb.right() / tile_width) - 1;
-    int top_tile = (int)std::floor(bb.top() / tile_height);
-    int bottom_tile = (int)std::ceil(bb.bottom() / tile_height) - 1;
+    int left_tile = (int)pd::floor(bb.left() / tile_width);
+    int right_tile = (int)pd::ceil(bb.right() / tile_width) - 1;
+    int top_tile = (int)pd::floor(bb.top() / tile_height);
+    int bottom_tile = (int)pd::ceil(bb.bottom() / tile_height) - 1;
 
     m_on_ground = false;
 
