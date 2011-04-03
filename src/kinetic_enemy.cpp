@@ -15,7 +15,7 @@ static const float see_distance = 150.0f;
 
 pd::kinetic_enemy::kinetic_enemy(pd::game_session *session,
                                  const pd::vec2 &pos)
-    : pd::enemy(session, pos, 50.0f, 82.0f),
+    : pd::enemy(session, pos),
     m_walk_anim(pd::get_resource<pd::texture>("textures/enemy_kinetic_walk.png"), 19, 0.035f),
     m_dash_anim(pd::get_resource<pd::texture>("textures/enemy_kinetic_dash.png"), 2)
 {
@@ -23,6 +23,16 @@ pd::kinetic_enemy::kinetic_enemy(pd::game_session *session,
     m_direction = 1;
     m_state_countdown = 0.0f;
     m_hit_player = false;
+}
+
+float pd::kinetic_enemy::width() const
+{
+    return 50.0f;
+}
+
+float pd::kinetic_enemy::height() const
+{
+    return 82.0f;
 }
 
 void pd::kinetic_enemy::update(pd::timedelta_t dt)

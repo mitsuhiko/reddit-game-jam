@@ -97,9 +97,14 @@ void pd::game_session::handle_event(SDL_Event &evt, pd::timedelta_t dt)
             return;
         case SDLK_b:
             m_draw_bounds = !m_draw_bounds;
-            break;
+            return;
         }
     }
+
+    m_player->handle_event(evt, dt);
+    for (std::vector<pd::enemy *>::iterator iter = m_enemies.begin();
+         iter != m_enemies.end(); ++iter)
+        (*iter)->handle_event(evt, dt);
 }
 
 void pd::game_session::render(pd::timedelta_t dt) const

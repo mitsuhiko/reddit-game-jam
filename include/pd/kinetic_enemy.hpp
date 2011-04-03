@@ -23,6 +23,9 @@ namespace pd {
         bool can_see(const pd::entity *other) const;
         bool dashing() const { return m_state == dashing_state; }
 
+        float width() const;
+        float height() const;
+
         void update(pd::timedelta_t dt);
         void render(pd::timedelta_t dt) const;
 

@@ -19,21 +19,30 @@ namespace pd {
         player(pd::game_session *session, const pd::vec2 &pos);
 
         float energy() const { return m_energy; }
-        stance_type stance() const { return thermal_stance; }
         bool looks_right() const { return !m_flipped; }
         bool looks_left() const { return m_flipped; }
+
+        stance_type stance() const { return m_stance; }
+        void stance(stance_type val) { m_stance = val; }
         
         void apply_physics(pd::timedelta_t dt);
         const pd::vec2 &velocity() const { return m_velocity; }
         void velocity(const pd::vec2 &val) { m_velocity = val; }
 
+        float width() const;
+        float height() const;
+
+        void handle_event(SDL_Event &evt, pd::timedelta_t dt);
         void update(pd::timedelta_t dt);
         void render(pd::timedelta_t dt) const;
 
     private:
         pd::vec2 m_velocity;
         pd::animation m_thermal_idle_anim;
+        pd::animation m_kinetic_idle_anim;
+        pd::animation m_electromagnetic_idle_anim;
         pd::animation m_flamethrower_anim;
+        stance_type m_stance;
         float m_movement;
         float m_energy;
         float m_previous_bottom;

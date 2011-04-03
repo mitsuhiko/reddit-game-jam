@@ -6,13 +6,10 @@
 #include <pd/config.hpp>
 
 
-pd::entity::entity(pd::game_session *session, const pd::vec2 &pos, float width,
-                   float height)
+pd::entity::entity(pd::game_session *session, const pd::vec2 &pos)
 {
     m_session = session;
     m_pos = pos;
-    m_width = width;
-    m_height = height;
     m_previous_bottom = 0.0f;
     m_on_ground = false;
 }
@@ -23,7 +20,11 @@ pd::entity::~entity()
 
 pd::aabb pd::entity::bounding_box() const
 {
-    return pd::aabb(m_pos, m_pos + pd::vec2(m_width, m_height));
+    return pd::aabb(m_pos, m_pos + pd::vec2(width(), height()));
+}
+
+void pd::entity::handle_event(SDL_Event &evt, pd::timedelta_t dt)
+{
 }
 
 void pd::entity::handle_collisions()
