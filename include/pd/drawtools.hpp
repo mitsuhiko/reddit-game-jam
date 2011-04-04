@@ -45,6 +45,11 @@ namespace pd {
         glTranslatef(pos.x, pos.y, 0.0f);
     }
 
+    inline void translate(float x, float y)
+    {
+        glTranslatef(x, y, 0.0f);
+    }
+
     inline void rotate(float angle)
     {
         glRotatef(angle, 0.0f, 0.0f, 1.0f);
@@ -59,16 +64,23 @@ namespace pd {
         translate(-pos);
     }
 
+    inline void rotate_around_point(float angle, float x, float y)
+    {
+        if (angle >= -10e-5 && angle <= 10e-5f)
+            return;
+        translate(x, y);
+        rotate(angle);
+        translate(-x, -y);
+    }
+
     inline void scale(const pd::vec2 &factor)
     {
         glScalef(factor.x, factor.y, 1.0f);
     }
 
-    inline void scale_around_point(const pd::vec2 &factor, const pd::vec2 &pos)
+    inline void scale(float x, float y)
     {
-        translate(pos);
-        scale(factor);
-        translate(-pos);
+        glScalef(x, y, 1.0f);
     }
 }
 
