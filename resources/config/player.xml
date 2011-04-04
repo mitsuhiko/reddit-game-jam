@@ -38,5 +38,6 @@
     <offset name="thermal" x="10.0" y="24.0" />
     <offset name="kinetic" x="26.0" y="10.0" />
     <offset name="electromagnetic" x="6.0" y="17.0" />
+    <offset name="flamethrower" x="68.0" y="14.0" />
   </offsets>
 </player>

@@ -125,6 +125,7 @@ void pd::player::update(pd::timedelta_t dt)
 
 void pd::player::render(pd::timedelta_t dt) const
 {
+    pd::push_matrix();
     pd::vec2 pos = this->pos();
 
     switch (m_stance) {
@@ -139,22 +140,26 @@ void pd::player::render(pd::timedelta_t dt) const
         break;
     }
 
-    draw_effect effect = draw_without_effect;
-    if (m_flipped)
-        effect = draw_flipped_vertically;
+    pd::translate(pos);
+    if (m_flipped) {
+        pd::scale(glm::vec2(-1.0f, 1.0f));
+        pd::translate(glm::vec2(-width(), 0.0f));
+    }
 
     switch (m_stance) {
     case thermal_stance:
-        m_thermal_idle_anim.draw(pos, effect);
+        m_thermal_idle_anim.draw();
         break;
     case kinetic_stance:
-        m_kinetic_idle_anim.draw(pos, effect);
+        m_kinetic_idle_anim.draw();
         break;
     case electromagnetic_stance:
-        m_electromagnetic_idle_anim.draw(pos, effect);
+        m_electromagnetic_idle_anim.draw();
         break;
     }
 
     if (m_shooting)
-        m_flamethrower_anim.draw(pos + pd::vec2(70.0f, 14.0f), effect);
+        m_flamethrower_anim.draw(cfg.flamethrower_offset);
+
+    pd::pop_matrix();
 }

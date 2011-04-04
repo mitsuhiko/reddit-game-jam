@@ -94,6 +94,8 @@ static void load_player_config()
             load_vector_config(cfg.kinetic_offset, offset);
         else if (offset_name == "electromagnetic")
             load_vector_config(cfg.electromagnetic_offset, offset);
+        else if (offset_name == "flamethrower")
+            load_vector_config(cfg.flamethrower_offset, offset);
     }
 }
 
