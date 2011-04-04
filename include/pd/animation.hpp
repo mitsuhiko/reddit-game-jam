@@ -21,6 +21,7 @@ namespace pd {
                         draw_effect effect = draw_without_effect,
                         pd::color color = pd::color()) const;
 
+        int width() const;
         int current_frame() const { return m_current_frame; }
         int frames() const { return m_frames; }
         float anim_speed() const { return m_anim_speed; }

@@ -123,40 +123,52 @@ void pd::player::update(pd::timedelta_t dt)
         m_flipped = false;
 }
 
+const pd::animation *pd::player::current_animation() const
+{
+    switch (m_stance) {
+    case thermal_stance:
+        return &m_thermal_idle_anim;
+    case kinetic_stance:
+        return &m_kinetic_idle_anim;
+    case electromagnetic_stance:
+        return &m_electromagnetic_idle_anim;
+    default:
+        assert(0);
+        return 0;
+    }
+}
+
+const pd::vec2 &pd::player::bound_offset() const
+{
+    static glm::vec2 dummy_vec;
+    switch (m_stance) {
+    case thermal_stance:
+        return cfg.thermal_offset;
+    case kinetic_stance:
+        return cfg.kinetic_offset;
+    case electromagnetic_stance:
+        return cfg.electromagnetic_offset;
+    default:
+        assert(0);
+        return dummy_vec;
+    }
+}
+
 void pd::player::render(pd::timedelta_t dt) const
 {
     pd::push_matrix();
     pd::vec2 pos = this->pos();
+    const pd::animation *anim = current_animation();
 
-    switch (m_stance) {
-    case thermal_stance:
-        pos -= cfg.thermal_offset;
-        break;
-    case kinetic_stance:
-        pos -= cfg.kinetic_offset;
-        break;
-    case electromagnetic_stance:
-        pos -= cfg.electromagnetic_offset;
-        break;
-    }
+    pos -= bound_offset();
 
     pd::translate(pos);
     if (m_flipped) {
         pd::scale(glm::vec2(-1.0f, 1.0f));
-        pd::translate(glm::vec2(-width(), 0.0f));
+        pd::translate(glm::vec2(-anim->width(), 0.0f));
     }
 
-    switch (m_stance) {
-    case thermal_stance:
-        m_thermal_idle_anim.draw();
-        break;
-    case kinetic_stance:
-        m_kinetic_idle_anim.draw();
-        break;
-    case electromagnetic_stance:
-        m_electromagnetic_idle_anim.draw();
-        break;
-    }
+    anim->draw();
 
     if (m_shooting)
         m_flamethrower_anim.draw(cfg.flamethrower_offset);

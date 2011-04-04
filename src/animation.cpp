@@ -39,8 +39,13 @@ void pd::animation::draw_frame(int frame, const pd::vec2 &pos,
                                draw_effect effect, pd::color color) const
 {
     assert(frame < m_frames);
-    int slice_width = m_texture->width() / m_frames;
+    int slice_width = width();
     pd::texture_slice texture(m_texture, frame * slice_width,
         0, slice_width, m_texture->height());
     pd::draw_quad(&texture, pos, effect, color);
+}
+
+int pd::animation::width() const
+{
+    return m_texture->width() / m_frames;
 }

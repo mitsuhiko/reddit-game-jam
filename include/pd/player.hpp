@@ -24,6 +24,8 @@ namespace pd {
 
         stance_type stance() const { return m_stance; }
         void stance(stance_type val) { m_stance = val; }
+        const pd::animation *current_animation() const;
+        const pd::vec2 &bound_offset() const;
         
         void apply_physics(pd::timedelta_t dt);
         const pd::vec2 &velocity() const { return m_velocity; }
