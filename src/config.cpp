@@ -1,8 +1,9 @@
 #include <pd/config.hpp>
 #include <pd/xml.hpp>
 
-pd::config::_player pd::config::player;
 pd::config::_world pd::config::world;
+pd::config::_camera pd::config::camera;
+pd::config::_player pd::config::player;
 pd::config::_kinetic_enemy pd::config::kinetic_enemy;
 
 
@@ -31,6 +32,18 @@ static void load_world_config()
 
     cfg.gravity_acceleration = physics.attr<float>("gravity-acceleration");
     cfg.max_fall_speed = physics.attr<float>("max-fall-speed");
+}
+
+static void load_camera_config()
+{
+    static const char *filename = "config/camera.xml";
+    PD_LOG("Loading camera config from " << filename);
+
+    pd::config::_camera &cfg = pd::config::camera;
+    pd::xml_document doc(filename);
+    pd::xml_element movement = doc.root().first_child("movement");
+
+    cfg.adjust_time = movement.attr<float>("adjust-time");
 }
 
 static void load_player_config()
@@ -127,6 +140,7 @@ static void load_kinetic_enemy_config()
 void pd::config::load()
 {
     load_world_config();
+    load_camera_config();
     load_player_config();
     load_kinetic_enemy_config();
 }

@@ -18,6 +18,10 @@ namespace pd {
             float max_fall_speed;
         };
 
+        struct _camera {
+            float adjust_time;
+        };
+
         struct _player {
             float width;
             float height;
@@ -59,6 +63,7 @@ namespace pd {
         };
 
         extern _world world;
+        extern _camera camera;
         extern _player player;
         extern _kinetic_enemy kinetic_enemy;
     }

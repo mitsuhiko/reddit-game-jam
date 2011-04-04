@@ -2,8 +2,9 @@
 #include <pd/game.hpp>
 #include <pd/drawtools.hpp>
 #include <pd/math.hpp>
+#include <pd/config.hpp>
 
-static const float adjust_time = 0.35f;
+static pd::config::_camera &cfg = pd::config::camera;
 
 
 pd::camera::camera()
@@ -15,7 +16,7 @@ pd::camera::camera()
 
 void pd::camera::look_at(const pd::vec2 &pos, pd::timedelta_t dt)
 {
-    float t = adjust_time;
+    float t = cfg.adjust_time;
     pd::vec2 delta = pos - m_pos;
     m_acceleration = (2.0f * (delta - m_velocity * t)) / (t * t);
     m_velocity += m_acceleration * dt;
