@@ -69,12 +69,12 @@ void pd::player::apply_physics(float dt)
 
 float pd::player::width() const
 {
-    return 60.0f;
+    return cfg.width;
 }
 
 float pd::player::height() const
 {
-    return 90.0f;
+    return cfg.height;
 }
 
 void pd::player::handle_event(SDL_Event &evt, pd::timedelta_t dt)
@@ -129,13 +129,13 @@ void pd::player::render(pd::timedelta_t dt) const
 
     switch (m_stance) {
     case thermal_stance:
-        pos -= pd::vec2(10.0f, 24.0f);
+        pos -= cfg.thermal_offset;
         break;
     case kinetic_stance:
-        pos -= pd::vec2(26.0f, 10.0f);
+        pos -= cfg.kinetic_offset;
         break;
     case electromagnetic_stance:
-        pos -= pd::vec2(6.0f, 17.0f);
+        pos -= cfg.electromagnetic_offset;
         break;
     }
 

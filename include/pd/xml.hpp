@@ -2,6 +2,7 @@
 #define _INC_PD_XML_HPP_
 #include <pd/pd.hpp>
 #include <pd/lexical_cast.hpp>
+#include <sstream>
 #include <iterator>
 
 #define TIXML_USE_STL
@@ -228,11 +229,23 @@ namespace pd {
         xml_document(const std::string &filename)
         {
             if (!load(filename))
-                pd::critical_error("XML Load error", "Could not load XML file");
+                pd::critical_error("XML Load error", error_message());
         }
+
+        std::string error_message() const
+        {
+            std::stringstream ss;
+            ss << "Could not load XML file '" << m_filename << "'" << std::endl;
+            ss << m_doc.ErrorDesc() << std::endl;
+            ss << "Line: " << m_doc.ErrorRow() << ", " << m_doc.ErrorCol();
+            return ss.str();
+        }
+
+        const std::string &filename() const { return m_filename; }
 
         bool load(const std::string &filename)
         {
+            m_filename = filename;
             return m_doc.LoadFile(filename, TIXML_ENCODING_UTF8);
         }
 
@@ -242,6 +255,7 @@ namespace pd {
         }
 
     private:
+        std::string m_filename;
         mutable TiXmlDocument m_doc;
     };
 }

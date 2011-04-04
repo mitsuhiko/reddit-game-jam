@@ -2,7 +2,6 @@
 #define _INC_PD_MATH_HPP_
 #include <pd/pd.hpp>
 #include <pd/config.hpp>
-#include <glm/glm.hpp>
 #include <cmath>
 #include <limits>
 
@@ -11,13 +10,6 @@ namespace pd {
 
     static const double pi = 3.14159265358979323846;
     static const double e = 2.718281828459045;
-
-    /* use glm vectors for the time being.  I don't plan on replacing them
-       anytime soon, but maybe something better comes around so better be
-       prepaired. */
-    using glm::vec2;
-    using glm::mat2;
-    using glm::mat3;
 
     /* vector and math helpers */
     using glm::abs;

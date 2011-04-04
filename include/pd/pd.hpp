@@ -35,6 +35,9 @@
 #  undef main
 #endif
 
+/* glm */
+#include <glm/glm.hpp>
+
 /* logging */
 #define PD_LOG(Expr) do { \
     std::string _filename(__FILE__); \
@@ -58,7 +61,15 @@ namespace pd {
         ::exit(1);
     }
 
+    /* standard types */
     typedef float timedelta_t;
+    
+    /* use glm vectors for the time being.  I don't plan on replacing them
+       anytime soon, but maybe something better comes around so better be
+       prepaired. */
+    using glm::vec2;
+    using glm::mat2;
+    using glm::mat3;
 }
 
 #endif

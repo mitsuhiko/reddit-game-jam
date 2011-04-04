@@ -4,20 +4,17 @@
 #include <pd/texture.hpp>
 #include <pd/drawtools.hpp>
 #include <pd/game_session.hpp>
+#include <pd/config.hpp>
 #include <pd/rnd.hpp>
 
-static const float spawn_fall_speed = 300.0f;
-static const float movement_speed = 100.0f;
-static const float dash_speed = 500.0f;
-static const float dash_countdown = 0.3f;
-static const float see_distance = 150.0f;
+
+static pd::config::_kinetic_enemy &cfg = pd::config::kinetic_enemy;
 
 
 pd::kinetic_enemy::kinetic_enemy(pd::game_session *session,
                                  const pd::vec2 &pos)
     : pd::enemy(session, pos),
-    m_walk_anim(pd::get_resource<pd::texture>("textures/enemy_kinetic_walk.png"), 19, 0.035f),
-    m_dash_anim(pd::get_resource<pd::texture>("textures/enemy_kinetic_dash.png"), 2)
+    m_walk_anim(cfg.walk), m_dash_anim(cfg.dash)
 {
     m_state = spawn_state;
     m_direction = 1;
@@ -27,12 +24,12 @@ pd::kinetic_enemy::kinetic_enemy(pd::game_session *session,
 
 float pd::kinetic_enemy::width() const
 {
-    return 50.0f;
+    return cfg.width;
 }
 
 float pd::kinetic_enemy::height() const
 {
-    return 82.0f;
+    return cfg.height;
 }
 
 void pd::kinetic_enemy::update(pd::timedelta_t dt)
@@ -45,7 +42,7 @@ void pd::kinetic_enemy::update(pd::timedelta_t dt)
 
     switch (m_state) {
     case spawn_state: {
-        float dy = spawn_fall_speed * dt;
+        float dy = cfg.spawn_fall_speed * dt;
         float new_bottom = (pos().y + dy + height());
         tile_y = (int)(new_bottom / map->tile_height());
         pd::collision_flag coll = map->get_collision(tile_x, tile_y);
@@ -66,7 +63,7 @@ void pd::kinetic_enemy::update(pd::timedelta_t dt)
         return;
     case walking_state:
         if (can_see(session()->player())) {
-            m_state_countdown = dash_countdown;
+            m_state_countdown = cfg.dash_countdown;
             m_state = prepare_dashing_state;
             return;
         }
@@ -99,21 +96,21 @@ void pd::kinetic_enemy::update(pd::timedelta_t dt)
     }
 
     m_walk_anim.update(dt);
-    float speed = dashing() ? dash_speed : movement_speed;
+    float speed = dashing() ? cfg.dash_speed : cfg.movement_speed;
     move(pd::vec2(m_direction * speed, 0.0f) * dt);
 }
 
 bool pd::kinetic_enemy::can_see(const pd::entity *other) const
 {
     pd::aabb sight_box = pd::aabb::make_box(bounding_box().center_top(),
-                                            see_distance * m_direction,
+                                            cfg.see_distance * m_direction,
                                             height());
     return other->bounding_box().intersects(sight_box);
 }
 
 void pd::kinetic_enemy::render(pd::timedelta_t dt) const
 {
-    const pd::vec2 pos = this->pos() + pd::vec2(-15.0f, -8.0f);
+    const pd::vec2 pos = this->pos() - cfg.default_offset;
     draw_effect effect = draw_without_effect;
     if (m_direction < 0.0f)
         effect = draw_flipped_vertically;
@@ -122,7 +119,7 @@ void pd::kinetic_enemy::render(pd::timedelta_t dt) const
         m_state == dashing_state ||
         m_state == dash_recover_state)
         m_dash_anim.draw_frame(dashing() ? 1 : 0,
-                               pos + pd::vec2(-26.0f, -17.0f), effect);
+                               pos - cfg.dash_offset, effect);
     else
         m_walk_anim.draw(pos, effect);
 }
