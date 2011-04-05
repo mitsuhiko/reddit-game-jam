@@ -58,28 +58,19 @@ set(GAME_HEADERS
 	include/pd/game_session.hpp
 )
 
-if(APPLE)
-	set(SDL_PATH ${CMAKE_CURRENT_SOURCE_DIR}/libs/sdl-1.3/local)
-	set(SDL_INCLUDE ${CMAKE_CURRENT_SOURCE_DIR}/libs/sdl-1.3/local/include/SDL)
-	set(SDL_MAIN_PATH ${SDL_PATH})
-elseif(WIN32)
-	set(SDL_PATH ${CMAKE_CURRENT_SOURCE_DIR}/libs/sdl-1.3/VisualC/SDL/Release)
-	set(SDL_INCLUDE ${CMAKE_CURRENT_SOURCE_DIR}/libs/sdl-1.3/include)
-	set(SDL_MAIN_PATH ${CMAKE_CURRENT_SOURCE_DIR}/libs/sdl-1.3/VisualC/SDLmain/Release)
-endif()
 set(GLEW_PATH ${CMAKE_CURRENT_SOURCE_DIR}/libs/glew-1.5.8)
-
+set(SDL_DIR ${CMAKE_CURRENT_SOURCE_DIR}/libs/sdl-1.3
+	CACHE STRING "Path to SDL 1.3" FORCE)
 find_library(SDL_LIBRARY
 	NAMES SDL-1.3.0 SDL
-	PATHS ${SDL_PATH}
-	PATH_SUFFIXES lib
+	PATHS ${SDL_DIR}
+	PATH_SUFFIXES local/lib VisualC/SDL/Release
 	NO_DEFAULT_PATH
 )
-
 find_library(SDLMAIN_LIBRARY
 	NAMES SDLmain
-	PATHS ${SDL_MAIN_PATH}
-	PATH_SUFFIXES lib
+	PATHS ${SDL_DIR}
+	PATH_SUFFIXES local/lib VisualC/SDLmain/Release
 	NO_DEFAULT_PATH
 )
 
@@ -97,7 +88,7 @@ endif()
 
 include_directories(
     ${CMAKE_CURRENT_SOURCE_DIR}/include
-	${SDL_INCLUDE}
+	${SDL_DIR}/include
 	${CMAKE_CURRENT_SOURCE_DIR}/libs/vendor
 	${CMAKE_CURRENT_SOURCE_DIR}/libs/vendor/utfcpp
 	${CMAKE_CURRENT_SOURCE_DIR}/libs/vendor/mtrand
@@ -141,7 +132,8 @@ if(APPLE)
 elseif(WIN32)
 	set(VS_OUTPUT_DIR ${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_CFG_INTDIR})
 	add_custom_command(TARGET ProbablyDefective POST_BUILD
-		COMMAND ${CMAKE_COMMAND} -E copy_if_different ${SDL_PATH}/SDL.dll
+		COMMAND ${CMAKE_COMMAND} -E copy_if_different
+			${SDL_DIR}/VisualC/Release/SDL.dll
 			${VS_OUTPUT_DIR}/SDL.dll
 	)
 endif()
