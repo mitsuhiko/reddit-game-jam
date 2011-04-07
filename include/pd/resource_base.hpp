@@ -9,6 +9,7 @@ namespace pd {
 
     class resource_base {
     public:
+        resource_base() { m_resmgr = 0; }
         virtual ~resource_base() {}
         bool managed() const { return m_resmgr != 0; }
         pd::resource_manager *resmgr() { return m_resmgr; }
