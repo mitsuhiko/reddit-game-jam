@@ -133,7 +133,7 @@ elseif(WIN32)
 	set(VS_OUTPUT_DIR ${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_CFG_INTDIR})
 	add_custom_command(TARGET ProbablyDefective POST_BUILD
 		COMMAND ${CMAKE_COMMAND} -E copy_if_different
-			${SDL_DIR}/VisualC/Release/SDL.dll
+			${SDL_DIR}/VisualC/SDL/Release/SDL.dll
 			${VS_OUTPUT_DIR}/SDL.dll
 	)
 endif()
