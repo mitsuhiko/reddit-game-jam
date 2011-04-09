@@ -52,6 +52,7 @@ set(GAME_HEADERS
 	include/pd/rnd.hpp
 	include/pd/utils.hpp
     include/pd/xml.hpp
+    include/pd/unordered_map.hpp
 
 	include/pd/screen.hpp
 	include/pd/main_menu.hpp

@@ -3,20 +3,17 @@
 
 #include <pd/pd.hpp>
 #include <pd/resource_base.hpp>
+#include <pd/unordered_map.hpp>
 #include <vector>
 
-#ifdef _MSC_VER
-#include <unordered_map>
-#else
-#include <tr1/unordered_map>
-#endif
 
 namespace pd {
 
+    using std::tr1::unordered_map;
+
     class resource_manager {
     public:
-        typedef std::tr1::unordered_map<std::string,
-            pd::resource_base *> resource_map_t;
+        typedef pd::unordered_map<std::string, pd::resource_base *> map_t;
 
         resource_manager();
         ~resource_manager();
@@ -29,7 +26,7 @@ namespace pd {
         template <class T>
         T *get(const std::string &filename)
         {
-            resource_map_t::iterator iter;
+            map_t::iterator iter;
             for (int i = m_stack.size() - 1; i >= 0; i--) {
                 iter = m_stack[i].find(filename);
                 if (iter != m_stack[i].end()) {
@@ -49,7 +46,7 @@ namespace pd {
         resource_manager(const resource_manager &resource_manager);
         resource_manager &operator=(const resource_manager &resource_manager);
 
-        std::vector<resource_map_t> m_stack;
+        std::vector<map_t> m_stack;
         size_t m_size;
     };
 }
