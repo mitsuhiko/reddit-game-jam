@@ -41,8 +41,20 @@ pd::simple_texture::simple_texture(SDL_Surface *surface)
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 
+    GLenum format;
+    switch (surface->format->BytesPerPixel) {
+    case 4:
+        format = (surface->format->Rmask == 0x000000ff) ? GL_RGBA : GL_BGRA;
+        break;
+    case 3:
+        format = (surface->format->Rmask == 0x000000ff) ? GL_RGB : GL_BGR;
+        break;
+    default:
+        assert(false);
+    }
+
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, m_stored_width,
-                 m_stored_height, 0, GL_RGBA, GL_UNSIGNED_BYTE,
+                 m_stored_height, 0, format, GL_UNSIGNED_BYTE,
                  surface->pixels);
 }
 

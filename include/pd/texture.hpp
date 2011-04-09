@@ -65,8 +65,6 @@ namespace pd {
         int offset_y() const { return m_offset_y; }
         const texture *parent() const { return m_parent; }
 
-        texture *slice(int x, int y, int width, int height);
-
     private:
         texture *m_parent;
         int m_offset_x;
