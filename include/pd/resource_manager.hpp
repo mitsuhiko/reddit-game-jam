@@ -3,15 +3,20 @@
 
 #include <pd/pd.hpp>
 #include <pd/resource_base.hpp>
-#include <pd/unordered_map.hpp>
 #include <vector>
+
+#ifdef _MSC_VER
+#include <unordered_map>
+#else
+#include <tr1/unordered_map>
+#endif
 
 namespace pd {
 
     class resource_manager {
     public:
-        typedef pd::unordered_map<std::string,
-            pd::resource_base *>::type resource_map_t;
+        typedef std::tr1::unordered_map<std::string,
+            pd::resource_base *> resource_map_t;
 
         resource_manager();
         ~resource_manager();

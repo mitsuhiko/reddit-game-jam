@@ -165,7 +165,7 @@ void pd::player::render(pd::timedelta_t dt) const
     pd::translate(pos);
     if (m_flipped) {
         pd::scale(-1.0f, 1.0f);
-        pd::translate(-anim->width(), 0.0f);
+        pd::translate(-(float)anim->width(), 0.0f);
     }
 
     anim->draw();
