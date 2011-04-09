@@ -14,13 +14,13 @@ pd::resource_manager::~resource_manager()
 
 void pd::resource_manager::push()
 {
-    m_stack.push_back(std::map<std::string, pd::resource_base *>());
+    m_stack.push_back(resource_map_t());
 }
 
 void pd::resource_manager::pop()
 {
-    std::map<std::string, pd::resource_base *> &loaded = m_stack[m_stack.size() - 1];
-    for (std::map<std::string, pd::resource_base *>::iterator iter = loaded.begin();
+    resource_map_t &loaded = m_stack[m_stack.size() - 1];
+    for (resource_map_t::iterator iter = loaded.begin();
          iter != loaded.end(); ++iter)
         delete iter->second;
     m_size -= loaded.size();

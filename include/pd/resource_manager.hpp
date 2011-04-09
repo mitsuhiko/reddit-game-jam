@@ -3,13 +3,16 @@
 
 #include <pd/pd.hpp>
 #include <pd/resource_base.hpp>
-#include <map>
+#include <pd/unordered_map.hpp>
 #include <vector>
 
 namespace pd {
 
     class resource_manager {
     public:
+        typedef pd::unordered_map<std::string,
+            pd::resource_base *>::type resource_map_t;
+
         resource_manager();
         ~resource_manager();
 
@@ -21,7 +24,7 @@ namespace pd {
         template <class T>
         T *get(const std::string &filename)
         {
-            std::map<std::string, pd::resource_base *>::iterator iter;
+            resource_map_t::iterator iter;
             for (int i = m_stack.size() - 1; i >= 0; i--) {
                 iter = m_stack[i].find(filename);
                 if (iter != m_stack[i].end()) {
@@ -41,7 +44,7 @@ namespace pd {
         resource_manager(const resource_manager &resource_manager);
         resource_manager &operator=(const resource_manager &resource_manager);
 
-        std::vector<std::map<std::string, pd::resource_base *> > m_stack;
+        std::vector<resource_map_t> m_stack;
         size_t m_size;
     };
 }
