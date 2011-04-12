@@ -3,6 +3,7 @@
 #include <pd/pd.hpp>
 #include <pd/math.hpp>
 #include <pd/aabb.hpp>
+#include <pd/collisions.hpp>
 #include <vector>
 
 
@@ -27,7 +28,7 @@ namespace pd {
         pd::game_session *session() { return m_session; }
         const pd::game_session *session() const { return m_session; }
 
-        void handle_collisions();
+        int move_collision_checked(const pd::vec2 &delta);
         pd::aabb bounding_box() const;
 
         virtual void handle_event(SDL_Event &evt);

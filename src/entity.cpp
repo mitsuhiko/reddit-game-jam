@@ -27,9 +27,11 @@ void pd::entity::handle_event(SDL_Event &evt)
 {
 }
 
-void pd::entity::handle_collisions()
+int pd::entity::move_collision_checked(const pd::vec2 &delta)
 {
     pd::vec2 old_pos = pos();
+    move(delta);
+
     pd::aabb bb = bounding_box();
     const pd::map *map = session()->map();
     float tile_width = (float)map->tile_width();
@@ -44,14 +46,15 @@ void pd::entity::handle_collisions()
 
     for (int y = top_tile; y <= bottom_tile; y++) {
         for (int x = left_tile; x <= right_tile; x++) {
-            pd::collision_flag collision = map->get_collision(x, y);
+            pd::tile_collision_flag collision = map->get_collision(x, y);
 
             if (collision == pd::passable)
                 continue;
 
             pd::aabb block_bb = map->get_block(x, y)->bounding_box();
             pd::vec2 depth = bounding_box().intersection_depth(block_bb);
-            if (depth == pd::vec2())
+            if (pd::almost_equal(depth.x, 0.0f) &&
+                pd::almost_equal(depth.y, 0.0f))
                 continue;
 
             pd::vec2 abs_depth = pd::abs(depth);
@@ -75,5 +78,14 @@ void pd::entity::handle_collisions()
         }
     }
 
+    // let the caller know what the collisions were so it does not have to
+    // check that for itself.
+    int mask = 0;
+    if (delta.x && pos().x == old_pos.x)
+        mask |= (delta.x < 0.0f) ? collided_left : collided_right;
+    if (delta.y && pos().y == old_pos.y)
+        mask |= (delta.y < 0.0f) ? collided_top : collided_bottom;
+
     m_previous_bottom = bounding_box().bottom();
+    return mask;
 }

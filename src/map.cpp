@@ -118,7 +118,7 @@ pd::map::~map()
     delete[] m_blocks;
 }
 
-pd::collision_flag pd::map::get_collision(int x, int y) const
+pd::tile_collision_flag pd::map::get_collision(int x, int y) const
 {
     const pd::block *block = get_block(x, y);
     if (!block)
@@ -140,7 +140,7 @@ void pd::map::draw_tile_bounds() const
 {
     for (int y = 0; y < m_height; y++) {
         for (int x = 0; x < m_width; x++) {
-            pd::collision_flag c = get_collision(x, y);
+            pd::tile_collision_flag c = get_collision(x, y);
             pd::draw_debug_box(pd::vec2(x * m_tile_width, y * m_tile_height),
                                (float)m_tile_width, (float)m_tile_height,
                                c ? 0xb5cf2faa : 0x33333311);
@@ -176,7 +176,7 @@ pd::aabb pd::block::bounding_box() const
     return pd::aabb(pos, pos + size);
 }
 
-pd::collision_flag pd::block::collision() const
+pd::tile_collision_flag pd::block::collision() const
 {
     if (m_tile == 0)
         return pd::passable;

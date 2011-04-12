@@ -49,6 +49,7 @@ set(GAME_HEADERS
 	include/pd/camera.hpp
     include/pd/config.hpp
     include/pd/aabb.hpp
+	include/pd/collisions.hpp
 	include/pd/rnd.hpp
 	include/pd/utils.hpp
     include/pd/xml.hpp

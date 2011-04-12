@@ -4,6 +4,7 @@
 #include <pd/math.hpp>
 #include <pd/color.hpp>
 #include <pd/aabb.hpp>
+#include <pd/collisions.hpp>
 #include <map>
 #include <vector>
 
@@ -12,12 +13,6 @@ namespace pd {
     class block;
     class texture;
     class game_session;
-
-    enum collision_flag {
-        passable,
-        impassable,
-        semi_passable
-    };
 
     class map {
     public:
@@ -56,7 +51,7 @@ namespace pd {
             return m_blocks[(y * m_width) + x];
         }
 
-        collision_flag get_collision(int x, int y) const;
+        tile_collision_flag get_collision(int x, int y) const;
 
         pd::game_session *session() { return m_session; }
         const pd::game_session *session() const { return m_session; }
@@ -90,7 +85,7 @@ namespace pd {
         int x() const { return m_x; }
         int y() const { return m_y; }
         const pd::map::tile_id_t tile() const { return m_tile; }
-        collision_flag collision() const;
+        tile_collision_flag collision() const;
 
     private:
         pd::map *m_map;

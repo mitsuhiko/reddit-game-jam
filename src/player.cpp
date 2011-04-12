@@ -58,12 +58,11 @@ void pd::player::apply_physics(float dt)
 
     // position updates
     pd::vec2 old_pos = pos();
-    move(m_velocity * dt);
+    int mask = move_collision_checked(m_velocity * dt);
 
-    handle_collisions();
-    if (pos().x == old_pos.x)
+    if (pd::collided_horizontally(mask))
         m_velocity.x = 0.0f;
-    if (pos().y == old_pos.y)
+    if (pd::collided_vertically(mask))
         m_velocity.y = 0.0f;
 }
 

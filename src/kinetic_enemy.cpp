@@ -87,17 +87,15 @@ void pd::kinetic_enemy::update(pd::timedelta_t dt)
 
     m_walk_anim.update(dt);
 
-    pd::vec2 old_pos = pos();
-    move(m_velocity * dt);
-    handle_collisions();
+    int mask = move_collision_checked(m_velocity * dt);
 
-    if (pos().y == old_pos.y) {
+    if (pd::collided_vertically(mask)) {
         m_velocity.y = 0.0f;
         if (m_state == spawn_state)
             m_state = walking_state;
     }
 
-    if (m_velocity.x && pos().x == old_pos.x) {
+    if (pd::collided_horizontally(mask)) {
         if (m_state == dashing_state) {
             m_state_countdown = pd::default_rnd().range(0.1f, 0.3f);
             m_state = dash_recover_state;
