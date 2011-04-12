@@ -9,6 +9,6 @@ void pd::screen::handle_event(SDL_Event &evt)
 {
 }
 
-void pd::screen::render(pd::timedelta_t dt) const
+void pd::screen::draw() const
 {
 }

@@ -27,7 +27,7 @@ namespace pd {
 
         int height() const { return m_panel->height(); }
 
-        void render(const pd::vec2 &pos, float value)
+        void draw(const pd::vec2 &pos, float value)
         {
             pd::draw_quad(m_panel, pos);
             pd::draw_quad(m_bar, pos + m_bar_offset,
@@ -107,19 +107,19 @@ void pd::game_session::handle_event(SDL_Event &evt)
         (*iter)->handle_event(evt);
 }
 
-void pd::game_session::render(pd::timedelta_t dt) const
+void pd::game_session::draw() const
 {
     pd::push_matrix();
 
     m_cam->apply();
-	m_map->render();
+	m_map->draw();
 
     for (std::vector<pd::enemy *>::const_iterator iter = m_enemies.begin();
          iter != m_enemies.end(); ++iter)
-        (*iter)->render(dt);
+        (*iter)->draw();
 
-    // render player on top
-    m_player->render(dt);
+    // draw() player on top
+    m_player->draw();
 
     if (m_draw_bounds) {
         m_map->draw_tile_bounds();
@@ -131,10 +131,10 @@ void pd::game_session::render(pd::timedelta_t dt) const
 
     pd::pop_matrix();
     
-    render_gui(dt);
+    draw_gui();
 }
 
-void pd::game_session::render_gui(pd::timedelta_t dt) const
+void pd::game_session::draw_gui() const
 {
     pd::game_power_bar *bar;
     switch (m_player->stance()) {
@@ -151,5 +151,5 @@ void pd::game_session::render_gui(pd::timedelta_t dt) const
         assert(false);
     }
 
-    bar->render(pd::vec2(10.0f, 10.0f), m_player->energy());
+    bar->draw(pd::vec2(10.0f, 10.0f), m_player->energy());
 }

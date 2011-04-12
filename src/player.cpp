@@ -153,7 +153,7 @@ const pd::vec2 &pd::player::bound_offset() const
     }
 }
 
-void pd::player::render(pd::timedelta_t dt) const
+void pd::player::draw() const
 {
     pd::push_matrix();
     pd::vec2 pos = this->pos();

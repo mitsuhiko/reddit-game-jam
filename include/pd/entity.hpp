@@ -33,7 +33,7 @@ namespace pd {
 
         virtual void handle_event(SDL_Event &evt);
         virtual void update(pd::timedelta_t dt) = 0;
-        virtual void render(pd::timedelta_t dt) const = 0;
+        virtual void draw() const = 0;
 
     private:
         pd::game_session *m_session;

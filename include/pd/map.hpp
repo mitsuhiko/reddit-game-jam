@@ -21,7 +21,7 @@ namespace pd {
 	    map(pd::game_session *session, std::string filename);
 	    ~map();
         
-	    void render() const;
+	    void draw() const;
         void draw_tile_bounds() const;
 
         int width() const { return m_width; }
@@ -57,7 +57,7 @@ namespace pd {
         const pd::game_session *session() const { return m_session; }
 
     private:
-        void render_tile(int x, int y, tile_id_t tile) const;
+        void draw_tile(int x, int y, tile_id_t tile) const;
         
 	    int m_width;
 	    int m_height;

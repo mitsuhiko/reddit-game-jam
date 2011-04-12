@@ -126,7 +126,7 @@ pd::tile_collision_flag pd::map::get_collision(int x, int y) const
     return block->collision();
 }
 
-void pd::map::render_tile(int x, int y, pd::map::tile_id_t tile) const
+void pd::map::draw_tile(int x, int y, pd::map::tile_id_t tile) const
 {
     if (!tile)
         return;
@@ -148,15 +148,15 @@ void pd::map::draw_tile_bounds() const
     }
 }
 
-void pd::map::render() const
+void pd::map::draw() const
 {
     pd::clear_screen(m_background_color);
     for (int y = 0; y < m_height; y++) {
         for (int x = 0; x < m_width; x++) {
-            render_tile(x, y, get_bg(x, y));
+            draw_tile(x, y, get_bg(x, y));
             const pd::block *block = get_block(x, y);
             if (block)
-                render_tile(x, y, block->tile());
+                draw_tile(x, y, block->tile());
         }
     }
 }

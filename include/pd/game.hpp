@@ -21,7 +21,7 @@ namespace pd {
 
         void handle_event(SDL_Event &evt);
         void update(pd::timedelta_t dt);
-        void render(pd::timedelta_t dt) const;
+        void draw() const;
         void swap();
 
         pd::screen *screen() { return m_screen; }
