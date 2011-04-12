@@ -118,7 +118,6 @@ void pd::game_session::draw() const
          iter != m_enemies.end(); ++iter)
         (*iter)->draw();
 
-    // draw() player on top
     m_player->draw();
 
     if (m_draw_bounds) {
