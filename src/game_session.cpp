@@ -114,11 +114,12 @@ void pd::game_session::render(pd::timedelta_t dt) const
     m_cam->apply();
 	m_map->render();
 
-    m_player->render(dt);
-
     for (std::vector<pd::enemy *>::const_iterator iter = m_enemies.begin();
          iter != m_enemies.end(); ++iter)
         (*iter)->render(dt);
+
+    // render player on top
+    m_player->render(dt);
 
     if (m_draw_bounds) {
         m_map->draw_tile_bounds();
