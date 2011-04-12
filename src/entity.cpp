@@ -29,6 +29,9 @@ void pd::entity::handle_event(SDL_Event &evt)
 
 int pd::entity::move_collision_checked(const pd::vec2 &delta)
 {
+    if (delta == pd::vec2())
+        return 0;
+
     pd::vec2 old_pos = pos();
     move(delta);
 
