@@ -5,7 +5,7 @@
 
 static const int window_width = 1280;
 static const int window_height = 720;
-static const pd::timedelta_t simulation_dt = 0.016;
+static const pd::timedelta_t simulation_dt = 0.016f;
 
 pd::game *pd::game::s_instance;
 
