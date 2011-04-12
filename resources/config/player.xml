@@ -5,11 +5,10 @@
     max-kinetic-speed="500.0"
     acceleration="1400.0"
     kinetic-acceleration="2400.0"
-    friction="5.0" />
+    friction="6.0"
+    air-friction="4.0" />
   <jumping
-    max-time="0.35"
-    launch-velocity="-2600.0"
-    control-power="0.14" />
+    impulse="620.0" />
 
   <animations>
     <animation

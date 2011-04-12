@@ -66,11 +66,10 @@ static void load_player_config()
     cfg.max_kinetic_movement_speed = movement.attr<float>("max-kinetic-speed");
     cfg.movement_acceleration = movement.attr<float>("acceleration");
     cfg.kinetic_movement_acceleration = movement.attr<float>("kinetic-acceleration");
+    cfg.air_friction = movement.attr<float>("air-friction");
     cfg.friction = movement.attr<float>("friction");
 
-    cfg.max_jump_time = jumping.attr<float>("max-time");
-    cfg.jump_launch_velocity = jumping.attr<float>("launch-velocity");
-    cfg.jump_control_power = jumping.attr<float>("control-power");
+    cfg.jump_impulse = jumping.attr<float>("impulse");
 
     for (pd::xml_element animation = animations.first_child();
          animation; animation = animation.next_sibling()) {

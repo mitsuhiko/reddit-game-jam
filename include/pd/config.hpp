@@ -31,9 +31,8 @@ namespace pd {
             float movement_acceleration;
             float kinetic_movement_acceleration;
             float friction;
-            float max_jump_time;
-            float jump_launch_velocity;
-            float jump_control_power;
+            float air_friction;
+            float jump_impulse;
 
             animation_config thermal_idle;
             animation_config kinetic_idle;
