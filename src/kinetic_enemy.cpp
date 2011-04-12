@@ -101,8 +101,7 @@ void pd::kinetic_enemy::update(pd::timedelta_t dt)
             m_state = dash_recover_state;
         } else {
             m_state = walking_state;
-            if (pd::sign(m_velocity.x) == pd::sign(m_direction))
-                m_direction *= -1;
+            m_direction *= -1;
         }
     }
 }
