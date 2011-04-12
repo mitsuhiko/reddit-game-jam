@@ -61,7 +61,7 @@ namespace pd {
         ::exit(1);
     }
 
-    /* standard types */
+    /* the type for timedeltas */
     typedef float timedelta_t;
     
     /* use glm vectors for the time being.  I don't plan on replacing them

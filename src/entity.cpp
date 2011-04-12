@@ -23,7 +23,7 @@ pd::aabb pd::entity::bounding_box() const
     return pd::aabb(m_pos, m_pos + pd::vec2(width(), height()));
 }
 
-void pd::entity::handle_event(SDL_Event &evt, pd::timedelta_t dt)
+void pd::entity::handle_event(SDL_Event &evt)
 {
 }
 

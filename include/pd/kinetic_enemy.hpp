@@ -21,7 +21,9 @@ namespace pd {
         kinetic_enemy(pd::game_session *session, const pd::vec2 &pos);
 
         bool can_see(const pd::entity *other) const;
-        bool dashing() const { return m_state == dashing_state; }
+        bool dashing() const;
+        bool movement_frozen() const;
+        float current_speed() const;
 
         float width() const;
         float height() const;
@@ -32,8 +34,8 @@ namespace pd {
     private:
         pd::animation m_walk_anim;
         pd::animation m_dash_anim;
+        pd::vec2 m_velocity;
         int m_direction;
-        bool m_hit_player;
         state m_state;
         pd::timedelta_t m_state_countdown;
     };

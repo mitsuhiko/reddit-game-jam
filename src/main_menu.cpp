@@ -51,7 +51,7 @@ void pd::main_menu::update(pd::timedelta_t dt)
 {
 }
 
-void pd::main_menu::handle_event(SDL_Event &evt, pd::timedelta_t dt)
+void pd::main_menu::handle_event(SDL_Event &evt)
 {
     if (evt.type == SDL_KEYDOWN) {
         switch (evt.key.keysym.sym) {

@@ -9,7 +9,7 @@ namespace pd {
         virtual ~screen() {}
 
         virtual void update(pd::timedelta_t dt);
-        virtual void handle_event(SDL_Event &evt, pd::timedelta_t dt);
+        virtual void handle_event(SDL_Event &evt);
         virtual void render(pd::timedelta_t dt) const;
     };
 }

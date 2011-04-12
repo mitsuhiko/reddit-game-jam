@@ -30,7 +30,7 @@ namespace pd {
         void handle_collisions();
         pd::aabb bounding_box() const;
 
-        virtual void handle_event(SDL_Event &evt, pd::timedelta_t dt);
+        virtual void handle_event(SDL_Event &evt);
         virtual void update(pd::timedelta_t dt) = 0;
         virtual void render(pd::timedelta_t dt) const = 0;
 

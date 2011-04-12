@@ -34,7 +34,7 @@ namespace pd {
         float width() const;
         float height() const;
 
-        void handle_event(SDL_Event &evt, pd::timedelta_t dt);
+        void handle_event(SDL_Event &evt);
         void update(pd::timedelta_t dt);
         void render(pd::timedelta_t dt) const;
 

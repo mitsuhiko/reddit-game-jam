@@ -77,7 +77,7 @@ float pd::player::height() const
     return cfg.height;
 }
 
-void pd::player::handle_event(SDL_Event &evt, pd::timedelta_t dt)
+void pd::player::handle_event(SDL_Event &evt)
 {
     if (evt.type == SDL_KEYDOWN) {
         switch (evt.key.keysym.sym) {

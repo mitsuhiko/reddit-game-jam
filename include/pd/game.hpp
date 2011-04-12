@@ -19,7 +19,7 @@ namespace pd {
         void stop() { m_running = false; }
         bool is_running() const { return m_running; }
 
-        void handle_event(SDL_Event &evt, pd::timedelta_t dt);
+        void handle_event(SDL_Event &evt);
         void update(pd::timedelta_t dt);
         void render(pd::timedelta_t dt) const;
         void swap();

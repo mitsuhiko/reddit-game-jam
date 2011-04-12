@@ -11,7 +11,7 @@ namespace pd {
     class main_menu : public screen {
     public:
         void update(pd::timedelta_t dt);
-        void handle_event(SDL_Event &evt, pd::timedelta_t dt);
+        void handle_event(SDL_Event &evt);
         void render(pd::timedelta_t dt) const;
 
         static main_menu *instance();

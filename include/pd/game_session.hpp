@@ -24,7 +24,7 @@ namespace pd {
         ~game_session();
 
         void update(pd::timedelta_t dt);
-        void handle_event(SDL_Event &evt, pd::timedelta_t dt);
+        void handle_event(SDL_Event &evt);
         void render(pd::timedelta_t dt) const;
 
         void render_gui(pd::timedelta_t dt) const;

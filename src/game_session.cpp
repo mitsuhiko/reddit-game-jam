@@ -86,7 +86,7 @@ void pd::game_session::update(pd::timedelta_t dt)
     m_cam->look_at(m_player->pos(), dt);
 }
 
-void pd::game_session::handle_event(SDL_Event &evt, pd::timedelta_t dt)
+void pd::game_session::handle_event(SDL_Event &evt)
 {
     if (evt.type == SDL_KEYDOWN) {
         switch (evt.key.keysym.sym) {
@@ -101,10 +101,10 @@ void pd::game_session::handle_event(SDL_Event &evt, pd::timedelta_t dt)
         }
     }
 
-    m_player->handle_event(evt, dt);
+    m_player->handle_event(evt);
     for (std::vector<pd::enemy *>::iterator iter = m_enemies.begin();
          iter != m_enemies.end(); ++iter)
-        (*iter)->handle_event(evt, dt);
+        (*iter)->handle_event(evt);
 }
 
 void pd::game_session::render(pd::timedelta_t dt) const

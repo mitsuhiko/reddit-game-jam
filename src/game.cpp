@@ -5,7 +5,7 @@
 
 static const int window_width = 1280;
 static const int window_height = 720;
-static const int fps_limit = 62;
+static const pd::timedelta_t simulation_dt = 0.016;
 
 pd::game *pd::game::s_instance;
 
@@ -76,6 +76,7 @@ void pd::game::run()
 {
     SDL_Event evt;
     uint64_t old_ticks = 0;
+    pd::timedelta_t accumulator = 0.0f;
 
     while (m_running) {
         uint64_t now = pd::get_ticks();
@@ -85,12 +86,18 @@ void pd::game::run()
         // this took way too long.  We probably had a suspended mainloop
         // (debugger, window moved etc.)
         if (dt > 0.1f)
-            dt = 1.0f / fps_limit;
+            dt = simulation_dt;
 
         while (SDL_PollEvent(&evt))
-            handle_event(evt, dt);
-        if (dt > 0.0f)
-            update(dt);
+            handle_event(evt);
+
+        // run the simulation at a fixed frequency.
+        accumulator += dt;
+        while (accumulator >= simulation_dt) {
+            update(simulation_dt);
+            accumulator -= simulation_dt;
+        }
+
         render(dt);
         swap();
 
@@ -111,7 +118,7 @@ void pd::game::render(pd::timedelta_t dt) const
         m_screen->render(dt);
 }
 
-void pd::game::handle_event(SDL_Event &evt, pd::timedelta_t dt)
+void pd::game::handle_event(SDL_Event &evt)
 {
     if (evt.type == SDL_QUIT)
         stop();
@@ -124,5 +131,5 @@ void pd::game::handle_event(SDL_Event &evt, pd::timedelta_t dt)
         }
     }
     if (m_screen)
-        m_screen->handle_event(evt, dt);
+        m_screen->handle_event(evt);
 }
