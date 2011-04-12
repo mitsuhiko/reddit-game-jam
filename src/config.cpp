@@ -3,6 +3,7 @@
 
 pd::config::_world pd::config::world;
 pd::config::_camera pd::config::camera;
+pd::config::_console pd::config::console;
 pd::config::_player pd::config::player;
 pd::config::_kinetic_enemy pd::config::kinetic_enemy;
 
@@ -44,6 +45,19 @@ static void load_camera_config()
     pd::xml_element movement = doc.root().first_child("movement");
 
     cfg.adjust_time = movement.attr<float>("adjust-time");
+}
+
+static void load_console_config()
+{
+    static const char *filename = "config/console.xml";
+    PD_LOG("Loading console config from " << filename);
+
+    pd::config::_console &cfg = pd::config::console;
+    pd::xml_document doc(filename);
+    pd::xml_element settings = doc.root().first_child("settings");
+
+    cfg.max_lines = settings.attr<int>("max-lines");
+    cfg.print_to_stderr = settings.attr<bool>("print-to-stderr");
 }
 
 static void load_player_config()
@@ -142,6 +156,7 @@ void pd::config::load()
 {
     load_world_config();
     load_camera_config();
+    load_console_config();
     load_player_config();
     load_kinetic_enemy_config();
 }

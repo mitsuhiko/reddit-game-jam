@@ -22,6 +22,7 @@ set(GAME_SOURCES
 	src/rnd.cpp
 	src/utils.cpp
     src/config.cpp
+	src/console.cpp
 
 	src/screen.cpp
 	src/main_menu.cpp
@@ -53,6 +54,7 @@ set(GAME_HEADERS
 	include/pd/rnd.hpp
 	include/pd/utils.hpp
     include/pd/xml.hpp
+	include/pd/console.hpp
     include/pd/unordered_map.hpp
 
 	include/pd/screen.hpp

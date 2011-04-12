@@ -2,6 +2,8 @@
 #include <pd/main_menu.hpp>
 #include <pd/utils.hpp>
 #include <pd/config.hpp>
+#include <pd/console.hpp>
+
 
 static const int window_width = 1280;
 static const int window_height = 720;
@@ -56,11 +58,13 @@ pd::game::game()
     m_screen = pd::main_menu::instance();
     m_running = true;
     m_last_delay = 0;
+    m_console = new pd::console();
 }
 
 pd::game::~game()
 {
     s_instance = 0;
+    delete m_console;
     SDL_GL_DeleteContext(m_glctx);
     SDL_DestroyWindow(m_win);
     SDL_Quit();
@@ -116,6 +120,9 @@ void pd::game::draw() const
 {
     if (m_screen)
         m_screen->draw();
+
+    if (m_console->visible())
+        m_console->draw();
 }
 
 void pd::game::handle_event(SDL_Event &evt)
@@ -127,6 +134,9 @@ void pd::game::handle_event(SDL_Event &evt)
         case SDLK_F1:
             PD_LOG("Reloading config files");
             pd::config::load();
+            break;
+        case SDLK_BACKQUOTE:
+            m_console->toggle_visibility();
             break;
         }
     }

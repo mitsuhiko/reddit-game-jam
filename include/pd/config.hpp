@@ -22,6 +22,11 @@ namespace pd {
             float adjust_time;
         };
 
+        struct _console {
+            int max_lines;
+            bool print_to_stderr;
+        };
+
         struct _player {
             float width;
             float height;
@@ -64,6 +69,8 @@ namespace pd {
 
         extern _world world;
         extern _camera camera;
+        extern _console console;
+
         extern _player player;
         extern _kinetic_enemy kinetic_enemy;
     }
