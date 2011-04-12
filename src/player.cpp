@@ -57,7 +57,6 @@ void pd::player::apply_physics(float dt)
     m_velocity.x = pd::clamp(m_velocity.x, -max_speed, max_speed);
 
     // position updates
-    pd::vec2 old_pos = pos();
     int mask = move_collision_checked(m_velocity * dt);
 
     if (pd::collided_horizontally(mask))
