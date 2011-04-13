@@ -44,7 +44,9 @@ namespace pd {
         pd::animation m_kinetic_idle_anim;
         pd::animation m_electromagnetic_idle_anim;
         pd::animation m_flamethrower_anim;
+        pd::animation m_ice_spray_anim;
         stance_type m_stance;
+        bool m_alternative_fire;
         float m_movement;
         float m_energy;
         float m_previous_bottom;

@@ -15,7 +15,8 @@ pd::player::player(pd::game_session *session, const pd::vec2 &pos)
     : pd::entity(session, pos), m_thermal_idle_anim(cfg.thermal_idle),
       m_kinetic_idle_anim(cfg.kinetic_idle),
       m_electromagnetic_idle_anim(cfg.electromagnetic_idle),
-      m_flamethrower_anim(cfg.flamethrower)
+      m_flamethrower_anim(cfg.flamethrower),
+      m_ice_spray_anim(cfg.ice_spray)
 {
     m_stance = thermal_stance;
     m_energy = 1.0f;
@@ -25,6 +26,7 @@ pd::player::player(pd::game_session *session, const pd::vec2 &pos)
     m_tries_jumping = false;
     m_was_jumping = false;
     m_shooting = false;
+    m_alternative_fire = false;
 }
 
 void pd::player::apply_physics(float dt)
@@ -73,6 +75,8 @@ void pd::player::handle_event(SDL_Event &evt)
     if (evt.type == SDL_KEYDOWN) {
         switch (evt.key.keysym.sym) {
         case SDLK_1:
+            if (m_stance == thermal_stance)
+                m_alternative_fire = !m_alternative_fire;
             m_stance = thermal_stance;
             break;
         case SDLK_2:
@@ -107,6 +111,7 @@ void pd::player::update(pd::timedelta_t dt)
     m_kinetic_idle_anim.update(dt);
     m_electromagnetic_idle_anim.update(dt);
     m_flamethrower_anim.update(dt);
+    m_ice_spray_anim.update(dt);
     
     if (m_velocity.x < 0)
         m_flipped = true;
@@ -161,8 +166,12 @@ void pd::player::draw() const
 
     anim->draw();
 
-    if (m_shooting)
-        m_flamethrower_anim.draw(cfg.flamethrower_offset);
+    if (m_stance == thermal_stance && m_shooting) {
+        if (m_alternative_fire)
+            m_ice_spray_anim.draw(cfg.ice_spray_offset);
+        else
+            m_flamethrower_anim.draw(cfg.flamethrower_offset);
+    }
 
     pd::pop_matrix();
 }

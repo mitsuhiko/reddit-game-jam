@@ -31,6 +31,11 @@
       texture="textures/flamer.png"
       frames="5"
       speed="0.1" />
+    <animation
+      name="ice-spray"
+      texture="textures/ice_spray.png"
+      frames="5"
+      speed="0.1" />
   </animations>
 
   <offsets>
@@ -38,5 +43,6 @@
     <offset name="kinetic" x="26.0" y="10.0" />
     <offset name="electromagnetic" x="6.0" y="17.0" />
     <offset name="flamethrower" x="68.0" y="14.0" />
+    <offset name="ice-spray" x="68.0" y="14.0" />
   </offsets>
 </player>

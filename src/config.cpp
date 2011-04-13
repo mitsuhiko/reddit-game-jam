@@ -96,6 +96,8 @@ static void load_player_config()
             load_animation_config(cfg.electromagnetic_idle, animation);
         else if (animation_name == "flamethrower")
             load_animation_config(cfg.flamethrower, animation);
+        else if (animation_name == "ice-spray")
+            load_animation_config(cfg.ice_spray, animation);
     }
 
     for (pd::xml_element offset = offsets.first_child();
@@ -109,6 +111,8 @@ static void load_player_config()
             load_vector_config(cfg.electromagnetic_offset, offset);
         else if (offset_name == "flamethrower")
             load_vector_config(cfg.flamethrower_offset, offset);
+        else if (offset_name == "ice-spray")
+            load_vector_config(cfg.ice_spray_offset, offset);
     }
 }
 

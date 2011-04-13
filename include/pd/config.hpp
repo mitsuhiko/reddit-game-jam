@@ -43,11 +43,13 @@ namespace pd {
             animation_config kinetic_idle;
             animation_config electromagnetic_idle;
             animation_config flamethrower;
+            animation_config ice_spray;
 
             pd::vec2 thermal_offset;
             pd::vec2 kinetic_offset;
             pd::vec2 electromagnetic_offset;
             pd::vec2 flamethrower_offset;
+            pd::vec2 ice_spray_offset;
         };
 
         struct _kinetic_enemy {
