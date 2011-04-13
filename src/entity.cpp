@@ -4,6 +4,7 @@
 #include <pd/game.hpp>
 #include <pd/game_session.hpp>
 #include <pd/config.hpp>
+#include <pd/console.hpp>
 
 
 pd::entity::entity(pd::game_session *session, const pd::vec2 &pos)
@@ -48,7 +49,14 @@ int pd::entity::move_collision_checked(const pd::vec2 &delta)
     m_on_ground = false;
 
     for (int y = top_tile; y <= bottom_tile; y++) {
-        for (int x = left_tile; x <= right_tile; x++) {
+        for (int sx = left_tile; sx <= right_tile; sx++) {
+            // if we're moving to the left side we want to start testing the
+            // tiles from the right side, otherwise we want to start testing
+            // from the left side.  This solves the problem of being stuck
+            // in the corner of a tile.  This solution is not too nice but
+            // works.  Generally the whole collision handling here is pretty
+            // ugly and should be improved.
+            int x = delta.x < 0.0f ? right_tile - sx + left_tile : sx;
             pd::tile_collision_flag collision = map->get_collision(x, y);
 
             if (collision == pd::passable)
