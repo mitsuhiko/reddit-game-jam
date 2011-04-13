@@ -107,6 +107,8 @@ void pd::player::update(pd::timedelta_t dt)
 
     apply_physics(dt);
 
+    weapon_hit_detection();
+
     m_thermal_idle_anim.update(dt);
     m_kinetic_idle_anim.update(dt);
     m_electromagnetic_idle_anim.update(dt);
@@ -117,6 +119,12 @@ void pd::player::update(pd::timedelta_t dt)
         m_flipped = true;
     else if (m_velocity.x > 0)
         m_flipped = false;
+}
+
+void pd::player::weapon_hit_detection()
+{
+    if (!m_shooting)
+        return;
 }
 
 const pd::animation *pd::player::current_animation() const

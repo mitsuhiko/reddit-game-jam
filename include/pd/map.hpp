@@ -51,6 +51,9 @@ namespace pd {
             return m_blocks[(y * m_width) + x];
         }
 
+        void get_corner_tiles(const pd::aabb &bb, int *left_tile,
+                              int *right_tile, int *top_tile,
+                              int *bottom_tile) const;
         tile_collision_flag get_collision(int x, int y) const;
 
         pd::game_session *session() { return m_session; }

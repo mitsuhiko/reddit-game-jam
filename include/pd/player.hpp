@@ -28,6 +28,7 @@ namespace pd {
         const pd::vec2 &bound_offset() const;
         
         void apply_physics(pd::timedelta_t dt);
+        void weapon_hit_detection();
         const pd::vec2 &velocity() const { return m_velocity; }
         void velocity(const pd::vec2 &val) { m_velocity = val; }
 

@@ -5,6 +5,7 @@
 #include <pd/drawtools.hpp>
 #include <pd/lexical_cast.hpp>
 #include <pd/xml.hpp>
+#include <pd/math.hpp>
 #include <sstream>
 
 
@@ -116,6 +117,16 @@ pd::map::~map()
 
     delete[] m_background;
     delete[] m_blocks;
+}
+
+void pd::map::get_corner_tiles(const pd::aabb &bb, int *left_tile,
+                               int *right_tile, int *top_tile,
+                               int *bottom_tile) const
+{
+    *left_tile = (int)pd::floor(bb.left() / m_tile_width);
+    *right_tile = (int)pd::ceil(bb.right() / m_tile_width) - 1;
+    *top_tile = (int)pd::floor(bb.top() / m_tile_height);
+    *bottom_tile = (int)pd::ceil(bb.bottom() / m_tile_height) - 1;
 }
 
 pd::tile_collision_flag pd::map::get_collision(int x, int y) const

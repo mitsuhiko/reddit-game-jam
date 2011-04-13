@@ -38,13 +38,9 @@ int pd::entity::move_collision_checked(const pd::vec2 &delta)
 
     pd::aabb bb = bounding_box();
     const pd::map *map = session()->map();
-    float tile_width = (float)map->tile_width();
-    float tile_height = (float)map->tile_height();
 
-    int left_tile = (int)pd::floor(bb.left() / tile_width);
-    int right_tile = (int)pd::ceil(bb.right() / tile_width) - 1;
-    int top_tile = (int)pd::floor(bb.top() / tile_height);
-    int bottom_tile = (int)pd::ceil(bb.bottom() / tile_height) - 1;
+    int left_tile, right_tile, top_tile, bottom_tile;
+    map->get_corner_tiles(bb, &left_tile, &right_tile, &top_tile, &bottom_tile);
 
     m_on_ground = false;
 
