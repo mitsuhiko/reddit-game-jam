@@ -26,6 +26,8 @@ namespace pd {
                    float width, float height,
                    draw_effect effect = draw_without_effect,
                    pd::color color = pd::color());
+    void draw_solid_quad(const pd::vec2 &pos, float width, float height,
+                         pd::color color = pd::color());
 
     void draw_debug_box(const pd::vec2 &pos, float width, float height,
                         pd::color color = pd::color());

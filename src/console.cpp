@@ -9,7 +9,7 @@ pd::config::_console &cfg = pd::config::console;
 
 pd::console::console()
 {
-    m_font = pd::get_resource<pd::bitmap_font>("fonts/simple.fnt");
+    m_font = pd::get_resource<pd::bitmap_font>("fonts/console.fnt");
     m_visible = false;
 }
 
@@ -48,6 +48,10 @@ void pd::console::draw() const
 {
     static const float x = 10.0f;
     float y = 10.0f;
+
+    pd::draw_solid_quad(pd::vec2(0.0f, 0.0f), pd::game::instance().width(),
+                        m_lines.size() * m_font->height() + 2.0f * y,
+                        0x092C36EE);
 
     for (std::deque<std::string>::const_iterator iter = m_lines.begin();
          iter != m_lines.end(); ++iter) {
