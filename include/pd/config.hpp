@@ -22,6 +22,11 @@ namespace pd {
             float adjust_time;
         };
 
+        struct _console {
+            int max_lines;
+            bool print_to_stderr;
+        };
+
         struct _player {
             float width;
             float height;
@@ -31,9 +36,8 @@ namespace pd {
             float movement_acceleration;
             float kinetic_movement_acceleration;
             float friction;
-            float max_jump_time;
-            float jump_launch_velocity;
-            float jump_control_power;
+            float air_friction;
+            float jump_impulse;
 
             animation_config thermal_idle;
             animation_config kinetic_idle;
@@ -65,6 +69,8 @@ namespace pd {
 
         extern _world world;
         extern _camera camera;
+        extern _console console;
+
         extern _player player;
         extern _kinetic_enemy kinetic_enemy;
     }

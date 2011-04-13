@@ -56,8 +56,7 @@ int pd::entity::move_collision_checked(const pd::vec2 &delta)
 
             pd::aabb block_bb = map->get_block(x, y)->bounding_box();
             pd::vec2 depth = bounding_box().intersection_depth(block_bb);
-            if (pd::almost_equal(depth.x, 0.0f) &&
-                pd::almost_equal(depth.y, 0.0f))
+            if (depth == pd::vec2())
                 continue;
 
             pd::vec2 abs_depth = pd::abs(depth);

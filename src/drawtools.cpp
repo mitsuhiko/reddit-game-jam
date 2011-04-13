@@ -32,39 +32,52 @@ void pd::draw_quad(const pd::texture *texture, const pd::vec2 &pos,
 {
     float x = pos.x;
     float y = pos.y;
-    glBindTexture(GL_TEXTURE_2D, texture->id());
     float vertices[] = {
         x, y,
         x, y + height,
         x + width, y + height,
         x + width, y
     };
-    float fac_x = (float)texture->width() / texture->stored_width();
-    float fac_y = (float)texture->height() / texture->stored_height();
-    float off_x = (float)texture->offset_x() / texture->stored_width();
-    float off_y = (float)texture->offset_y() / texture->stored_height();
-    float texcoords[] = {
-        off_x, off_y,
-        off_x, fac_y + off_y,
-        fac_x + off_x, fac_y + off_y,
-        fac_x + off_x, off_y
-    };
 
-    if ((effect & draw_flipped_horizontally) != 0) {
-        pd::swap(texcoords[1], texcoords[3]);
-        pd::swap(texcoords[5], texcoords[7]);
-    }
-    if ((effect & draw_flipped_vertically) != 0) {
-        pd::swap(texcoords[0], texcoords[4]);
-        pd::swap(texcoords[2], texcoords[6]);
+    if (texture) {
+        glBindTexture(GL_TEXTURE_2D, texture->id());
+        float fac_x = (float)texture->width() / texture->stored_width();
+        float fac_y = (float)texture->height() / texture->stored_height();
+        float off_x = (float)texture->offset_x() / texture->stored_width();
+        float off_y = (float)texture->offset_y() / texture->stored_height();
+        float texcoords[] = {
+            off_x, off_y,
+            off_x, fac_y + off_y,
+            fac_x + off_x, fac_y + off_y,
+            fac_x + off_x, off_y
+        };
+
+        if ((effect & draw_flipped_horizontally) != 0) {
+            pd::swap(texcoords[1], texcoords[3]);
+            pd::swap(texcoords[5], texcoords[7]);
+        }
+        if ((effect & draw_flipped_vertically) != 0) {
+            pd::swap(texcoords[0], texcoords[4]);
+            pd::swap(texcoords[2], texcoords[6]);
+        }
+        glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+        glTexCoordPointer(2, GL_FLOAT, 0, texcoords);
+    } else {
+        glBindTexture(GL_TEXTURE_2D, 0);
+        glDisableClientState(GL_TEXTURE_COORD_ARRAY);
     }
 
     float col[4];
     color.to_float(col);
     glColor4fv(col);
     glVertexPointer(2, GL_FLOAT, 0, vertices);
-    glTexCoordPointer(2, GL_FLOAT, 0, texcoords);
     glDrawArrays(GL_QUADS, 0, 4);
+}
+
+void pd::draw_solid_quad(const pd::vec2 &pos, float width, float height,
+                         pd::color color)
+{
+    draw_quad(0, pos, width, height, draw_without_effect, color);
 }
 
 void pd::draw_text(const std::string &text, const pd::vec2 &pos,
@@ -108,7 +121,6 @@ void pd::draw_debug_box(const pd::vec2 &pos, float width, float height,
     glVertexPointer(2, GL_FLOAT, 0, vertices);
     glDisableClientState(GL_TEXTURE_COORD_ARRAY);
     glDrawArrays(GL_LINE_LOOP, 0, 4);
-    glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 }
 
 void pd::draw_debug_box(const pd::aabb &aabb, pd::color color)

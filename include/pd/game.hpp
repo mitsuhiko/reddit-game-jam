@@ -3,9 +3,11 @@
 #include <pd/pd.hpp>
 #include <pd/resource_manager.hpp>
 
+
 namespace pd {
 
     class screen;
+    class console;
 
     class game {
     public:
@@ -21,11 +23,12 @@ namespace pd {
 
         void handle_event(SDL_Event &evt);
         void update(pd::timedelta_t dt);
-        void render(pd::timedelta_t dt) const;
+        void draw() const;
         void swap();
 
         pd::screen *screen() { return m_screen; }
         void screen(pd::screen *val) { m_screen = val; }
+        pd::console &console() { return *m_console; }
         static pd::game &instance() { return *s_instance; }
 
         void get_size(int &width, int &height) const { return SDL_GetWindowSize(m_win, &width, &height); }
@@ -39,6 +42,7 @@ namespace pd {
         SDL_GLContext m_glctx;
         pd::screen *m_screen;
         bool m_running;
+        pd::console *m_console;
         pd::resource_manager m_resmgr;
         static pd::game *s_instance;
         uint64_t m_last_delay;

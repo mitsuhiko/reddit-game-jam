@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <world>
   <physics
-    gravity-acceleration="1000.0"
-    max-fall-speed="600.0" />
+    gravity-acceleration="1400.0"
+    max-fall-speed="1000.0" />
 </world>

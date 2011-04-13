@@ -25,9 +25,9 @@ namespace pd {
 
         void update(pd::timedelta_t dt);
         void handle_event(SDL_Event &evt);
-        void render(pd::timedelta_t dt) const;
+        void draw() const;
 
-        void render_gui(pd::timedelta_t dt) const;
+        void draw_gui() const;
         void update_cam(pd::timedelta_t dt);
 
         pd::map *map() { return m_map; }

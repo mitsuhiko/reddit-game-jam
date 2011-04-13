@@ -73,7 +73,7 @@ void pd::main_menu::handle_event(SDL_Event &evt)
     }
 }
 
-void pd::main_menu::render(pd::timedelta_t dt) const
+void pd::main_menu::draw() const
 {
     pd::clear_screen(0x333333ff);
     pd::draw_quad(m_logo, pd::vec2(280.0f, 50.0f));

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<console>
+  <settings
+    print-to-stderr="0"
+    max-lines="5" />
+</console>

@@ -3,6 +3,7 @@
 
 pd::config::_world pd::config::world;
 pd::config::_camera pd::config::camera;
+pd::config::_console pd::config::console;
 pd::config::_player pd::config::player;
 pd::config::_kinetic_enemy pd::config::kinetic_enemy;
 
@@ -46,6 +47,19 @@ static void load_camera_config()
     cfg.adjust_time = movement.attr<float>("adjust-time");
 }
 
+static void load_console_config()
+{
+    static const char *filename = "config/console.xml";
+    PD_LOG("Loading console config from " << filename);
+
+    pd::config::_console &cfg = pd::config::console;
+    pd::xml_document doc(filename);
+    pd::xml_element settings = doc.root().first_child("settings");
+
+    cfg.max_lines = settings.attr<int>("max-lines");
+    cfg.print_to_stderr = settings.attr<bool>("print-to-stderr");
+}
+
 static void load_player_config()
 {
     static const char *filename = "config/player.xml";
@@ -66,11 +80,10 @@ static void load_player_config()
     cfg.max_kinetic_movement_speed = movement.attr<float>("max-kinetic-speed");
     cfg.movement_acceleration = movement.attr<float>("acceleration");
     cfg.kinetic_movement_acceleration = movement.attr<float>("kinetic-acceleration");
+    cfg.air_friction = movement.attr<float>("air-friction");
     cfg.friction = movement.attr<float>("friction");
 
-    cfg.max_jump_time = jumping.attr<float>("max-time");
-    cfg.jump_launch_velocity = jumping.attr<float>("launch-velocity");
-    cfg.jump_control_power = jumping.attr<float>("control-power");
+    cfg.jump_impulse = jumping.attr<float>("impulse");
 
     for (pd::xml_element animation = animations.first_child();
          animation; animation = animation.next_sibling()) {
@@ -143,6 +156,7 @@ void pd::config::load()
 {
     load_world_config();
     load_camera_config();
+    load_console_config();
     load_player_config();
     load_kinetic_enemy_config();
 }

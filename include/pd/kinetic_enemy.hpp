@@ -29,7 +29,7 @@ namespace pd {
         float height() const;
 
         void update(pd::timedelta_t dt);
-        void render(pd::timedelta_t dt) const;
+        void draw() const;
 
     private:
         pd::animation m_walk_anim;

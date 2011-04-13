@@ -2,10 +2,12 @@
 #include <pd/main_menu.hpp>
 #include <pd/utils.hpp>
 #include <pd/config.hpp>
+#include <pd/console.hpp>
+
 
 static const int window_width = 1280;
 static const int window_height = 720;
-static const pd::timedelta_t simulation_dt = 0.016f;
+static const pd::timedelta_t simulation_dt = 0.01f;
 
 pd::game *pd::game::s_instance;
 
@@ -36,7 +38,7 @@ pd::game::game()
         window_width, window_height,
         SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN);
     if (!win)
-        pd::critical_error("Unable to create render window", SDL_GetError());
+        pd::critical_error("Unable to create draw() window", SDL_GetError());
 
     SDL_GLContext ctx = SDL_GL_CreateContext(win);
     SDL_GL_SetSwapInterval(1);
@@ -56,11 +58,13 @@ pd::game::game()
     m_screen = pd::main_menu::instance();
     m_running = true;
     m_last_delay = 0;
+    m_console = new pd::console();
 }
 
 pd::game::~game()
 {
     s_instance = 0;
+    delete m_console;
     SDL_GL_DeleteContext(m_glctx);
     SDL_DestroyWindow(m_win);
     SDL_Quit();
@@ -98,7 +102,7 @@ void pd::game::run()
             accumulator -= simulation_dt;
         }
 
-        render(dt);
+        draw();
         swap();
 
         // wait a little bit so that our timer has enough precision
@@ -112,10 +116,13 @@ void pd::game::update(pd::timedelta_t dt)
         m_screen->update(dt);
 }
 
-void pd::game::render(pd::timedelta_t dt) const
+void pd::game::draw() const
 {
     if (m_screen)
-        m_screen->render(dt);
+        m_screen->draw();
+
+    if (m_console->visible())
+        m_console->draw();
 }
 
 void pd::game::handle_event(SDL_Event &evt)
@@ -127,6 +134,9 @@ void pd::game::handle_event(SDL_Event &evt)
         case SDLK_F1:
             PD_LOG("Reloading config files");
             pd::config::load();
+            break;
+        case SDLK_BACKQUOTE:
+            m_console->toggle_visibility();
             break;
         }
     }

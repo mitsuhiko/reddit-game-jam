@@ -89,11 +89,15 @@ namespace pd {
         return value + 1;
     }
 
-    template <class T>
-    bool almost_equal(T a, T b)
+    inline bool almost_equal(float a, float b, float e = 10e-5f)
     {
-        static const T e = std::numeric_limits<T>::epsilon() / T(2);
         return (a - e < b && a + e > b);
+    }
+
+    inline bool almost_equal(const pd::vec2 &a, const pd::vec2 &b, float e = 10e-5f)
+    {
+        return pd::almost_equal(a.x, b.x, e) &&
+               pd::almost_equal(a.y, b.y, e);
     }
 
     template <class T, class F>

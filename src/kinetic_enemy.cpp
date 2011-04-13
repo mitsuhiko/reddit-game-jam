@@ -114,7 +114,7 @@ bool pd::kinetic_enemy::can_see(const pd::entity *other) const
     return other->bounding_box().intersects(sight_box);
 }
 
-void pd::kinetic_enemy::render(pd::timedelta_t dt) const
+void pd::kinetic_enemy::draw() const
 {
     const pd::vec2 pos = this->pos() - cfg.default_offset;
     draw_effect effect = draw_without_effect;
