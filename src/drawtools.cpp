@@ -105,8 +105,10 @@ void pd::draw_text(const std::string &text, const pd::vec2 &pos,
 void pd::draw_debug_box(const pd::vec2 &pos, float width, float height,
                         pd::color color)
 {
-    float x = pos.x;
-    float y = pos.y;
+    // the 0.5 is needed to reliably hit the pixel raster with lines.
+    // Correction is necessary when drawing lines unfortunately.
+    float x = 0.5f + pos.x;
+    float y = 0.5f + pos.y;
     float vertices[] = {
         x, y,
         x, y + height,

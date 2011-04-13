@@ -27,5 +27,9 @@ void pd::camera::apply()
 {
     int width, height;
     pd::game::instance().get_size(width, height);
-    pd::translate(-m_pos + pd::vec2(width / 2.0f, height / 2.0f));
+
+    // XXX: quick hack to avoid texture filtering problems when camera
+    // moves in other units than a pixel.
+    pd::vec2 delta = -m_pos + pd::vec2(width / 2.0f, height / 2.0f);
+    pd::translate(pd::floor(delta.x), pd::floor(delta.y));
 }

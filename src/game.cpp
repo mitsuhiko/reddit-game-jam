@@ -45,7 +45,8 @@ pd::game::game()
 
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    glOrtho(0.0f, window_width, window_height, 0.0f, 0.0f, 1000.0f);
+    glOrtho(0.0f, window_width, window_height, 0.0f, -1.0f, 1.0f);
+    glMatrixMode(GL_MODELVIEW);
 
     glEnable(GL_TEXTURE_2D);
     glEnable(GL_BLEND);
