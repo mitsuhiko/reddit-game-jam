@@ -83,6 +83,8 @@ void pd::game_session::update(pd::timedelta_t dt)
          iter != m_enemies.end(); ++iter)
         (*iter)->update(dt);
 
+    m_map->update(dt);
+
     m_cam->look_at(m_player->pos(), dt);
 }
 

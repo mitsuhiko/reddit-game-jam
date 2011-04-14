@@ -12,7 +12,7 @@ namespace pd {
     public:
         animation(const pd::config::animation_config &cfg);
         animation(pd::texture *texture, int frames, float anim_speed = 0.0f);
-        void update(pd::timedelta_t dt);
+        bool update(pd::timedelta_t dt);
 
         void draw(const pd::vec2 &pos = pd::vec2(),
                   draw_effect effect = draw_without_effect,

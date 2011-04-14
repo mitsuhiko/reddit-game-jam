@@ -23,10 +23,13 @@ pd::animation::animation(pd::texture *texture, int frames, float anim_speed)
     m_current_frame = 0;
 }
 
-void pd::animation::update(pd::timedelta_t dt)
+bool pd::animation::update(pd::timedelta_t dt)
 {
+    int old_frame = m_current_frame;
     for (m_time += dt; m_time >= m_anim_speed; m_time -= m_anim_speed)
         m_current_frame = (m_current_frame + 1) % m_frames;
+
+    return old_frame != m_current_frame && m_current_frame == 0;
 }
 
 void pd::animation::draw(const pd::vec2 &pos, draw_effect effect,

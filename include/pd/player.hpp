@@ -31,6 +31,8 @@ namespace pd {
         void apply_physics(pd::timedelta_t dt);
         const pd::config::weapon_config *current_weapon_config() const;
         pd::aabb get_weapon_aabb(const pd::config::weapon_config *weapon) const;
+        const pd::animation *get_weapon_animation(
+            const pd::config::weapon_config *weapon) const;
 
         void weapon_hit_detection();
         void handle_block_hit(pd::block *block,

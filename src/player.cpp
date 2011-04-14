@@ -127,8 +127,8 @@ const pd::config::weapon_config *pd::player::current_weapon_config() const
     switch (m_stance) {
     case thermal_stance:
         if (m_alternative_fire)
-            return &cfg.flamethrower;
-        return &cfg.ice_spray;
+            return &cfg.ice_spray;
+        return &cfg.flamethrower;
     default:;
     }
 
@@ -144,6 +144,16 @@ pd::aabb pd::player::get_weapon_aabb(const pd::config::weapon_config *weapon) co
         width *= -1.0f;
     }
     return pd::aabb::make_box(pos, width, weapon->height);
+}
+
+const pd::animation *pd::player::get_weapon_animation(
+    const pd::config::weapon_config *weapon) const
+{
+    if (weapon == &cfg.flamethrower)
+        return &m_flamethrower_anim;
+    else if (weapon == &cfg.ice_spray)
+        return &m_ice_spray_anim;
+    return 0;
 }
 
 void pd::player::weapon_hit_detection()
@@ -176,6 +186,15 @@ void pd::player::weapon_hit_detection()
 void pd::player::handle_block_hit(pd::block *block,
                                   const pd::config::weapon_config *weapon)
 {
+    if (weapon == &cfg.flamethrower) {
+        if (block->is("water"))
+            block->start_transition("void");
+        else if (block->is("metal"))
+            block->start_transition("lava");
+    } else if (weapon == &cfg.ice_spray) {
+        if (block->is("water"))
+            block->start_transition("ice");
+    }
 }
 
 const pd::animation *pd::player::current_animation() const
@@ -225,16 +244,12 @@ void pd::player::draw() const
 
     anim->draw();
 
-    if (m_stance == thermal_stance && m_shooting) {
-        if (m_alternative_fire)
-            m_ice_spray_anim.draw(cfg.ice_spray.offset);
-        else
-            m_flamethrower_anim.draw(cfg.flamethrower.offset);
-    }
+    const pd::config::weapon_config *weapon = current_weapon_config();
+    if (weapon && m_shooting)
+        get_weapon_animation(weapon)->draw(weapon->offset);
 
     pd::pop_matrix();
 
-    const pd::config::weapon_config *weapon = current_weapon_config();
     if (weapon && session()->draw_bounds())
         pd::draw_debug_box(get_weapon_aabb(weapon), 0xC730A9ff);
 }

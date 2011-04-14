@@ -3,6 +3,7 @@
 #include <pd/game_session.hpp>
 #include <pd/texture.hpp>
 #include <pd/drawtools.hpp>
+#include <pd/animation.hpp>
 #include <pd/lexical_cast.hpp>
 #include <pd/xml.hpp>
 #include <pd/math.hpp>
@@ -159,6 +160,17 @@ void pd::map::draw_tile_bounds() const
     }
 }
 
+void pd::map::update(pd::timedelta_t dt)
+{
+    for (int y = 0; y < m_height; y++) {
+        for (int x = 0; x < m_width; x++) {
+            pd::block *block = get_block(x, y);
+            if (block)
+                block->update(dt);
+        }
+    }
+}
+
 void pd::map::draw() const
 {
     pd::clear_screen(m_background_color);
@@ -167,7 +179,7 @@ void pd::map::draw() const
             draw_tile(x, y, get_bg(x, y));
             const pd::block *block = get_block(x, y);
             if (block)
-                draw_tile(x, y, block->tile());
+                block->draw();
         }
     }
 }
@@ -178,6 +190,7 @@ pd::block::block(pd::map *map, pd::map::tile_id_t tile, int x, int y)
     m_tile = tile;
     m_x = x;
     m_y = y;
+    m_transition = 0;
 }
 
 pd::aabb pd::block::bounding_box() const
@@ -202,6 +215,44 @@ pd::map::tile_id_t pd::block::tile_by_name(const std::string &name)
     return static_cast<pd::map::tile_id_t>(iter->second);
 }
 
+void pd::block::start_transition(pd::map::tile_id_t new_tile)
+{
+    pd::map::tile_id_t old_tile = m_tile;
+
+    m_tile = new_tile;
+    delete m_transition;
+    m_transition = 0;
+
+    pd::unordered_map<int, pd::config::block_def>::iterator iter;
+    iter = pd::config::blocks.defs.find(old_tile);
+
+    if (iter == pd::config::blocks.defs.end())
+        return;
+
+    pd::unordered_map<int, pd::config::animation_config>::iterator titer;
+    titer = iter->second.transitions.find(new_tile);
+
+    if (titer == iter->second.transitions.end())
+        return;
+
+    m_transition = new pd::animation(titer->second);
+}
+
 void pd::block::update(pd::timedelta_t dt)
 {
+    if (!m_transition)
+        return;
+
+    if (m_transition->update(dt)) {
+        delete m_transition;
+        m_transition = 0;
+    }
+}
+
+void pd::block::draw() const
+{
+    if (m_transition)
+        m_transition->draw();
+    else
+        m_map->draw_tile(m_x, m_y, m_tile);
 }

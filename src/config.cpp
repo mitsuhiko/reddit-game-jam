@@ -89,7 +89,7 @@ static pd::config::block_def &get_block_def(int code)
 
 static void load_block_config()
 {
-    static const char *filename = "config/block.xml";
+    static const char *filename = "config/blocks.xml";
     PD_LOG("Loading block config from " << filename);
 
     pd::config::_blocks &cfg = pd::config::blocks;
