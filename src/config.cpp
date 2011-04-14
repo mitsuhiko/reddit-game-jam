@@ -77,7 +77,7 @@ static int get_block_code(const std::string &def)
         return value;
     pd::unordered_map<std::string, int>::iterator iter;
     iter = pd::config::blocks.aliases.find(def);
-    return (iter == pd::config::blocks.aliases.end()) ? iter->second : 0;
+    return (iter != pd::config::blocks.aliases.end()) ? iter->second : 0;
 }
 
 static pd::config::block_def &get_block_def(int code)

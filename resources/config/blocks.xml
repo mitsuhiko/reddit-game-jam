@@ -12,20 +12,20 @@
     <transition
       from="water"
       to="void"
-      textures="textures/water_to_steam.png"
+      texture="textures/water_to_steam.png"
       frames="6"
       speed="0.05" />
     <transition
       from="water"
       to="ice"
-      textures="textures/water_to_ice.png"
+      texture="textures/water_to_ice.png"
       frames="6"
       speed="0.15" />
     <transition
       from="metal"
       to="lava"
       name="metal_to_magma"
-      textures="textures/metal_to_magma.png"
+      texture="textures/metal_to_magma.png"
       frames="6"
       speed="0.15" />
   </transitions>

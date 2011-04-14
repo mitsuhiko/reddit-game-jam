@@ -7,6 +7,7 @@
 #include <pd/lexical_cast.hpp>
 #include <pd/xml.hpp>
 #include <pd/math.hpp>
+#include <pd/console.hpp>
 #include <sstream>
 
 
@@ -252,7 +253,8 @@ void pd::block::update(pd::timedelta_t dt)
 void pd::block::draw() const
 {
     if (m_transition)
-        m_transition->draw();
+        m_transition->draw(pd::vec2((float)m_x * m_map->tile_width(),
+                                    (float)m_y * m_map->tile_height()));
     else
         m_map->draw_tile(m_x, m_y, m_tile);
 }
