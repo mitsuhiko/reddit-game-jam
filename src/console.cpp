@@ -49,7 +49,7 @@ void pd::console::draw() const
     static const float x = 10.0f;
     float y = 10.0f;
 
-    pd::draw_solid_quad(pd::vec2(0.0f, 0.0f), pd::game::instance().width(),
+    pd::draw_solid_quad(pd::vec2(0.0f, 0.0f), (float)pd::game::instance().width(),
                         m_lines.size() * m_font->height() + 2.0f * y,
                         0x092C36EE);
 
