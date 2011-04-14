@@ -5,6 +5,7 @@
 #include <pd/game_session.hpp>
 #include <pd/entity.hpp>
 #include <pd/config.hpp>
+#include <pd/console.hpp>
 #include <vector>
 
 
@@ -15,8 +16,8 @@ pd::player::player(pd::game_session *session, const pd::vec2 &pos)
     : pd::entity(session, pos), m_thermal_idle_anim(cfg.thermal_idle),
       m_kinetic_idle_anim(cfg.kinetic_idle),
       m_electromagnetic_idle_anim(cfg.electromagnetic_idle),
-      m_flamethrower_anim(cfg.flamethrower),
-      m_ice_spray_anim(cfg.ice_spray)
+      m_flamethrower_anim(cfg.flamethrower.anim),
+      m_ice_spray_anim(cfg.ice_spray.anim)
 {
     m_stance = thermal_stance;
     m_energy = 1.0f;
@@ -121,10 +122,60 @@ void pd::player::update(pd::timedelta_t dt)
         m_flipped = false;
 }
 
+const pd::config::weapon_config *pd::player::current_weapon_config() const
+{
+    switch (m_stance) {
+    case thermal_stance:
+        if (m_alternative_fire)
+            return &cfg.flamethrower;
+        return &cfg.ice_spray;
+    default:;
+    }
+
+    return 0;
+}
+
+pd::aabb pd::player::get_weapon_aabb(const pd::config::weapon_config *weapon) const
+{
+    pd::vec2 pos = this->pos() + weapon->offset;
+    float width = weapon->width;
+    if (m_flipped) {
+        pos.x -= current_animation()->width();
+        width *= -1.0f;
+    }
+    return pd::aabb::make_box(pos, width, weapon->height);
+}
+
 void pd::player::weapon_hit_detection()
 {
-    if (!m_shooting)
+    pd::map *map = session()->map();
+    const pd::config::weapon_config *weapon = current_weapon_config();
+
+    if (!m_shooting || !weapon)
         return;
+
+    pd::aabb bb = pd::aabb::make_box(pos() + weapon->offset,
+        (m_flipped ? -1 : 1) * weapon->width, weapon->height);
+
+    int left_tile, right_tile, top_tile, bottom_tile;
+    map->get_corner_tiles(bb, &left_tile, &right_tile,
+                          &top_tile, &bottom_tile);
+
+
+    for (int y = top_tile; y <= bottom_tile; y++) {
+        for (int x = left_tile; x <= right_tile; x++) {
+            pd::block *block = map->get_block(x, y);
+            if (!block)
+                continue;
+
+            handle_block_hit(block, weapon);
+        }
+    }
+}
+
+void pd::player::handle_block_hit(pd::block *block,
+                                  const pd::config::weapon_config *weapon)
+{
 }
 
 const pd::animation *pd::player::current_animation() const
@@ -176,10 +227,14 @@ void pd::player::draw() const
 
     if (m_stance == thermal_stance && m_shooting) {
         if (m_alternative_fire)
-            m_ice_spray_anim.draw(cfg.ice_spray_offset);
+            m_ice_spray_anim.draw(cfg.ice_spray.offset);
         else
-            m_flamethrower_anim.draw(cfg.flamethrower_offset);
+            m_flamethrower_anim.draw(cfg.flamethrower.offset);
     }
 
     pd::pop_matrix();
+
+    const pd::config::weapon_config *weapon = current_weapon_config();
+    if (weapon && session()->draw_bounds())
+        pd::draw_debug_box(get_weapon_aabb(weapon), 0xC730A9ff);
 }

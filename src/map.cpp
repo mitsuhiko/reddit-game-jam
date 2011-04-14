@@ -193,3 +193,15 @@ pd::tile_collision_flag pd::block::collision() const
         return pd::passable;
     return pd::impassable;
 }
+
+pd::map::tile_id_t pd::block::tile_by_name(const std::string &name)
+{
+    pd::unordered_map<std::string, int>::iterator iter;
+    iter = pd::config::blocks.aliases.find(name);
+    assert(iter != pd::config::blocks.aliases.end());
+    return static_cast<pd::map::tile_id_t>(iter->second);
+}
+
+void pd::block::update(pd::timedelta_t dt)
+{
+}

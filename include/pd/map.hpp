@@ -76,19 +76,18 @@ namespace pd {
 
     class block {
     public:
-
-        static const pd::map::tile_id_t metal_type = 129;
-        static const pd::map::tile_id_t ice_type = 130;
-        static const pd::map::tile_id_t glass_type = 131;
-        static const pd::map::tile_id_t laval_type = 132;
-        static const pd::map::tile_id_t water_type = 133;
-
         block(pd::map *map, pd::map::tile_id_t tile, int x, int y);
         pd::aabb bounding_box() const;
         int x() const { return m_x; }
         int y() const { return m_y; }
         const pd::map::tile_id_t tile() const { return m_tile; }
         tile_collision_flag collision() const;
+
+        static pd::map::tile_id_t tile_by_name(const std::string &name);
+
+        void transform_to(pd::map::tile_id_t new_tile,
+                          pd::timedelta_t transform_time = 0.2f);
+        void update(pd::timedelta_t dt);
 
     private:
         pd::map *m_map;

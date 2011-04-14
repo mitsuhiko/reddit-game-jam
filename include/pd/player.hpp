@@ -6,6 +6,7 @@
 
 namespace pd {
 
+    class block;
     class session;
 
     class player : public pd::entity {
@@ -28,7 +29,12 @@ namespace pd {
         const pd::vec2 &bound_offset() const;
         
         void apply_physics(pd::timedelta_t dt);
+        const pd::config::weapon_config *current_weapon_config() const;
+        pd::aabb get_weapon_aabb(const pd::config::weapon_config *weapon) const;
+
         void weapon_hit_detection();
+        void handle_block_hit(pd::block *block,
+                              const pd::config::weapon_config *weapon);
         const pd::vec2 &velocity() const { return m_velocity; }
         void velocity(const pd::vec2 &val) { m_velocity = val; }
 

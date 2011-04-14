@@ -37,6 +37,8 @@ namespace pd {
         const std::vector<pd::enemy *> &enemies() const { return m_enemies; }
         std::vector<pd::enemy *> &enemies() { return m_enemies; }
 
+        bool draw_bounds() const { return m_draw_bounds; }
+
     private:
         bool m_draw_bounds;
 		pd::map *m_map;

@@ -23,6 +23,13 @@ namespace pd {
             return rv;
         }
 
+        static pd::aabb make_box_around_center(const pd::vec2 &center,
+                                               float width, float height,
+                                               float shiftback = 0.0f)
+        {
+            return make_box(center, width, height);
+        }
+
         float left() const { return v1.x; }
         float top() const { return v1.y; }
         float right() const { return v2.x; }

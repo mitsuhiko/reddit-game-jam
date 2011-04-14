@@ -1,0 +1,32 @@
+<blocks>
+  <special-blocks>
+    <block id="0" name="void" />
+    <block id="129" name="metal" />
+    <block id="130" name="ice" />
+    <block id="131" name="glass" />
+    <block id="132" name="lava" />
+    <block id="133" name="water" />
+  </special-blocks>
+
+  <transitions>
+    <transition
+      from="water"
+      to="void"
+      textures="textures/water_to_steam.png"
+      frames="6"
+      speed="0.05" />
+    <transition
+      from="water"
+      to="ice"
+      textures="textures/water_to_ice.png"
+      frames="6"
+      speed="0.15" />
+    <transition
+      from="metal"
+      to="lava"
+      name="metal_to_magma"
+      textures="textures/metal_to_magma.png"
+      frames="6"
+      speed="0.15" />
+  </transitions>
+</blocks>
