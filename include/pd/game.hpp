@@ -34,10 +34,15 @@ namespace pd {
         void get_size(int &width, int &height) const { return SDL_GetWindowSize(m_win, &width, &height); }
         int width() const { int width, height; get_size(width, height); return width; }
         int height() const { int width, height; get_size(width, height); return height; }
+        void fullscreen(bool val);
+        bool fullscreen() const { return m_fullscreen; }
+        void toggle_fullscreen() { fullscreen(!fullscreen()); }
 
         pd::resource_manager &resmgr() { return m_resmgr; }
 
     private:
+        void on_resize();
+
         SDL_Window *m_win;
         SDL_GLContext m_glctx;
         pd::screen *m_screen;
@@ -46,6 +51,12 @@ namespace pd {
         pd::resource_manager m_resmgr;
         static pd::game *s_instance;
         uint64_t m_last_delay;
+        bool m_fullscreen;
+
+#if PD_PLATFORM == PD_PLATFORM_OSX
+        int m_osx_alternative_width;
+        int m_osx_alternative_height;
+#endif
     };
 
 
